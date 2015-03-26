@@ -1,6 +1,7 @@
 package com.bigmouth.app.ui;
 
-import com.yangyu.mytitlebar01.R;
+
+import com.bigmouth.app.R;
 
 import android.app.Activity;
 import android.content.Intent;
