@@ -4,8 +4,10 @@ import cn.sharesdk.framework.ShareSDK;
 import cn.sharesdk.onekeyshare.OnekeyShare;
 
 import com.bigmouth.app.R;
+import com.bigmouth.app.scan.MipcaCaptureActivity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
@@ -81,7 +83,13 @@ public class DialogActivity extends Activity implements OnClickListener {
 
 			// 启动分享GUI
 			oks.show(this);
-
+            finish();
+			break;
+		case R.id.llayout04:
+			
+			Intent intent3 = new Intent(this, MipcaCaptureActivity.class);
+			startActivityForResult(intent3, 1);
+			finish();
 			break;
 
 		default:

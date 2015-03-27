@@ -12,25 +12,25 @@ import android.widget.ImageButton;
 
 /**
  * @author yangyu
- *	¹¦ÄÜÃèÊö£ºµÚ¶şÖÖÊµÏÖ·½Ê½,ActivityÊµÏÖ·½Ê½
+ *	ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú¶ï¿½ï¿½ï¿½Êµï¿½Ö·ï¿½Ê½,ActivityÊµï¿½Ö·ï¿½Ê½
  */
 public class MainAcitivity extends Activity {
-	//¶¨Òå±êÌâÀ¸ÉÏµÄ°´Å¥
+	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÏµÄ°ï¿½Å¥
 	private ImageButton titleBtn;
 		
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_title);
+		setContentView(R.layout.activity_title1);
 		
 		initView();			
 	}
 	
 	/**
-	 * ³õÊ¼»¯×é¼ş
+	 * ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½
 	 */
 	private void initView(){
-		//ÊµÀı»¯±êÌâÀ¸°´Å¥²¢ÉèÖÃ¼àÌı
+		//Êµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Å¥ï¿½ï¿½ï¿½ï¿½ï¿½Ã¼ï¿½ï¿½ï¿½
 		titleBtn = (ImageButton) findViewById(R.id.title_btn);
 		titleBtn.setOnClickListener(new OnClickListener() {
 			@Override
