@@ -38,10 +38,12 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="10"
-            android:background="#ffffff"
+            android:background="#8cc421"
             android:button="@null"
+            android:drawableTop="@drawable/home"
             android:gravity="center"
-            android:text="@string/invite"
+            android:padding="8dp"
+            android:text="首页"
             android:textColor="@drawable/bottomtab_text_color_selector" />
 
         <RadioButton
@@ -49,10 +51,12 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="10"
-            android:background="#ffffff"
+            android:background="#8cc421"
             android:button="@null"
+            android:drawableTop="@drawable/info2"
             android:gravity="center"
-            android:text="@string/playing"
+            android:padding="8dp"
+            android:text="我的课时"
             android:textColor="@drawable/bottomtab_text_color_selector" />
 
         <RadioButton
@@ -60,10 +64,12 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="10"
-            android:background="#ffffff"
+            android:background="#8cc421"
             android:button="@null"
+            android:drawableTop="@drawable/record"
             android:gravity="center"
-            android:text="@string/player"
+            android:padding="8dp"
+            android:text="上课记录"
             android:textColor="@drawable/bottomtab_text_color_selector" />
 
         <RadioButton
@@ -71,10 +77,12 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="10"
-            android:background="#ffffff"
+            android:background="#8cc421"
             android:button="@null"
+            android:drawableTop="@drawable/calendar2"
             android:gravity="center"
-            android:text="@string/me"
+            android:padding="8dp"
+            android:text="上课日历"
             android:textColor="@drawable/bottomtab_text_color_selector" />
     </RadioGroup>
 

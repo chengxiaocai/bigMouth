@@ -3,30 +3,43 @@ package com.bigmouth.app.ui;
 import com.bigmouth.app.R;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.ImageButton;
 import android.widget.RadioButton;
 
-import com.bigmouth.app.R;
-import com.bigmouth.app.ui.fragment.InviteFragment;
-import com.bigmouth.app.ui.fragment.MeFragment;
-import com.bigmouth.app.ui.fragment.PlayerFragment;
-import com.bigmouth.app.ui.fragment.PlayingFragment;
+import com.bigmouth.app.ui.fragment.IndexFragment;
+import com.bigmouth.app.ui.fragment.CalenderFragment;
+import com.bigmouth.app.ui.fragment.ClassTimeFragment;
+import com.bigmouth.app.ui.fragment.ClassRecordFragment;
+import com.bigmouth.app.ui.fragment.TempFragment;
 
 public class MainAcitivity extends FragmentActivity implements OnClickListener {
 	private TitlePopup titlePopup;
 	private ImageButton titleBtn;
 	FragmentTransaction transaction;
-	InviteFragment inviteFramet;
-	MeFragment meFragment;
-	PlayerFragment playerFragment;
-	PlayingFragment playingFragment;
+	IndexFragment inviteFramet;
+	CalenderFragment meFragment;
+	ClassTimeFragment playerFragment;
+	ClassRecordFragment playingFragment;
+	TempFragment temFragment;
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+	public String url;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +52,7 @@ public class MainAcitivity extends FragmentActivity implements OnClickListener {
 	}
 
 	private void initView() {
-
+        url = getIntent().getStringExtra("url");
 		transaction = getSupportFragmentManager().beginTransaction();
 		findViewById(R.id.rb_miantab_invite).setOnClickListener(this);
 		RadioButton rb_invite = (RadioButton) findViewById(R.id.rb_miantab_invite);
@@ -58,12 +71,12 @@ public class MainAcitivity extends FragmentActivity implements OnClickListener {
 			}
 		});
 
-		if (inviteFramet == null) {
-			inviteFramet = new InviteFragment();
+		if (temFragment == null) {
+			temFragment = new TempFragment();
 
-			transaction.add(R.id.frag_main_tab, inviteFramet);
+			transaction.add(R.id.frag_main_tab, temFragment);
 		} else {
-			transaction.show(inviteFramet);
+			transaction.show(temFragment);
 		}
 		transaction.commit();
 	}
@@ -76,8 +89,9 @@ public class MainAcitivity extends FragmentActivity implements OnClickListener {
 		int id = v.getId();
 		switch (id) {
 		case R.id.rb_miantab_invite:
+			Log.i("ccc","1111");
 			if (inviteFramet == null) {
-				inviteFramet = new InviteFragment();
+				inviteFramet = new IndexFragment();
 
 				transaction.add(R.id.frag_main_tab, inviteFramet);
 			} else {
@@ -86,8 +100,9 @@ public class MainAcitivity extends FragmentActivity implements OnClickListener {
 			break;
 
 		case R.id.rb_miantab_me:
+			Log.i("ccc","2222");
 			if (meFragment == null) {
-				meFragment = new MeFragment();
+				meFragment = new CalenderFragment();
 
 				transaction.add(R.id.frag_main_tab, meFragment);
 			} else {
@@ -96,8 +111,9 @@ public class MainAcitivity extends FragmentActivity implements OnClickListener {
 			break;
 
 		case R.id.rb_miantab_player:
+			Log.i("ccc","3333");
 			if (playerFragment == null) {
-				playerFragment = new PlayerFragment();
+				playerFragment = new ClassTimeFragment();
 				transaction.add(R.id.frag_main_tab, playerFragment);
 			} else {
 				transaction.show(playerFragment);
@@ -105,8 +121,9 @@ public class MainAcitivity extends FragmentActivity implements OnClickListener {
 			break;
 
 		case R.id.rb_miantab_playing:
+			Log.i("ccc","44444");
 			if (playingFragment == null) {
-				playingFragment = new PlayingFragment();
+				playingFragment = new ClassRecordFragment();
 				transaction.add(R.id.frag_main_tab, playingFragment);
 			} else {
 				transaction.show(playingFragment);
@@ -123,6 +140,9 @@ public class MainAcitivity extends FragmentActivity implements OnClickListener {
 		if (inviteFramet != null) {
 			transaction.hide(inviteFramet);
 		}
+		if (temFragment != null) {
+			transaction.hide(temFragment);
+		}
 
 		if (meFragment != null) {
 			transaction.hide(meFragment);
@@ -137,6 +157,13 @@ public class MainAcitivity extends FragmentActivity implements OnClickListener {
 		}
 	}
 	private void init(){
+		SharedPreferences sharedPreferences = getSharedPreferences("isLogin", Context.MODE_PRIVATE); //私有数据
+		Editor editor = sharedPreferences.edit();//获取编辑器
+		editor.putBoolean("isLogin", true);
+		
+		editor.commit();//提交修改
+		
+		
 		titlePopup = new TitlePopup(this, LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT,this);
 		titlePopup.addAction(new ActionItem(this, "分享", R.drawable.mm_title_btn_receiver_normal));
 		titlePopup.addAction(new ActionItem(this, "扫描", R.drawable.mm_title_btn_set_normal));

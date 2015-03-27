@@ -1,6 +1,7 @@
 package com.bigmouth.app.ui.fragment;
 
 
+
 import com.bigmouth.app.R;
 
 import android.os.Bundle;
@@ -12,15 +13,15 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-public class InviteFragment extends Fragment {
+public class ClassTimeFragment extends Fragment {
+
 	private WebView mWebView;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		View contentView=inflater.inflate(R.layout.fragment_invite,
-		 container, false);
-		mWebView = (WebView) contentView.findViewById(R.id.invit_web);
+		View contentView=inflater.inflate(R.layout.fragment_player,container, false);
+		mWebView = (WebView) contentView.findViewById(R.id.playing_web);
 		WebSettings webSettings = mWebView.getSettings();
 		webSettings.setJavaScriptEnabled(true);
 		mWebView.setWebViewClient(new WebViewClient() {
@@ -29,7 +30,7 @@ public class InviteFragment extends Fragment {
 				return true;
 			}
 		});
-		mWebView.loadUrl("http://wap.management.01teacher.cn/Account/LogOn");
+		mWebView.loadUrl("http://wap.management.01teacher.cn/StudentPeriod/My");
 
 		return contentView;
 	}

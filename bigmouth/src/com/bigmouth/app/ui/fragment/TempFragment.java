@@ -13,7 +13,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-public class PlayingFragment extends Fragment {
+public class TempFragment extends Fragment {
 
 	private WebView mWebView;
 
@@ -30,8 +30,7 @@ public class PlayingFragment extends Fragment {
 				return true;
 			}
 		});
-		mWebView.loadUrl("http://wap.management.01teacher.cn/StudentPeriod/My");
-
+		mWebView.loadUrl("http://wap.management.01teacher.cn/");
 		return contentView;
 	}
 }
