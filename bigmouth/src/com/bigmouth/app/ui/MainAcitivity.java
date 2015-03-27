@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.ImageButton;
 import android.widget.RadioButton;
 
@@ -19,7 +20,7 @@ import com.bigmouth.app.ui.fragment.PlayerFragment;
 import com.bigmouth.app.ui.fragment.PlayingFragment;
 
 public class MainAcitivity extends FragmentActivity implements OnClickListener {
-
+	private TitlePopup titlePopup;
 	private ImageButton titleBtn;
 	FragmentTransaction transaction;
 	InviteFragment inviteFramet;
@@ -32,7 +33,7 @@ public class MainAcitivity extends FragmentActivity implements OnClickListener {
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.activity_main);
-
+		 init();
 		initView();
 
 	}
@@ -51,8 +52,9 @@ public class MainAcitivity extends FragmentActivity implements OnClickListener {
 		titleBtn.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				startActivity(new Intent(MainAcitivity.this,
-						DialogActivity.class));
+				/*startActivity(new Intent(MainAcitivity.this,
+						DialogActivity.class));*/
+				titlePopup.show(v);
 			}
 		});
 
@@ -133,6 +135,13 @@ public class MainAcitivity extends FragmentActivity implements OnClickListener {
 		if (playingFragment != null) {
 			transaction.hide(playingFragment);
 		}
+	}
+	private void init(){
+		titlePopup = new TitlePopup(this, LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT,this);
+		titlePopup.addAction(new ActionItem(this, "分享", R.drawable.mm_title_btn_receiver_normal));
+		titlePopup.addAction(new ActionItem(this, "扫描", R.drawable.mm_title_btn_set_normal));
+		titlePopup.addAction(new ActionItem(this, "测试3", R.drawable.mm_title_btn_share_normal));
+		titlePopup.addAction(new ActionItem(this, "测试4", R.drawable.mm_title_btn_speaker_normal));
 	}
 
 }

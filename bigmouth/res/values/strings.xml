@@ -3,7 +3,7 @@
 
     <string name="app_name">bigmouth</string>
     <string name="hello_world">Hello world!</string>
-    <string name="scan_toast">请将红外线对准快递、运单上的条形码</string>
+    <string name="scan_toast">请将二维码放入框中</string>
     <string name="flight_open">打开闪光灯</string>
     <string name="flight_close">关闭闪关灯</string>
     <string name="action_settings">Settings</string>
