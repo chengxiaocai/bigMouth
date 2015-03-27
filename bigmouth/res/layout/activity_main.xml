@@ -1,26 +1,81 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+     >
+    <include 
+        layout="@layout/activity_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/title"
+        />
+    <LinearLayout
+        android:layout_below="@id/title"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="70dp"
+        android:background="@color/blue"
+        android:orientation="vertical" >
 
-    <Button
-        android:id="@+id/main_btn01"
-        android:layout_width="fill_parent"
-        android:layout_height="44dp"
-        android:layout_above="@+id/main_btn02"
-        android:layout_margin="5dp"
-        android:background="@drawable/main_btn"
-        android:text="第一种实现方式（PopupWindow实现）"
-        android:textSize="16dp" />
+        <LinearLayout
+            android:id="@+id/frag_main_tab"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="1dp"
+            android:background="@color/white"
+            android:orientation="vertical" />
+    </LinearLayout>
 
-    <Button
-        android:id="@+id/main_btn02"
-        android:layout_width="fill_parent"
-        android:layout_height="44dp"
-        android:layout_centerVertical="true"
-        android:layout_margin="5dp"
-        android:background="@drawable/main_btn"
-        android:text="第二种实现方式（Activity实现）"
-        android:textSize="16dp" />
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_alignParentBottom="true"
+        android:background="#ffffff"
+        android:orientation="horizontal" >
+
+        <RadioButton
+            android:id="@+id/rb_miantab_invite"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="10"
+            android:background="#ffffff"
+            android:button="@null"
+            android:gravity="center"
+            android:text="@string/invite"
+            android:textColor="@drawable/bottomtab_text_color_selector" />
+
+        <RadioButton
+              android:id="@+id/rb_miantab_playing"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="10"
+            android:background="#ffffff"
+            android:button="@null"
+            android:gravity="center"
+            android:text="@string/playing"
+            android:textColor="@drawable/bottomtab_text_color_selector" />
+
+        <RadioButton
+              android:id="@+id/rb_miantab_player"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="10"
+            android:background="#ffffff"
+            android:button="@null"
+            android:gravity="center"
+            android:text="@string/player"
+            android:textColor="@drawable/bottomtab_text_color_selector" />
+
+        <RadioButton
+              android:id="@+id/rb_miantab_me"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="10"
+            android:background="#ffffff"
+            android:button="@null"
+            android:gravity="center"
+            android:text="@string/me"
+            android:textColor="@drawable/bottomtab_text_color_selector" />
+    </RadioGroup>
 
 </RelativeLayout>
