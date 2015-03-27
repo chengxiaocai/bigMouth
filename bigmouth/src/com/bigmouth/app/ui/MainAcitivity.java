@@ -1,9 +1,6 @@
 package com.bigmouth.app.ui;
 
-
-
 import com.bigmouth.app.R;
-
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -27,10 +24,11 @@ public class MainAcitivity extends FragmentActivity implements OnClickListener {
 	// ����������ϵİ�ť
 	private ImageButton titleBtn;
 	FragmentTransaction transaction;
-	InviteFragment inviteFramet ;
+	InviteFragment inviteFramet;
 	MeFragment meFragment;
-	PlayerFragment  playerFragment;
+	PlayerFragment playerFragment;
 	PlayingFragment playingFragment;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -44,7 +42,7 @@ public class MainAcitivity extends FragmentActivity implements OnClickListener {
 	 */
 	private void initView() {
 
-		transaction =getSupportFragmentManager().beginTransaction();
+		transaction = getSupportFragmentManager().beginTransaction();
 		findViewById(R.id.rb_miantab_invite).setOnClickListener(this);
 		RadioButton rb_invite = (RadioButton) findViewById(R.id.rb_miantab_invite);
 		rb_invite.setChecked(true);
@@ -61,12 +59,12 @@ public class MainAcitivity extends FragmentActivity implements OnClickListener {
 						DialogActivity.class));
 			}
 		});
-		
-		if(inviteFramet==null){
+
+		if (inviteFramet == null) {
 			inviteFramet = new InviteFragment();
-			
-			transaction.add(R.id.frag_main_tab, inviteFramet);  
-		}else{
+
+			transaction.add(R.id.frag_main_tab, inviteFramet);
+		} else {
 			transaction.show(inviteFramet);
 		}
 		transaction.commit();
@@ -75,75 +73,70 @@ public class MainAcitivity extends FragmentActivity implements OnClickListener {
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
-		transaction =getSupportFragmentManager().beginTransaction();
+		transaction = getSupportFragmentManager().beginTransaction();
 		hideFragments(transaction);
-		int id =v.getId();
+		int id = v.getId();
 		switch (id) {
 		case R.id.rb_miantab_invite:
-			if(inviteFramet==null){
+			if (inviteFramet == null) {
 				inviteFramet = new InviteFragment();
-				
-				transaction.add(R.id.frag_main_tab, inviteFramet);  
-			}else{
+
+				transaction.add(R.id.frag_main_tab, inviteFramet);
+			} else {
 				transaction.show(inviteFramet);
 			}
 			break;
-			
-			
+
 		case R.id.rb_miantab_me:
-			if(meFragment==null){
+			if (meFragment == null) {
 				meFragment = new MeFragment();
-				
-				transaction.add(R.id.frag_main_tab, meFragment);  
-			}else{
+
+				transaction.add(R.id.frag_main_tab, meFragment);
+			} else {
 				transaction.show(meFragment);
 			}
 			break;
-			
-			
+
 		case R.id.rb_miantab_player:
-			if(playerFragment==null){
+			if (playerFragment == null) {
 				playerFragment = new PlayerFragment();
-				transaction.add(R.id.frag_main_tab, playerFragment);  
-			}else{
+				transaction.add(R.id.frag_main_tab, playerFragment);
+			} else {
 				transaction.show(playerFragment);
 			}
 			break;
-			
-			
+
 		case R.id.rb_miantab_playing:
-			if(playingFragment==null){
+			if (playingFragment == null) {
 				playingFragment = new PlayingFragment();
-				transaction.add(R.id.frag_main_tab, playingFragment);  
-			}else{
+				transaction.add(R.id.frag_main_tab, playingFragment);
+			} else {
 				transaction.show(playingFragment);
 			}
 			break;
 
 		}
 		transaction.commit();
-		
+
 	}
-private void hideFragments(FragmentTransaction transaction){
-		
-		if(inviteFramet!=null){
+
+	private void hideFragments(FragmentTransaction transaction) {
+
+		if (inviteFramet != null) {
 			transaction.hide(inviteFramet);
 		}
-		
-		if(meFragment!=null){
+
+		if (meFragment != null) {
 			transaction.hide(meFragment);
 		}
-		
-		if(playerFragment!=null){
+
+		if (playerFragment != null) {
 			transaction.hide(playerFragment);
 		}
-		
-		if(playingFragment!=null){
+
+		if (playingFragment != null) {
 			transaction.hide(playingFragment);
 		}
 	}
-	
-	
-		
 
 }
