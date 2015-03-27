@@ -2,7 +2,12 @@
 <resources>
 
     <string name="app_name">bigmouth</string>
-    <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="me">me</string>
+    <string name="invite">invite</string>
+    <string name="welecom">欢迎来到太极象棋</string>
+    <string name="player">player</string>
+    <string name="playing">playing</string>
 
 </resources>
