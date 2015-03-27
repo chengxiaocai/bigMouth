@@ -18,11 +18,8 @@ import com.bigmouth.app.ui.fragment.MeFragment;
 import com.bigmouth.app.ui.fragment.PlayerFragment;
 import com.bigmouth.app.ui.fragment.PlayingFragment;
 
-
-
-	
 public class MainAcitivity extends FragmentActivity implements OnClickListener {
-	
+
 	private ImageButton titleBtn;
 	FragmentTransaction transaction;
 	InviteFragment inviteFramet;
@@ -34,18 +31,12 @@ public class MainAcitivity extends FragmentActivity implements OnClickListener {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		setContentView(R.layout.activity_title1);
-		
-		initView();			
-
 		setContentView(R.layout.activity_main);
 
 		initView();
 
 	}
 
-	
-		
 	private void initView() {
 
 		transaction = getSupportFragmentManager().beginTransaction();
@@ -56,7 +47,6 @@ public class MainAcitivity extends FragmentActivity implements OnClickListener {
 		findViewById(R.id.rb_miantab_player).setOnClickListener(this);
 		findViewById(R.id.rb_miantab_playing).setOnClickListener(this);
 
-	
 		titleBtn = (ImageButton) findViewById(R.id.title_btn);
 		titleBtn.setOnClickListener(new OnClickListener() {
 			@Override

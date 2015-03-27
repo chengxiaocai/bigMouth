@@ -1,18 +1,18 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-     >
-    <include 
-        layout="@layout/activity_title"
+    android:layout_height="match_parent" >
+
+    <include
+        android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/title"
-        />
+        layout="@layout/activity_title1" />
+
     <LinearLayout
-        android:layout_below="@id/title"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@id/title"
         android:layout_marginBottom="70dp"
         android:background="@color/blue"
         android:orientation="vertical" >
@@ -45,7 +45,7 @@
             android:textColor="@drawable/bottomtab_text_color_selector" />
 
         <RadioButton
-              android:id="@+id/rb_miantab_playing"
+            android:id="@+id/rb_miantab_playing"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="10"
@@ -56,7 +56,7 @@
             android:textColor="@drawable/bottomtab_text_color_selector" />
 
         <RadioButton
-              android:id="@+id/rb_miantab_player"
+            android:id="@+id/rb_miantab_player"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="10"
@@ -67,7 +67,7 @@
             android:textColor="@drawable/bottomtab_text_color_selector" />
 
         <RadioButton
-              android:id="@+id/rb_miantab_me"
+            android:id="@+id/rb_miantab_me"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="10"
