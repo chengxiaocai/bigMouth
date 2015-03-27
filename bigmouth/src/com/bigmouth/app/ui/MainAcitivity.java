@@ -1,5 +1,10 @@
 package com.bigmouth.app.ui;
 
+
+
+import com.bigmouth.app.R;
+
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -16,10 +21,10 @@ import com.bigmouth.app.ui.fragment.PlayerFragment;
 import com.bigmouth.app.ui.fragment.PlayingFragment;
 
 /**
- * @author yangyu ¹¦ÄÜÃèÊö£ºµÚ¶şÖÖÊµÏÖ·½Ê½,ActivityÊµÏÖ·½Ê½
+ * @author yangyu ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú¶ï¿½ï¿½ï¿½Êµï¿½Ö·ï¿½Ê½,ActivityÊµï¿½Ö·ï¿½Ê½
  */
 public class MainAcitivity extends FragmentActivity implements OnClickListener {
-	// ¶¨Òå±êÌâÀ¸ÉÏµÄ°´Å¥
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÏµÄ°ï¿½Å¥
 	private ImageButton titleBtn;
 	FragmentTransaction transaction;
 	InviteFragment inviteFramet ;
@@ -35,7 +40,7 @@ public class MainAcitivity extends FragmentActivity implements OnClickListener {
 	}
 
 	/**
-	 * ³õÊ¼»¯×é¼ş
+	 * ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½
 	 */
 	private void initView() {
 
@@ -47,7 +52,7 @@ public class MainAcitivity extends FragmentActivity implements OnClickListener {
 		findViewById(R.id.rb_miantab_player).setOnClickListener(this);
 		findViewById(R.id.rb_miantab_playing).setOnClickListener(this);
 
-		// ÊµÀı»¯±êÌâÀ¸°´Å¥²¢ÉèÖÃ¼àÌı
+		// Êµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Å¥ï¿½ï¿½ï¿½ï¿½ï¿½Ã¼ï¿½ï¿½ï¿½
 		titleBtn = (ImageButton) findViewById(R.id.title_btn);
 		titleBtn.setOnClickListener(new OnClickListener() {
 			@Override
