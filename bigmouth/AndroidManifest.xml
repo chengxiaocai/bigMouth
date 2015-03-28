@@ -7,10 +7,13 @@
     <uses-sdk
         android:minSdkVersion="4"
         android:targetSdkVersion="14" />
-      <uses-permission android:name="android.permission.VIBRATE" />
+
+    <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.CAMERA" />
+
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
+
     <uses-permission android:name="android.permission.GET_TASKS" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
@@ -26,17 +29,16 @@
         android:icon="@drawable/log"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
-        <activity 
-            android:windowSoftInputMode="adjustPan|stateAlwaysHidden"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"
-            android:name="com.bigmouth.app.ui.LoginActivity" >
-          
+        <activity
+            android:name="com.bigmouth.app.ui.LoginActivity"
+            android:theme="@android:style/Theme.NoTitleBar"
+            android:windowSoftInputMode="adjustPan|stateAlwaysHidden" >
         </activity>
-        <activity 
-            android:windowSoftInputMode="adjustPan|stateAlwaysHidden"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"
-            android:name="com.bigmouth.app.ui.MainAcitivity" >
-             <intent-filter>
+        <activity
+            android:name="com.bigmouth.app.ui.MainAcitivity"
+            android:theme="@android:style/Theme.NoTitleBar"
+            android:windowSoftInputMode="adjustPan|stateAlwaysHidden" >
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -48,7 +50,11 @@
         </activity>
         <activity
             android:name="com.bigmouth.app.scan.MipcaCaptureActivity"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+            android:theme="@android:style/Theme.NoTitleBar" >
+        </activity>
+        <activity
+            android:name="com.bigmouth.app.ui.ReadActivity"
+            android:theme="@android:style/Theme.NoTitleBar" >
         </activity>
         <activity
             android:name="cn.sharesdk.framework.ShareSDKUIShell"

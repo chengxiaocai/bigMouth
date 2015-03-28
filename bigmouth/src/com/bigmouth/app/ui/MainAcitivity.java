@@ -167,8 +167,7 @@ public class MainAcitivity extends FragmentActivity implements OnClickListener {
 		titlePopup = new TitlePopup(this, LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT,this);
 		titlePopup.addAction(new ActionItem(this, "分享", R.drawable.mm_title_btn_receiver_normal));
 		titlePopup.addAction(new ActionItem(this, "扫描", R.drawable.mm_title_btn_set_normal));
-		titlePopup.addAction(new ActionItem(this, "测试3", R.drawable.mm_title_btn_share_normal));
-		titlePopup.addAction(new ActionItem(this, "测试4", R.drawable.mm_title_btn_speaker_normal));
+		titlePopup.addAction(new ActionItem(this, "分享", R.drawable.mm_title_btn_share_normal));
 	}
 
 }

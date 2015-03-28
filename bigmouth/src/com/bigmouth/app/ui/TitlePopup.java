@@ -113,12 +113,17 @@ public class TitlePopup extends PopupWindow {
 
 					// 启动分享GUI
 					oks.show(mContext);
-				} else {
+				} else if(index==1) {
 					Intent intent3 = new Intent(mContext,
 							MipcaCaptureActivity.class);
 					
 					ac.startActivityForResult(intent3, 1);
 					
+				}else{
+					Intent intent3 = new Intent(mContext,
+							ReadActivity.class);
+					
+					ac.startActivityForResult(intent3, 1);
 				}
 			}
 		});

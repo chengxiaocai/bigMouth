@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff"
+    android:gravity="center"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:id="@+id/line_read"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:background="#efeff4"
+        android:orientation="vertical"
+        android:visibility="gone" >
+        <TextView 
+            android:id="@+id/tv_src_word"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            
+            />
+        <TextView 
+            android:id="@+id/tv_result_word"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            
+            />
+        <Button 
+            android:id="@+id/lound"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="发音"
+            />
+    </LinearLayout>
+
+    <TextView
+        android:layout_marginTop="20dp"
+        android:id="@+id/tv_read_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+       
+        android:layout_gravity="center"
+        android:textColor="#000000"
+        android:textSize="20sp" />
+
+</FrameLayout>

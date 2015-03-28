@@ -29,6 +29,7 @@ public class IndexFragment extends Fragment {
 		mWebView.setWebViewClient(new WebViewClient() {
 			public boolean shouldOverrideUrlLoading(WebView view, String url) {
 				view.loadUrl(url);
+				view.getUrl();
 				return true;
 			}
 		});
