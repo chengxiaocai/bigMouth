@@ -18,6 +18,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.baidu.speechsynthesizer.SpeechSynthesizer;
+import com.baidu.speechsynthesizer.SpeechSynthesizerListener;
+import com.baidu.speechsynthesizer.publicutility.SpeechError;
 import com.bigmouth.app.R;
 import com.bigmouth.app.util.Constant;
 import com.bigmouth.app.util.StreamTools;
@@ -25,6 +28,7 @@ import com.bigmouth.app.util.StreamTools;
 import android.app.Activity;
 import android.graphics.Color;
 
+import android.media.AudioManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Spannable;
@@ -35,22 +39,35 @@ import android.text.style.BackgroundColorSpan;
 import android.text.style.ClickableSpan;
 import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.animation.TranslateAnimation;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.TextView.BufferType;
 
-public class ReadActivity extends Activity {
+public class ReadActivity extends Activity implements OnClickListener, SpeechSynthesizerListener {
 	private TextView testText = null;
-	private TextView  tvSrcWord,tvResultWrod;
+	private TextView tvSrcWord, tvResultWrod;
 	private LinearLayout line;
+	private Button btnLound;
+	private SpeechSynthesizer speechSynthesizer;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_read);
+		speechSynthesizer = new SpeechSynthesizer(getApplicationContext(),"holder", this);
+		// 此处需要将setApiKey方法的两个参数替换为你在百度开发者中心注册应用所得到的apiKey和secretKey
+		speechSynthesizer.setApiKey("OsxkbrvCtRuxA6ptGMbAIQTF",
+				"1UrKFZwaxAllo5uP9007QduXhkwyvvmG");
+		speechSynthesizer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+		setVolumeControlStream(AudioManager.STREAM_MUSIC);
+
+		btnLound = (Button) findViewById(R.id.lound);
+
 		line = (LinearLayout) findViewById(R.id.line_read);
 		testText = (TextView) findViewById(R.id.tv_read_content);
 		tvResultWrod = (TextView) findViewById(R.id.tv_result_word);
@@ -168,7 +185,7 @@ public class ReadActivity extends Activity {
 			@Override
 			protected String doInBackground(String... params) {
 				// TODO Auto-generated method stub
-				String result=null;
+				String result = null;
 				try {
 
 					HttpClient client = new DefaultHttpClient();
@@ -190,7 +207,7 @@ public class ReadActivity extends Activity {
 					if (code == 200) {
 						InputStream is = response.getEntity().getContent();
 						result = StreamTools.readFromStream(is);
-						
+
 					} else {
 						Toast.makeText(ReadActivity.this, "服务器异常", 1).show();
 					}
@@ -206,7 +223,7 @@ public class ReadActivity extends Activity {
 			protected void onPostExecute(String response) {
 				// TODO Auto-generated method stub
 				super.onPostExecute(response);
-				if(response!=null){
+				if (response != null) {
 					Log.i("cc....response", response);
 					try {
 						JSONObject json = new JSONObject(response);
@@ -216,17 +233,111 @@ public class ReadActivity extends Activity {
 						String src = json2.optString("src");
 						tvResultWrod.setText(dst);
 						tvSrcWord.setText(src);
-						
+						btnLound.setOnClickListener(ReadActivity.this); // 注册发音监听器
+
 					} catch (JSONException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					} else {
-						Toast.makeText(ReadActivity.this, "访问失败", 0).show();
-					}
+				} else {
+					Toast.makeText(ReadActivity.this, "访问失败", 0).show();
 				}
-			
+			}
+
 		}.execute(Constant.BAIDU_TRANSLATE_URL);
 	}
+
+	@Override
+	public void onClick(View v) {
+		// TODO Auto-generated method stub
+		 new Thread(new Runnable() {
+
+             @Override
+             public void run() {
+                 setParams();
+                 int ret = speechSynthesizer.speak(tvSrcWord.getText().toString());
+                 if (ret != 0) {
+                    Log.i("cc......","hecheng faile!!");
+                 }
+             }
+         }).start();
+	}
+
+	@Override
+	public void onBufferProgressChanged(SpeechSynthesizer arg0, int arg1) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onCancel(SpeechSynthesizer arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onError(SpeechSynthesizer arg0, SpeechError arg1) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onNewDataArrive(SpeechSynthesizer arg0, byte[] arg1,
+			boolean arg2) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onSpeechFinish(SpeechSynthesizer arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onSpeechPause(SpeechSynthesizer arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onSpeechProgressChanged(SpeechSynthesizer arg0, int arg1) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onSpeechResume(SpeechSynthesizer arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onSpeechStart(SpeechSynthesizer arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onStartWorking(SpeechSynthesizer arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+	 private void setParams() {
+	        speechSynthesizer.setParam(SpeechSynthesizer.PARAM_SPEAKER, "0");
+	        speechSynthesizer.setParam(SpeechSynthesizer.PARAM_VOLUME, "5");
+	        speechSynthesizer.setParam(SpeechSynthesizer.PARAM_SPEED, "5");
+	        speechSynthesizer.setParam(SpeechSynthesizer.PARAM_PITCH, "5");
+	        speechSynthesizer.setParam(SpeechSynthesizer.PARAM_AUDIO_ENCODE, SpeechSynthesizer.AUDIO_ENCODE_AMR);
+	        speechSynthesizer.setParam(SpeechSynthesizer.PARAM_AUDIO_RATE, SpeechSynthesizer.AUDIO_BITRATE_AMR_15K85);
+//	        speechSynthesizer.setParam(SpeechSynthesizer.PARAM_LANGUAGE, SpeechSynthesizer.LANGUAGE_ZH);
+//	        speechSynthesizer.setParam(SpeechSynthesizer.PARAM_NUM_PRON, "0");
+//	        speechSynthesizer.setParam(SpeechSynthesizer.PARAM_ENG_PRON, "0");
+//	        speechSynthesizer.setParam(SpeechSynthesizer.PARAM_PUNC, "0");
+//	        speechSynthesizer.setParam(SpeechSynthesizer.PARAM_BACKGROUND, "0");
+//	        speechSynthesizer.setParam(SpeechSynthesizer.PARAM_STYLE, "0");
+//	        speechSynthesizer.setParam(SpeechSynthesizer.PARAM_TERRITORY, "0");
+	    }
+
 
 }
