@@ -90,13 +90,16 @@ public class MainAcitivity extends FragmentActivity implements OnClickListener {
 		switch (id) {
 		case R.id.rb_miantab_invite:
 			Log.i("ccc","1111");
-			if (inviteFramet == null) {
+			Intent in = new Intent(this,LoginActivity.class);
+			startActivity(in);
+			finish();
+			/*if (inviteFramet == null) {
 				inviteFramet = new IndexFragment();
 
 				transaction.add(R.id.frag_main_tab, inviteFramet);
 			} else {
 				transaction.show(inviteFramet);
-			}
+			}*/
 			break;
 
 		case R.id.rb_miantab_me:
@@ -157,11 +160,7 @@ public class MainAcitivity extends FragmentActivity implements OnClickListener {
 		}
 	}
 	private void init(){
-		SharedPreferences sharedPreferences = getSharedPreferences("isLogin", Context.MODE_PRIVATE); //私有数据
-		Editor editor = sharedPreferences.edit();//获取编辑器
-		editor.putBoolean("isLogin", true);
 		
-		editor.commit();//提交修改
 		
 		
 		titlePopup = new TitlePopup(this, LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT,this);
