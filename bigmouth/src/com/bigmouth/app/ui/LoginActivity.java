@@ -58,6 +58,8 @@ public class LoginActivity extends Activity {
 
 				return true;
 			}
+			
+			
 		});
 		mWebView.loadUrl("http://wap.management.01teacher.cn/");
 

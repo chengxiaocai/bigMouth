@@ -6,12 +6,14 @@ import java.util.List;
 import com.bigmouth.app.R;
 
 
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -39,6 +41,7 @@ public class GuidAcitity extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
+				
 				Intent intent = new Intent(GuidAcitity.this,LoginActivity.class);
 				startActivity(intent);
 				finish();
