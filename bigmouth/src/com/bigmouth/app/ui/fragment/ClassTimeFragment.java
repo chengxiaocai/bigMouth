@@ -30,7 +30,7 @@ public class ClassTimeFragment extends Fragment {
 				return true;
 			}
 		});
-		mWebView.loadUrl("http://wap.management.01teacher.cn/StudentPeriod/My");
+		mWebView.loadUrl("http://app.01teacher.cn/StudentPeriod/My");
 
 		return contentView;
 	}

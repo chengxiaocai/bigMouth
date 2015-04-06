@@ -33,7 +33,7 @@ public class IndexFragment extends Fragment {
 				return true;
 			}
 		});
-		mWebView.loadUrl("http://wap.management.01teacher.cn/");
+		mWebView.loadUrl("http://app.01teacher.cn/");
 
 		return contentView;
 	}
