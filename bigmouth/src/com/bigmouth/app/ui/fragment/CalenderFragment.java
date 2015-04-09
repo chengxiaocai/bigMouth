@@ -30,7 +30,7 @@ public class CalenderFragment extends Fragment {
 				return true;
 			}
 		});
-		mWebView.loadUrl("http://wap.management.01teacher.cn/Schedule/MyCourseDate");
+		mWebView.loadUrl("http://app.01teacher.cn/Schedule/MyCourseDate");
 
 		return contentView;
 	}

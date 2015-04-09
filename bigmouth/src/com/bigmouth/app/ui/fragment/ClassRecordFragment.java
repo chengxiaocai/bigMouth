@@ -30,7 +30,7 @@ public class ClassRecordFragment extends Fragment {
 				return true;
 			}
 		});
-		mWebView.loadUrl("http://wap.management.01teacher.cn/Attend/MyList");
+		mWebView.loadUrl("http://app.01teacher.cn/Attend/MyList");
 
 		return contentView;
 	}

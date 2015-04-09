@@ -38,12 +38,12 @@ public class LoginActivity extends Activity {
 			public boolean shouldOverrideUrlLoading(WebView view, String url) {
 				view.loadUrl(url);
 				if (view.getUrl().equals(
-						"http://wap.management.01teacher.cn/Account/LogOn")||view.getUrl().equals(
+						"http://app.01teacher.cn/Account/LogOn")||view.getUrl().equals(
 								"http://wap.management.01teacher.cn/Account/LogOff")) {
 				
 
 				} else if (view.getUrl().equals(
-						"http://wap.management.01teacher.cn/")) {
+						"http://app.01teacher.cn/")) {
 					
 					
 				} else {
@@ -61,7 +61,7 @@ public class LoginActivity extends Activity {
 			
 			
 		});
-		mWebView.loadUrl("http://wap.management.01teacher.cn/");
+		mWebView.loadUrl("http://app.01teacher.cn/");
 
 	}
 
