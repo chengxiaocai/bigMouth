@@ -3,33 +3,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <include
-        android:id="@+id/title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        layout="@layout/activity_title1" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/title"
-        android:layout_marginBottom="70dp"
-        android:background="@color/blue"
-        android:orientation="vertical" >
-
-        <LinearLayout
-            android:id="@+id/frag_main_tab"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="1dp"
-            android:background="@color/white"
-            android:orientation="vertical" />
-    </LinearLayout>
-
     <RadioGroup
+        android:id="@+id/rg_study_line"
         android:layout_width="match_parent"
         android:layout_height="70dp"
-        android:layout_alignParentBottom="true"
+        android:layout_alignParentTop="true"
         android:background="#ffffff"
         android:orientation="horizontal" >
 
@@ -85,5 +63,22 @@
             android:text="上课日历"
             android:textColor="@drawable/bottomtab_text_color_selector" />
     </RadioGroup>
+
+    <LinearLayout
+        android:layout_below="@+id/rg_study_line"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+      
+        android:background="@color/blue"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:id="@+id/frag_main_tab"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="1dp"
+            android:background="@color/white"
+            android:orientation="vertical" />
+    </LinearLayout>
 
 </RelativeLayout>

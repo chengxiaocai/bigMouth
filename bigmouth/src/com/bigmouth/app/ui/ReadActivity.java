@@ -338,6 +338,8 @@ public class ReadActivity extends Activity implements OnClickListener, SpeechSyn
 //	        speechSynthesizer.setParam(SpeechSynthesizer.PARAM_STYLE, "0");
 //	        speechSynthesizer.setParam(SpeechSynthesizer.PARAM_TERRITORY, "0");
 	    }
+	 
+	 
 
 
 }

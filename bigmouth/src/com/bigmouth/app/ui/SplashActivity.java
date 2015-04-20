@@ -64,7 +64,7 @@ public class SplashActivity extends Activity {
 				startActivity(intent);
 			} else {
 				startActivity(new Intent(SplashActivity.this,
-						MainAcitivity.class));
+						LoginActivity.class));
 			}
 			finish();
 

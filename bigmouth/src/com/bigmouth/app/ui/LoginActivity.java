@@ -5,15 +5,16 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.util.Log;
+import android.webkit.CookieManager;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
 
 import com.bigmouth.app.R;
+import com.bigmouth.app.util.PersistentUtil;
 
 public class LoginActivity extends Activity {
 	private WebView mWebView;
@@ -39,7 +40,7 @@ public class LoginActivity extends Activity {
 				view.loadUrl(url);
 				if (view.getUrl().equals(
 						"http://app.01teacher.cn/Account/LogOn")||view.getUrl().equals(
-								"http://wap.management.01teacher.cn/Account/LogOff")) {
+								"http://app.01teacher.cn/Account/LogOff")) {
 				
 
 				} else if (view.getUrl().equals(
@@ -58,6 +59,19 @@ public class LoginActivity extends Activity {
 
 				return true;
 			}
+			public void onPageFinished(WebView view, String url) {
+	            CookieManager cookieManager = CookieManager.getInstance();
+	            String CookieStr = cookieManager.getCookie(url);
+	            Log.e("sunzn", "Cookies = " + CookieStr);
+	            super.onPageFinished(view, url);
+	            if(CookieStr!=null&&CookieStr.contains("LinguaApp_UserType")){
+	            	String str [] = CookieStr.split(";");
+	            	Log.i("id", str [1]==null?"":str[1].split("=")[1]);
+	            	Log.i("type", str [2]==null?"":str[2].split("=")[1]);
+	            	PersistentUtil.getInstance().write(LoginActivity.this, "id",str [1]==null?"":str[1].split("=")[1]);
+	            	PersistentUtil.getInstance().write(LoginActivity.this, "type",str [2]==null?"":str[2].split("=")[1]);
+	            }
+	        }
 			
 			
 		});
