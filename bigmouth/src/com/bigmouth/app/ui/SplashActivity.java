@@ -11,6 +11,7 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.HttpParams;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -31,7 +32,6 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-
 import android.util.Log;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -134,11 +134,11 @@ public class SplashActivity extends Activity {
 				// TODO Auto-generated method stub
 				String result = null;
 				try {
-
+                    
 					HttpClient client = new DefaultHttpClient();
                    
 					HttpGet post = new HttpGet(params[0]);
-
+                    
 					HttpResponse response = client.execute(post);
 					int code = response.getStatusLine().getStatusCode();
 					if (code == 200) {
@@ -146,11 +146,12 @@ public class SplashActivity extends Activity {
 						result = StreamTools.readFromStream(is);
 
 					} else {
-						Toast.makeText(SplashActivity.this, "服务器异常", 1).show();
+						Toast.makeText(SplashActivity.this, "请求失败", 1).show();
 					}
 
 				} catch (Exception e) {
 					e.printStackTrace();
+				
 				}
 				return result;
 
