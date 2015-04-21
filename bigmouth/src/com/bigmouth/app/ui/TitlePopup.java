@@ -121,7 +121,7 @@ public class TitlePopup extends PopupWindow {
 					
 				}else{
 					Intent intent3 = new Intent(mContext,
-							ReadActivity.class);
+							StudyActivity.class);
 					
 					ac.startActivityForResult(intent3, 1);
 				}

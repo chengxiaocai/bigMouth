@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:background="@drawable/bg_word_item_corner"
+    android:layout_margin="10dp"
+    android:layout_height="80dp" >
+
+    <LinearLayout
+        android:layout_width="50dp"
+        android:layout_height="match_parent"
+       
+        android:gravity="center"
+        android:orientation="vertical" >
+
+        <ImageView
+            android:id="@+id/iv_words_usa"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/calendar2" />
+
+        <ImageView
+            android:id="@+id/iv_words_chinese"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/calendar2" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="3dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="3dp"
+        android:background="#9bc818" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="52dp"
+       
+        android:gravity="center"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/tv_words_usa"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="hahah(动)" />
+
+        <TextView
+            android:id="@+id/tv_words_chinese"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/calendar2"
+            android:text="hahah" />
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="10dp"
+        android:src="@drawable/icon_enter" />
+
+</RelativeLayout>

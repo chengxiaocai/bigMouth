@@ -3,17 +3,72 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <include
-        android:id="@+id/title"
+    <RadioGroup
+        android:id="@+id/rg_study_line"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        layout="@layout/activity_title1" />
+        android:layout_height="70dp"
+        android:layout_alignParentTop="true"
+        android:background="#ffffff"
+        android:orientation="horizontal" >
+
+        <RadioButton
+            android:id="@+id/rb_miantab_words"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="10"
+            android:background="#8cc421"
+            android:button="@null"
+            android:drawableTop="@drawable/home"
+            android:gravity="center"
+            android:padding="8dp"
+            android:text="文字"
+            android:textColor="@drawable/bottomtab_text_color_selector" />
+
+        <RadioButton
+            android:id="@+id/rb_miantab_reading"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="10"
+            android:background="#8cc421"
+            android:button="@null"
+            android:drawableTop="@drawable/info2"
+            android:gravity="center"
+            android:padding="8dp"
+            android:text="阅读"
+            android:textColor="@drawable/bottomtab_text_color_selector" />
+
+        <RadioButton
+            android:id="@+id/rb_miantab_practise"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="10"
+            android:background="#8cc421"
+            android:button="@null"
+            android:drawableTop="@drawable/record"
+            android:gravity="center"
+            android:padding="8dp"
+            android:text="实践"
+            android:textColor="@drawable/bottomtab_text_color_selector" />
+
+        <RadioButton
+            android:id="@+id/rb_miantab_setting"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="10"
+            android:background="#8cc421"
+            android:button="@null"
+            android:drawableTop="@drawable/calendar2"
+            android:gravity="center"
+            android:padding="8dp"
+            android:text="设置"
+            android:textColor="@drawable/bottomtab_text_color_selector" />
+    </RadioGroup>
 
     <LinearLayout
+        android:layout_below="@+id/rg_study_line"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/title"
-        android:layout_marginBottom="70dp"
+      
         android:background="@color/blue"
         android:orientation="vertical" >
 
@@ -25,65 +80,5 @@
             android:background="@color/white"
             android:orientation="vertical" />
     </LinearLayout>
-
-    <RadioGroup
-        android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:layout_alignParentBottom="true"
-        android:background="#ffffff"
-        android:orientation="horizontal" >
-
-        <RadioButton
-            android:id="@+id/rb_miantab_invite"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="10"
-            android:background="#8cc421"
-            android:button="@null"
-            android:drawableTop="@drawable/home"
-            android:gravity="center"
-            android:padding="8dp"
-            android:text="首页"
-            android:textColor="@drawable/bottomtab_text_color_selector" />
-
-        <RadioButton
-            android:id="@+id/rb_miantab_playing"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="10"
-            android:background="#8cc421"
-            android:button="@null"
-            android:drawableTop="@drawable/info2"
-            android:gravity="center"
-            android:padding="8dp"
-            android:text="我的课时"
-            android:textColor="@drawable/bottomtab_text_color_selector" />
-
-        <RadioButton
-            android:id="@+id/rb_miantab_player"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="10"
-            android:background="#8cc421"
-            android:button="@null"
-            android:drawableTop="@drawable/record"
-            android:gravity="center"
-            android:padding="8dp"
-            android:text="上课记录"
-            android:textColor="@drawable/bottomtab_text_color_selector" />
-
-        <RadioButton
-            android:id="@+id/rb_miantab_me"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="10"
-            android:background="#8cc421"
-            android:button="@null"
-            android:drawableTop="@drawable/calendar2"
-            android:gravity="center"
-            android:padding="8dp"
-            android:text="上课日历"
-            android:textColor="@drawable/bottomtab_text_color_selector" />
-    </RadioGroup>
 
 </RelativeLayout>

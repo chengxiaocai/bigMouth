@@ -136,7 +136,7 @@ public class SplashActivity extends Activity {
 				try {
 
 					HttpClient client = new DefaultHttpClient();
-
+                   
 					HttpGet post = new HttpGet(params[0]);
 
 					HttpResponse response = client.execute(post);

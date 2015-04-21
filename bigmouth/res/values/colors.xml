@@ -60,5 +60,10 @@
     <color name="activity_title_bg">#e74242</color>
     <color name="bg_theme_divider_line">#fdf4f2</color>
     <color name="bg_gray">#ebebeb</color>
+    <color name="green">#90c818</color>
+    <color name="light_yellow">#fffff8</color>
+    <color name="yellow">#fffff2</color>
+    <color name="text_gray">#fffff2</color>
+    <color name="text_green">#fffff2</color>
 
 </resources>
