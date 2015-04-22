@@ -157,7 +157,7 @@ public class MainAcitivity extends FragmentActivity implements OnClickListener {
 			transaction.hide(playingFragment);
 		}
 	}
-	private void init(){
+	public  void init(){
 		
 		
 		
@@ -166,5 +166,6 @@ public class MainAcitivity extends FragmentActivity implements OnClickListener {
 		titlePopup.addAction(new ActionItem(this, "扫描", R.drawable.mm_title_btn_set_normal));
 		titlePopup.addAction(new ActionItem(this, "阅读", R.drawable.mm_title_btn_share_normal));
 	}
+	
 
 }

@@ -23,9 +23,11 @@
         android:layout_marginTop="10dp" >
 
         <TextView
+            android:id="@+id/tv_words_show_word_num"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="#c8ccbb"
+            android:visibility="gone"
             android:layout_marginLeft="10dp"
             android:text="7收集的单词" />
 

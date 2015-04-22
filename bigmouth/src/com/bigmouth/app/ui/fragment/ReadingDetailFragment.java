@@ -11,7 +11,6 @@ import com.bigmouth.app.R;
 import com.bigmouth.app.bean.Readings;
 import com.bigmouth.app.bean.Words;
 import com.bigmouth.app.ui.MainAcitivity;
-import com.bigmouth.app.ui.StudyActivity;
 import com.bigmouth.app.util.DialogUtil;
 import com.bigmouth.app.util.HttpHandle;
 import com.bigmouth.app.util.PersistentUtil;
@@ -20,7 +19,6 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestHandle;
 import com.loopj.android.http.RequestParams;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -39,39 +37,31 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class ReadingFragment extends Fragment {
+public class ReadingDetailFragment extends Fragment {
 
 	private AsyncHttpClient ahc; // 异步处理
 	private RequestHandle reqhandle;
 	private Dialog thisdialog;
 	private JSONObject obj;
-	private ArrayList< Readings> readList = new ArrayList<Readings>();
+	private ArrayList<Readings> readList = new ArrayList<Readings>();
 	LayoutInflater inflater = null;
 	private ListView lvReading;
 	private View contentView;
 	private ReadingsAdapter adapter;
-	private  StudyActivity  ac;//父activitiy对象；
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		     contentView = inflater.inflate(R.layout.fragment_reading,
+		contentView = inflater.inflate(R.layout.fragment_reading_detail,
 				container, false);
-		initView();
-		getReading();
+		// initView();
+		// getReading();
 
 		return contentView;
 	}
-	@Override
-	public void onAttach(Activity activity) {
-		// TODO Auto-generated method stub
-		super.onAttach(activity);
-		ac =  (StudyActivity) activity;
-	}
 
 	public void initView() {
-	
-		
+
 		lvReading = (ListView) contentView.findViewById(R.id.lv_reading_list);
 		adapter = new ReadingsAdapter(readList);
 		lvReading.setAdapter(adapter);
@@ -81,7 +71,7 @@ public class ReadingFragment extends Fragment {
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
 				// TODO Auto-generated method stub
-				ac.changeReadingPage(new Intent());
+
 			}
 		});
 		inflater = LayoutInflater.from(getActivity());
@@ -93,7 +83,6 @@ public class ReadingFragment extends Fragment {
 	public void getReading() {
 
 		RequestParams rp = new RequestParams();
-	
 
 		reqhandle = ahc.post("http://app.01teacher.cn/App/GetReadings",
 
@@ -114,12 +103,11 @@ public class ReadingFragment extends Fragment {
 				// Toast.makeText(getActivity(), "添加成功", 0).show();
 				try {
 					obj = new JSONObject(content);
-				
-				
+
 					JSONArray array = obj.getJSONArray("data");
 					for (int i = 0; i < array.length(); i++) {
-                        
-						Readings read= new Readings();
+
+						Readings read = new Readings();
 						read.setId(array.getJSONObject(i).optString("id"));
 						read.setText(array.getJSONObject(i).optString("text"));
 						readList.add(read);
@@ -156,10 +144,10 @@ public class ReadingFragment extends Fragment {
 
 		});
 	}
+
 	private class ReadingsAdapter extends BaseAdapter {
-		ArrayList< Readings > listReadings;
-	    
- 
+		ArrayList<Readings> listReadings;
+
 		public ReadingsAdapter(ArrayList<Readings> listReadings) {
 			super();
 			this.listReadings = listReadings;
@@ -186,18 +174,20 @@ public class ReadingFragment extends Fragment {
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			// TODO Auto-generated method stub
-			if(listReadings.size()<1){
+			if (listReadings.size() < 1) {
 				return null;
 			}
 			if (convertView == null) {
 				convertView = inflater.inflate(R.layout.item_reading, null);
-				TextView tvText = (TextView) convertView.findViewById(R.id.tv_reading_text);
+				TextView tvText = (TextView) convertView
+						.findViewById(R.id.tv_reading_text);
 				tvText.setText(listReadings.get(position).getText());
-				
-				
+
 			}
 			return convertView;
 		}
 
 	}
+
+	
 }

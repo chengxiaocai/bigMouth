@@ -2,6 +2,7 @@ package com.bigmouth.app.ui;
 
 import com.bigmouth.app.R;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
@@ -13,6 +14,7 @@ import android.widget.ImageButton;
 import android.widget.RadioButton;
 
 import com.bigmouth.app.ui.fragment.PractiseFragment;
+import com.bigmouth.app.ui.fragment.ReadingDetailFragment;
 import com.bigmouth.app.ui.fragment.ReadingFragment;
 import com.bigmouth.app.ui.fragment.SettingFragment;
 import com.bigmouth.app.ui.fragment.TempFragment;
@@ -24,22 +26,22 @@ public class StudyActivity extends FragmentActivity implements OnClickListener {
 	ReadingFragment readingFramet;
 	PractiseFragment practiseFragment;
 	SettingFragment settingFragment;
+	ReadingDetailFragment  readingDetailFragment;
 	WordsFragment wordsFragment;
 	TempFragment temFragment;
 
-	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.activity_study);
-		
+
 		initView();
 
 	}
 
 	private void initView() {
-		
+
 		transaction = getSupportFragmentManager().beginTransaction();
 		findViewById(R.id.rb_miantab_words).setOnClickListener(this);
 
@@ -128,9 +130,34 @@ public class StudyActivity extends FragmentActivity implements OnClickListener {
 		if (practiseFragment != null) {
 			transaction.hide(practiseFragment);
 		}
+		if (readingDetailFragment != null) {
+			transaction.hide(readingDetailFragment);
+		}
 
 	}
 
-	
+	public void changeReadingPage(Intent in) {
+		transaction = getSupportFragmentManager().beginTransaction();
+		hideFragments(transaction);
+		if(in==null){
+			if (readingFramet == null) {
+				readingFramet = new ReadingFragment();
+
+				transaction.add(R.id.frag_main_tab, readingFramet);
+			} else {
+				transaction.show(readingFramet);
+			}
+		}else{
+			if (readingDetailFragment == null) {
+				readingDetailFragment = new  ReadingDetailFragment();
+
+				transaction.add(R.id.frag_main_tab, readingDetailFragment);
+			} else {
+				transaction.show(readingDetailFragment);
+			}
+		}
+		transaction.commit();
+
+	}
 
 }
