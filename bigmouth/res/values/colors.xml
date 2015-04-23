@@ -65,5 +65,6 @@
     <color name="yellow">#fffff2</color>
     <color name="text_gray">#fffff2</color>
     <color name="text_green">#fffff2</color>
+    <color name="too_green">#51621e</color>
 
 </resources>

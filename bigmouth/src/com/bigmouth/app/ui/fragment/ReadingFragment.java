@@ -81,7 +81,9 @@ public class ReadingFragment extends Fragment {
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
 				// TODO Auto-generated method stub
-				ac.changeReadingPage(new Intent());
+				Intent in = new Intent ();
+				in.putExtra("text",readList.get(position).getText());
+				ac.changeReadingPage(in);
 			}
 		});
 		inflater = LayoutInflater.from(getActivity());

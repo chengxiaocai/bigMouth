@@ -9,9 +9,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup.LayoutParams;
-import android.widget.ImageButton;
-import android.widget.RadioButton;
 
 import com.bigmouth.app.ui.fragment.PractiseFragment;
 import com.bigmouth.app.ui.fragment.ReadingDetailFragment;
@@ -29,6 +26,8 @@ public class StudyActivity extends FragmentActivity implements OnClickListener {
 	ReadingDetailFragment  readingDetailFragment;
 	WordsFragment wordsFragment;
 	TempFragment temFragment;
+	private String text;
+	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -147,17 +146,25 @@ public class StudyActivity extends FragmentActivity implements OnClickListener {
 			} else {
 				transaction.show(readingFramet);
 			}
+			transaction.commit();
 		}else{
-			if (readingDetailFragment == null) {
+			text  = in.getStringExtra("text");
+			//if (readingDetailFragment == null) {
 				readingDetailFragment = new  ReadingDetailFragment();
+				
 
 				transaction.add(R.id.frag_main_tab, readingDetailFragment);
-			} else {
-				transaction.show(readingDetailFragment);
-			}
+			//} else {
+		//		transaction.show(readingDetailFragment);
+		//	}
+			
+			transaction.commit();
+			
 		}
-		transaction.commit();
 
+	}
+	public String getText(){
+		 return text;
 	}
 
 }

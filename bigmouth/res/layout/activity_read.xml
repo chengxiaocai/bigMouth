@@ -14,7 +14,7 @@
         android:orientation="vertical"
         android:visibility="gone" >
         <TextView 
-            android:id="@+id/tv_src_word"
+            android:id="@+id/fragment_reading_detail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             
