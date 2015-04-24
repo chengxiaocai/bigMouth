@@ -6,48 +6,53 @@
     android:layout_height="80dp" >
 
     <LinearLayout
-        android:layout_width="50dp"
+        android:layout_width="60dp"
         android:layout_height="match_parent"
-       
-        android:gravity="center"
+        android:layout_marginLeft="15dp"
+        android:layout_centerVertical="true"
         android:orientation="vertical" >
 
         <ImageView
             android:id="@+id/iv_words_usa"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/calendar2" />
+            android:src="@drawable/usa" />
 
         <ImageView
+            android:layout_marginTop="10dp"
             android:id="@+id/iv_words_chinese"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/calendar2" />
+            android:src="@drawable/usa" />
     </LinearLayout>
 
     <View
+        android:layout_centerVertical="true"
         android:layout_width="1dp"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="3dp"
-        android:layout_marginLeft="50dp"
-        android:layout_marginTop="3dp"
+        android:layout_height="60dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="55dp"
+        android:layout_marginTop="5dp"
         android:background="#9bc818" />
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_marginLeft="52dp"
-       
+        android:layout_marginLeft="65dp"
+       android:layout_centerVertical="true"
         android:gravity="center"
         android:orientation="vertical" >
 
         <TextView
             android:id="@+id/tv_words_usa"
+            android:textColor="@color/too_green"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="hahah(动)" />
 
         <TextView
+            android:textColor="@color/too_green"
+            android:layout_marginTop="10dp "
             android:id="@+id/tv_words_chinese"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -61,6 +66,6 @@
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_marginRight="10dp"
-        android:src="@drawable/icon_enter" />
+        android:src="@drawable/icon_ent" />
 
 </RelativeLayout>

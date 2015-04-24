@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#fffff2"
+    android:background="@color/light_yellow"
     android:orientation="vertical" >
 
     <TextView
@@ -13,38 +13,67 @@
         android:layout_marginRight="30dp"
         android:layout_marginTop="20dp"
         android:background="@drawable/bg_text_color_blue"
-        android:textColor="#9bc818"
         android:gravity="center"
-        android:text="添加单词（词典）" />
+        android:textStyle="bold"
+        
+        android:text="添加单词（词典）"
+        android:textColor="#9bc818" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/top" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="@color/yellow" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp" >
+        android:background="@color/yellow" >
 
         <TextView
             android:id="@+id/tv_words_show_word_num"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:text="7收集的单词"
             android:textColor="#c8ccbb"
-            android:visibility="gone"
-            android:layout_marginLeft="10dp"
-            android:text="7收集的单词" />
+            android:textSize="15sp"
+           
+            android:visibility="gone" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="10dp"
-               android:textColor="#c8ccbb"
-            android:text="编辑" />
+            android:layout_marginRight="20dp"
+            android:text="编辑"
+             android:textSize="15sp"
+           
+            
+            android:textColor="#c8ccbb" />
     </RelativeLayout>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="@color/yellow" />
+
     <ListView
-        android:layout_marginTop="10dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginLeft="30dp"
         android:id="@+id/lv_words_list"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:listSelector="#00000000"
+        android:scrollbars="none"
+        android:divider="#00000000"
+        android:dividerHeight="10dp"
+        android:layout_height="wrap_content"
+        android:background="@color/yellow" >
     </ListView>
 
 </LinearLayout>

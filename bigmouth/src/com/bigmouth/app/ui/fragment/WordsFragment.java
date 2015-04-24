@@ -48,10 +48,10 @@ public class WordsFragment extends Fragment {
 	private RequestHandle reqhandle;
 	private Dialog thisdialog;
 	private JSONObject obj;
-	private String strWordNum;  //返回单词数量
-	private ArrayList<Words> listWord = new ArrayList<Words>();  //存放获取的单词
-    private WordsAdapter adapter; 
-    private TextView tvWordNum;  //显示返回的单词数目
+	private String strWordNum; // 返回单词数量
+	private ArrayList<Words> listWord = new ArrayList<Words>(); // 存放获取的单词
+	private WordsAdapter adapter;
+	private TextView tvWordNum; // 显示返回的单词数目
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -67,7 +67,8 @@ public class WordsFragment extends Fragment {
 		ahc = new AsyncHttpClient();
 		thisdialog = DialogUtil.getLoadDialog(getActivity(), "请稍后！");
 		inflater = LayoutInflater.from(getActivity());
-		tvWordNum = (TextView) contentView.findViewById(R.id.tv_words_show_word_num);
+		tvWordNum = (TextView) contentView
+				.findViewById(R.id.tv_words_show_word_num);
 		lvWords = (ListView) contentView.findViewById(R.id.lv_words_list);
 		adapter = new WordsAdapter(listWord);
 		lvWords.setAdapter(adapter);
@@ -128,9 +129,8 @@ public class WordsFragment extends Fragment {
 	}
 
 	private class WordsAdapter extends BaseAdapter {
-		ArrayList< Words > listWord;
-	    
- 
+		ArrayList<Words> listWord;
+
 		public WordsAdapter(ArrayList<Words> listWord) {
 			super();
 			this.listWord = listWord;
@@ -157,136 +157,70 @@ public class WordsFragment extends Fragment {
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			// TODO Auto-generated method stub
-			if(listWord.size()<1){
+			if (listWord.size() < 1) {
 				return null;
 			}
 			if (convertView == null) {
 				convertView = inflater.inflate(R.layout.item_words, null);
-				TextView tvChinse = (TextView) convertView.findViewById(R.id.tv_words_chinese);
+				TextView tvChinse = (TextView) convertView
+						.findViewById(R.id.tv_words_chinese);
 				tvChinse.setText(listWord.get(position).getChinese());
-				
-				TextView tvUsa = (TextView) convertView.findViewById(R.id.tv_words_usa);
+
+				TextView tvUsa = (TextView) convertView
+						.findViewById(R.id.tv_words_usa);
 				tvUsa.setText(listWord.get(position).getWord());
 			}
 			return convertView;
 		}
 
 	}
-    
-	/** 添加单词
-	 * @param word 单词
-	 * @param chinese 翻译
-	 */
-	public void addWord(String word, String chinese) {
 
-		RequestParams rp = new RequestParams();
-        rp.put("UserID",PersistentUtil.getInstance().readString(getActivity(), "id", ""));
-        rp.put("Word",word);
-        rp.put("Translation",chinese);
-       // rp.put("ReadingID","");
-		reqhandle = ahc.post("http://app.01teacher.cn/App/PostUserWords",
-				
-				rp, new AsyncHttpResponseHandler() {
-					@Override
-					public void onStart() {
-						// TODO Auto-generated method stub
-						super.onStart();
-						Log.i("cc...cars", "start...");
-						//thisdialog.show();
-					}
-
-					@Override
-					public void onSuccess(String content) {
-						// TODO Auto-generated method stub
-						super.onSuccess(content);
-						Log.i("cc...cars", "success.......");
-						Toast.makeText(getActivity(), "添加成功", 0).show();
-						getWord();
-
-					}
-
-					@Override
-					public void onFinish() {
-						// TODO Auto-generated method stub
-						super.onFinish();
-						Log.i("cc...", "finish");
-						//thisdialog.dismiss();
-					}
-
-					@Override
-					public void onFailure(int arg0, Header[] arg1, byte[] arg2,
-							Throwable arg3) {
-						// TODO Auto-generated method stub
-						super.onFailure(arg0, arg1, arg2, arg3);
-						Log.i("cc...cars", "failue.......");
-						HttpHandle hh = new HttpHandle();
-						hh.handleFaile(getActivity(), arg3);
-						if (thisdialog.isShowing()) {
-							//thisdialog.dismiss();
-						}
-					}
-
-				});
-	}
 	/**
+	 * 添加单词
 	 * 
-	 * 获取单词
+	 * @param word
+	 *            单词
+	 * @param chinese
+	 *            翻译
 	 */
-	public void getWord() {
-		
-		listWord.clear();
+	public void addWord(final String word, final String chinese) {
+
 		RequestParams rp = new RequestParams();
-		rp.put("UserID",PersistentUtil.getInstance().readString(getActivity(), "id", ""));
-		
-		reqhandle = ahc.post("http://app.01teacher.cn/App/GetUserWords",
-				
-				rp, new AsyncHttpResponseHandler() {
+		rp.put("UserID",
+				PersistentUtil.getInstance()
+						.readString(getActivity(), "id", ""));
+		rp.put("Word", word);
+		rp.put("Translation", chinese);
+		// rp.put("ReadingID","");
+		reqhandle = ahc.post("http://app.01teacher.cn/App/PostUserWords",
+
+		rp, new AsyncHttpResponseHandler() {
 			@Override
 			public void onStart() {
 				// TODO Auto-generated method stub
 				super.onStart();
 				Log.i("cc...cars", "start...");
-				//thisdialog.show();
+				// thisdialog.show();
 			}
-			
+
 			@Override
 			public void onSuccess(String content) {
 				// TODO Auto-generated method stub
 				super.onSuccess(content);
 				Log.i("cc...cars", "success.......");
-			//	Toast.makeText(getActivity(), "添加成功", 0).show();
-				try {
-					obj = new JSONObject(content);
-					strWordNum = obj.optString("count");
-					tvWordNum.setVisibility(View.VISIBLE);
-					tvWordNum.setText(strWordNum+"收集的单词");
-					JSONArray array = obj.getJSONArray("data");
-					for(int i =0;i<array.length();i++){
-						
-						Words word = new Words();
-						word.setChinese(array.getJSONObject(i).optString("translation"));
-						word.setId(array.getJSONObject(i).optString("id"));
-						word.setWord(array.getJSONObject(i).optString("word"));
-						
-						listWord.add(word);
-						adapter.notifyDataSetChanged();
-					}
-					
-				} catch (JSONException e) {
-					Toast.makeText(getActivity(), "获取单词列表失败", 0).show();
-					e.printStackTrace();
-				}
-				
+				Toast.makeText(getActivity(), "添加成功", 0).show();
+				getWord();
+
 			}
-			
+
 			@Override
 			public void onFinish() {
 				// TODO Auto-generated method stub
 				super.onFinish();
 				Log.i("cc...", "finish");
-				//thisdialog.dismiss();
+				// thisdialog.dismiss();
 			}
-			
+
 			@Override
 			public void onFailure(int arg0, Header[] arg1, byte[] arg2,
 					Throwable arg3) {
@@ -296,10 +230,89 @@ public class WordsFragment extends Fragment {
 				HttpHandle hh = new HttpHandle();
 				hh.handleFaile(getActivity(), arg3);
 				if (thisdialog.isShowing()) {
-					//thisdialog.dismiss();
+					// thisdialog.dismiss();
 				}
 			}
-			
+
+		});
+	}
+
+	/**
+	 * 
+	 * 获取单词
+	 */
+	public void getWord() {
+
+		listWord.clear();
+		RequestParams rp = new RequestParams();
+		rp.put("UserID",
+				PersistentUtil.getInstance()
+						.readString(getActivity(), "id", ""));
+
+		reqhandle = ahc.post("http://app.01teacher.cn/App/GetUserWords",
+
+		rp, new AsyncHttpResponseHandler() {
+			@Override
+			public void onStart() {
+				// TODO Auto-generated method stub
+				super.onStart();
+				Log.i("cc...cars", "start...");
+				// thisdialog.show();
+			}
+
+			@Override
+			public void onSuccess(String content) {
+				// TODO Auto-generated method stub
+				super.onSuccess(content);
+				Log.i("cc...cars", "success.......");
+				// Toast.makeText(getActivity(), "添加成功", 0).show();
+				try {
+					obj = new JSONObject(content);
+					strWordNum = obj.optString("count");
+					tvWordNum.setVisibility(View.VISIBLE);
+					tvWordNum.setText(strWordNum + "收集的单词");
+					JSONArray array = obj.getJSONArray("data");
+					for (int i = 0; i < array.length(); i++) {
+
+						Words word = new Words();
+						word.setChinese(array.getJSONObject(i).optString(
+								"translation"));
+						word.setId(array.getJSONObject(i).optString("id"));
+						word.setWord(array.getJSONObject(i).optString("word"));
+
+						listWord.add(word);
+					}
+					
+					adapter.notifyDataSetChanged();
+
+				} catch (JSONException e) {
+					Toast.makeText(getActivity(), "获取单词列表失败", 0).show();
+					e.printStackTrace();
+				}
+
+			}
+
+			@Override
+			public void onFinish() {
+				// TODO Auto-generated method stub
+				super.onFinish();
+				Log.i("cc...", "finish");
+				// thisdialog.dismiss();
+			}
+
+			@Override
+			public void onFailure(int arg0, Header[] arg1, byte[] arg2,
+					Throwable arg3) {
+				// TODO Auto-generated method stub
+				super.onFailure(arg0, arg1, arg2, arg3);
+				Log.i("cc...cars", "failue.......");
+				HttpHandle hh = new HttpHandle();
+				hh.handleFaile(getActivity(), arg3);
+				if (thisdialog.isShowing()) {
+					// thisdialog.dismiss();
+				}
+			}
+
 		});
 	}
 }
