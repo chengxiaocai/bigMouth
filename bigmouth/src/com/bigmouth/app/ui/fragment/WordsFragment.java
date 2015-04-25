@@ -162,14 +162,14 @@ public class WordsFragment extends Fragment {
 			}
 			if (convertView == null) {
 				convertView = inflater.inflate(R.layout.item_words, null);
-				TextView tvChinse = (TextView) convertView
-						.findViewById(R.id.tv_words_chinese);
-				tvChinse.setText(listWord.get(position).getChinese());
-
-				TextView tvUsa = (TextView) convertView
-						.findViewById(R.id.tv_words_usa);
-				tvUsa.setText(listWord.get(position).getWord());
 			}
+			TextView tvChinse = (TextView) convertView
+					.findViewById(R.id.tv_words_chinese);
+			tvChinse.setText(listWord.get(position).getChinese());
+			
+			TextView tvUsa = (TextView) convertView
+					.findViewById(R.id.tv_words_usa);
+			tvUsa.setText(listWord.get(position).getWord());
 			return convertView;
 		}
 
@@ -209,6 +209,12 @@ public class WordsFragment extends Fragment {
 				super.onSuccess(content);
 				Log.i("cc...cars", "success.......");
 				Toast.makeText(getActivity(), "添加成功", 0).show();
+				/*Words words = new Words();
+				words.setChinese(chinese);
+				words.setWord(word);
+				listWord.add(words);
+				
+				adapter.notifyDataSetChanged();*/
 				getWord();
 
 			}

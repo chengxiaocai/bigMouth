@@ -1,7 +1,10 @@
 package com.bigmouth.app.ui;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
+import cn.sharesdk.framework.Platform;
+import cn.sharesdk.framework.PlatformActionListener;
 import cn.sharesdk.framework.ShareSDK;
 import cn.sharesdk.onekeyshare.OnekeyShare;
 
@@ -86,6 +89,7 @@ public class TitlePopup extends PopupWindow {
 					mItemOnClickListener.onItemClick(mActionItems.get(index),
 							index);
 				if (index == 0) {
+					Toast.makeText(mContext, "分享获取积分", 0).show();
 					ShareSDK.initSDK(mContext);
 					OnekeyShare oks = new OnekeyShare();
 					// 关闭sso授权
@@ -110,9 +114,36 @@ public class TitlePopup extends PopupWindow {
 					oks.setSite(mContext.getString(R.string.app_name));
 					// siteUrl是分享此内容的网站地址，仅在QQ空间使用
 					oks.setSiteUrl("http://sharesdk.cn");
-
+                  
 					// 启动分享GUI
 					oks.show(mContext);
+					// 获取已经注册到SDK的平台实例列表
+					Platform[] platformList = ShareSDK.getPlatformList();
+					for(int i =0;i<platformList.length;i++){
+						platformList[i].setPlatformActionListener(new PlatformActionListener() {
+							
+							@Override
+							public void onError(Platform arg0, int arg1, Throwable arg2) {
+								// TODO Auto-generated method stub
+								
+							}
+							
+							@Override
+							public void onComplete(Platform arg0, int arg1, HashMap<String, Object> arg2) {
+								// TODO Auto-generated method stub
+								Toast.makeText(mContext, "获取积分成功！", 0).show();
+							}
+							
+							@Override
+							public void onCancel(Platform arg0, int arg1) {
+								// TODO Auto-generated method stub
+								
+							}
+						});
+					}
+
+					
+				
 				} else if(index==1) {
 					Intent intent3 = new Intent(mContext,
 							MipcaCaptureActivity.class);

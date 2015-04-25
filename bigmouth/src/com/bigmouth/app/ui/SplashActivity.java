@@ -58,6 +58,11 @@ public class SplashActivity extends Activity {
 	private Handler handle = new Handler() {
 		public void handleMessage(android.os.Message msg) {
 			if (isFirst || !appVersion.equals(getVersionName())) {
+				if(imgUrl.size()<=0){
+					startActivity(new Intent(SplashActivity.this,
+							LoginActivity.class));
+					return;
+				}
                 Intent intent = new Intent();
                 intent.setClass(SplashActivity.this, GuidAcitity.class);
                 intent.putStringArrayListExtra("img", imgUrl);
@@ -77,8 +82,6 @@ public class SplashActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_splash);
 		iv_temp = (ImageView) findViewById(R.id.img_temp);
-        imgUrl.add("http://g.hiphotos.baidu.com/image/pic/item/902397dda144ad342f674710d2a20cf430ad8549.jpg");
-        imgUrl.add("http://f.hiphotos.baidu.com/image/pic/item/8644ebf81a4c510f8cde218d6259252dd42aa50b.jpg");
 		options = new DisplayImageOptions.Builder()
 
 		.cacheInMemory(true) // 设置下载的图片是否缓存在内存中
@@ -167,10 +170,12 @@ public class SplashActivity extends Activity {
 						JSONObject json = new JSONObject(response);
 						JSONArray json_url = json.optJSONArray("data");
 						imgNum = json.optInt("count");
-						for (int i = 0; i < imgUrl.size(); i++) {
-							ImageLoader.getInstance().displayImage(
-									imgUrl.get(i), iv_temp, options, null);
+						for(int j =0;j<json_url.length();j++){
+							JSONObject obj = json_url.getJSONObject(j);
+							ImageLoader.getInstance().displayImage(obj.optString("url"), iv_temp, options, null);
+							imgUrl.add("http://app.01teacher.cn"+obj.optString("url"));
 						}
+						
 
 					} catch (JSONException e) {
 						// TODO Auto-generated catch block

@@ -9,7 +9,6 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 
-
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -24,95 +23,106 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.LinearLayout.LayoutParams;
 
 public class GuidAcitity extends Activity {
 
 	private ViewPager viewPager = null;
 	private ImageView img1, img2, img3;
 	private ArrayList<String> titles;
+	private ArrayList<ImageView> ivIndexList;
 	private int currIndex = -1;
+	private LinearLayout llIndexImg;
 	ArrayList<String> imgUrl = new ArrayList<String>();
 	final ArrayList<View> views = new ArrayList<View>();
+	private TextView tvEnter;
 	DisplayImageOptions options; // DisplayImageOptions是用于设置图片显示的类
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_guid);
+		tvEnter = (TextView) findViewById(R.id.tv_guid_enter);
+		tvEnter.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				
+				startActivity(new Intent(GuidAcitity.this, LoginActivity.class));
+				finish();
+			}
+		});
 		options = new DisplayImageOptions.Builder()
 
 		.cacheInMemory(true) // 设置下载的图片是否缓存在内存中
 				.cacheOnDisc(true) // 设置下载的图片是否缓存在SD卡中
 				.imageScaleType(ImageScaleType.IN_SAMPLE_POWER_OF_2).build(); // 创建配置过得DisplayImageOption对象
-
-		
-		imgUrl=getIntent().getStringArrayListExtra("img");
+		llIndexImg = (LinearLayout) findViewById(R.id.ll_guid_indeximg);
+		ivIndexList = new ArrayList<ImageView>();
+		imgUrl = getIntent().getStringArrayListExtra("img");
 		PersistentUtil.getInstance().write(this, "isFirst", false);
 		PersistentUtil.getInstance().write(this, "version", getVersionName());
 		initWidgets();
 		// 把要显示的View装入数组
 		LayoutInflater li = LayoutInflater.from(this);
 
-		if(imgUrl!=null){
-			for(int i = 0;i<imgUrl.size();i++){
-				
+		if (imgUrl != null) {
+			for (int i = 0; i < imgUrl.size(); i++) {
+
 				View view = li.inflate(R.layout.pager1, null);
-				ImageView imgView = (ImageView) view.findViewById(R.id.index_img);
-				ImageLoader.getInstance().displayImage(
-						imgUrl.get(i), imgView, options, null);
+				ImageView imgView = (ImageView) view
+						.findViewById(R.id.index_img);
+				LayoutParams para = new LayoutParams(LayoutParams.WRAP_CONTENT,
+						LayoutParams.WRAP_CONTENT);
+				para.setMargins(15, 15, 15, 5);
+				ImageView imgIndex = new ImageView(this);
+
+				if (i == 0) {
+
+					imgIndex.setBackgroundResource(R.drawable.page_icon_sel);
+				} else {
+
+					imgIndex.setBackgroundResource(R.drawable.page_icon);
+				}
+				llIndexImg.addView(imgIndex, para);
+
+				ImageLoader.getInstance().displayImage(imgUrl.get(i), imgView,
+						options, null);
+				ivIndexList.add(imgIndex);
 				views.add(view);
 
 			}
 		}
-		/*View view2 = li.inflate(R.layout.pager2, null);
-		View view3 = li.inflate(R.layout.pager3, null);*/
-		/*view3.findViewById(R.id.enter).setOnClickListener(
-				new OnClickListener() {
-
-					@Override
-					public void onClick(View v) {
-						// TODO Auto-generated method stub
-						Intent intent = new Intent(GuidAcitity.this,
-								LoginActivity.class);
-						startActivity(intent);
-						finish();
-					}
-				});*/
-
-		// 添加页面
-		/*final ArrayList<View> views = new ArrayList<View>();
-		views.add(view1);
-		views.add(view2);
-		views.add(view3);*/
 
 		picViewPagerAdapter pagerAdapter = new picViewPagerAdapter(views);
 		viewPager.setAdapter(pagerAdapter);
 		currIndex = 0;
 		viewPager.setCurrentItem(currIndex);
-		img1.setImageResource(R.drawable.page_icon_sel);
 
 		viewPager.setOnPageChangeListener(new OnPageChangeListener() {
 
 			@Override
 			public void onPageSelected(int arg0) {
 				// TODO Auto-generated method stub
-				switch (arg0) {
-				case 0:
-					img1.setImageResource(R.drawable.page_icon_sel);
-					img2.setImageResource(R.drawable.page_icon);
-					img3.setImageResource(R.drawable.page_icon);
-					break;
-				case 1:
-					img2.setImageResource(R.drawable.page_icon_sel);
-					img1.setImageResource(R.drawable.page_icon);
-					img3.setImageResource(R.drawable.page_icon);
-					break;
-				case 2:
-					img3.setImageResource(R.drawable.page_icon_sel);
-					img2.setImageResource(R.drawable.page_icon);
-					img1.setImageResource(R.drawable.page_icon);
-					break;
-				default:
-					break;
+				if(arg0 == ivIndexList.size()-1){
+					llIndexImg.removeAllViews();
+					tvEnter.setVisibility(View.VISIBLE);
+					return;
+				}
+				for (int i = 0; i < ivIndexList.size(); i++) {
+
+					ivIndexList.get(arg0).setBackgroundResource(
+							R.drawable.page_icon_sel);
+					for (int j = 0; j < ivIndexList.size(); j++){
+						if(j==arg0)
+							continue;
+						else
+						ivIndexList.get(j).setBackgroundResource(R.drawable.page_icon);
+					}
+
 				}
 				currIndex = arg0;
 
@@ -134,9 +144,7 @@ public class GuidAcitity extends Activity {
 
 	private void initWidgets() {
 		viewPager = (ViewPager) findViewById(R.id.viewpager);
-		img1 = (ImageView) findViewById(R.id.icon_1);
-		img2 = (ImageView) findViewById(R.id.icon_2);
-		img3 = (ImageView) findViewById(R.id.icon_3);
+
 	}
 
 	/**

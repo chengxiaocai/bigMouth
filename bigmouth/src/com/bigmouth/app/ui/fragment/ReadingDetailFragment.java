@@ -70,7 +70,8 @@ public class ReadingDetailFragment extends Fragment implements OnClickListener,
 	private ImageView btnLound;
 	private SpeechSynthesizer speechSynthesizer;
 	private ArrayList<Means> meanList = new ArrayList<Means>();
-	private TextView tvWordType;
+	private TextView tvWordType,tvWordeFirst;
+	private LinearLayout llTranslaitonMore;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -81,6 +82,8 @@ public class ReadingDetailFragment extends Fragment implements OnClickListener,
 		// getReading();
 		tvWordType = (TextView) contentView
 				.findViewById(R.id.tv_result_word_type);
+		llTranslaitonMore = (LinearLayout) contentView.findViewById(R.id.ll_translation_more);
+		tvWordeFirst = (TextView) contentView.findViewById(R.id.tv_word_first);
 		tvText = (TextView) contentView.findViewById(R.id.tv_read_content);
 		// tvText.setText(ac.getText());
 		speechSynthesizer = new SpeechSynthesizer(getActivity()
@@ -101,6 +104,14 @@ public class ReadingDetailFragment extends Fragment implements OnClickListener,
 		getEachWord(tvText);
 		tvText.setMovementMethod(LinkMovementMethod.getInstance());
 		ahc = new AsyncHttpClient();
+		contentView.findViewById(R.id.iv_readtail_back).setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				ac.changeReadingPage(null);
+			}
+		});
 		return contentView;
 	}
 
@@ -259,7 +270,11 @@ public class ReadingDetailFragment extends Fragment implements OnClickListener,
 								JSONArray arr = mean.getJSONObject(i)
 										.optJSONArray("means");
 								for (int j = 0; j < arr.length(); j++) {
-									means.getList().add(arr.getString(j));
+									String isLong = arr.getString(j);
+									if(isLong.length()<10){
+										
+										means.getList().add(isLong);
+									}
 								}
 								meanList.add(means);
 							}
@@ -397,49 +412,64 @@ public class ReadingDetailFragment extends Fragment implements OnClickListener,
 	}
 
 	public void UpdateUi() {
-		
+		llTranslaitonMore.removeAllViews();
 		for (int i = 0; i < meanList.size(); i++) {
 			
 			Means mean = meanList.get(i);
 			if (mean != null) {
 				if (i == 0) {
 					String type = mean.getPart();
-					switch (type) {
-					case "n.":
-						tvWordType.setText("(名词)");
-						break;
-					case "pron.":
-						tvWordType.setText("(代词)");
-						break;
-					case "adj.":
-						tvWordType.setText("(形容词)");
-						break;
-					case "num.":
-						tvWordType.setText("(数词)");
-						break;
-					case "art.":
-						tvWordType.setText("(冠词)");
-						break;
-					case "prep.":
-						tvWordType.setText("(介词)");
-						break;
-					case "conj.":
-						tvWordType.setText("(连词)");
-						break;
-					case "interj.":
-						tvWordType.setText("(感叹词)");
-						break;
-
-					default:
-						break;
-
-					}
 					
-					tvSrcWord.setText(mean.getList().get(0));
-					Study();
+						if( "n.".equals(type))
+						tvWordType.setText("(名词)");
+						
+					
+						if("pron.".equals(type))
+						tvWordType.setText("(代词)");
+				
+					
+						if("adj.".equals(type))
+						tvWordType.setText("(形容词)");
+						
+					
+						if("num.".equals(type))
+						tvWordType.setText("(数词)");
+						
+					
+						if( "art.".equals(type))
+						tvWordType.setText("(冠词)");
+					
+					
+						if("prep.".equals(type))
+						tvWordType.setText("(介词)");
+						
+					
+						if( "conj.".equals(type))
+						tvWordType.setText("(连词)");
+						
+					
+						if("interj.".equals(type))
+						tvWordType.setText("(感叹词)");
+					
+
+					
+
+						tvSrcWord.setText(mean.getList().get(0));
+						Study();
+					}
+					for(int j = 0;j<mean.getList().size();j++){
+						if(j==0){
+							tvWordeFirst.setText(mean.getList().get(0));
+							continue;
+						}
+						TextView tvView = new TextView(getActivity());
+						tvView.setText(mean.getList().get(j));
+						llTranslaitonMore.addView(tvView);
+						
+					}
 				}
 			}
 		}
-	}
+	
 
 }
