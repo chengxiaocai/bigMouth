@@ -10,6 +10,8 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.LinearLayout;
+import android.widget.TextView;
+
 import com.bigmouth.app.ui.fragment.PractiseFragment;
 import com.bigmouth.app.ui.fragment.ReadingDetailFragment;
 import com.bigmouth.app.ui.fragment.ReadingFragment;
@@ -23,12 +25,12 @@ public class StudyActivity extends FragmentActivity implements OnClickListener {
 	ReadingFragment readingFramet;
 	PractiseFragment practiseFragment;
 	SettingFragment settingFragment;
-	ReadingDetailFragment  readingDetailFragment;
+	ReadingDetailFragment readingDetailFragment;
 	WordsFragment wordsFragment;
 	TempFragment temFragment;
 	private String text;
 	private LinearLayout line;
-	
+	private TextView tvWord, tvReading, tvPractise, tvSetting;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +44,10 @@ public class StudyActivity extends FragmentActivity implements OnClickListener {
 
 	private void initView() {
 		line = (LinearLayout) findViewById(R.id.rg_study_line);
-
+		tvPractise = (TextView) findViewById(R.id.rb_miantab_practise);
+		tvReading = (TextView) findViewById(R.id.rb_miantab_reading);
+		tvSetting = (TextView) findViewById(R.id.rb_miantab_setting);
+		tvWord = (TextView) findViewById(R.id.rb_miantab_words);
 		transaction = getSupportFragmentManager().beginTransaction();
 		findViewById(R.id.rb_miantab_words).setOnClickListener(this);
 
@@ -69,6 +74,11 @@ public class StudyActivity extends FragmentActivity implements OnClickListener {
 		int id = v.getId();
 		switch (id) {
 		case R.id.rb_miantab_practise:
+			tvPractise.setTextColor(getResources().getColor(R.color.gray));
+			tvReading.setTextColor(getResources().getColor(R.color.yellow));
+
+			tvSetting.setTextColor(getResources().getColor(R.color.yellow));
+			tvWord.setTextColor(getResources().getColor(R.color.yellow));
 			Log.i("ccc", "1111");
 			line.setBackground(getResources().getDrawable(R.drawable.bg_3));
 
@@ -82,6 +92,11 @@ public class StudyActivity extends FragmentActivity implements OnClickListener {
 			break;
 
 		case R.id.rb_miantab_reading:
+			tvPractise.setTextColor(getResources().getColor(R.color.yellow));
+			tvReading.setTextColor(getResources().getColor(R.color.gray));
+
+			tvSetting.setTextColor(getResources().getColor(R.color.yellow));
+			tvWord.setTextColor(getResources().getColor(R.color.yellow));
 			Log.i("ccc", "2222");
 			line.setBackground(getResources().getDrawable(R.drawable.bg_2));
 
@@ -95,6 +110,11 @@ public class StudyActivity extends FragmentActivity implements OnClickListener {
 			break;
 
 		case R.id.rb_miantab_words:
+			tvPractise.setTextColor(getResources().getColor(R.color.yellow));
+			tvReading.setTextColor(getResources().getColor(R.color.yellow));
+
+			tvSetting.setTextColor(getResources().getColor(R.color.yellow));
+			tvWord.setTextColor(getResources().getColor(R.color.gray));
 			line.setBackground(getResources().getDrawable(R.drawable.bg_1));
 			Log.i("ccc", "3333");
 			if (wordsFragment == null) {
@@ -106,6 +126,11 @@ public class StudyActivity extends FragmentActivity implements OnClickListener {
 			break;
 
 		case R.id.rb_miantab_setting:
+			tvPractise.setTextColor(getResources().getColor(R.color.yellow));
+			tvReading.setTextColor(getResources().getColor(R.color.yellow));
+
+			tvSetting.setTextColor(getResources().getColor(R.color.gray));
+			tvWord.setTextColor(getResources().getColor(R.color.yellow));
 			Log.i("ccc", "44444");
 			line.setBackground(getResources().getDrawable(R.drawable.bg_4));
 
@@ -148,7 +173,7 @@ public class StudyActivity extends FragmentActivity implements OnClickListener {
 	public void changeReadingPage(Intent in) {
 		transaction = getSupportFragmentManager().beginTransaction();
 		hideFragments(transaction);
-		if(in==null){
+		if (in == null) {
 			if (readingFramet == null) {
 				readingFramet = new ReadingFragment();
 
@@ -157,24 +182,24 @@ public class StudyActivity extends FragmentActivity implements OnClickListener {
 				transaction.show(readingFramet);
 			}
 			transaction.commit();
-		}else{
-			text  = in.getStringExtra("text");
-			//if (readingDetailFragment == null) {
-				readingDetailFragment = new  ReadingDetailFragment();
-				
+		} else {
+			text = in.getStringExtra("text");
+			// if (readingDetailFragment == null) {
+			readingDetailFragment = new ReadingDetailFragment();
 
-				transaction.add(R.id.frag_main_tab, readingDetailFragment);
-			//} else {
-		//		transaction.show(readingDetailFragment);
-		//	}
-			
+			transaction.add(R.id.frag_main_tab, readingDetailFragment);
+			// } else {
+			// transaction.show(readingDetailFragment);
+			// }
+
 			transaction.commit();
-			
+
 		}
 
 	}
-	public String getText(){
-		 return text;
+
+	public String getText() {
+		return text;
 	}
 
 }

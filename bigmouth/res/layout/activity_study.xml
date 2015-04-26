@@ -17,6 +17,7 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:layout_weight="1"
+            android:textColor="@color/gray"
             android:text="文字" />
 
         <TextView
@@ -25,7 +26,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-           
+            android:textColor="@color/yellow"
             android:text="阅读" />
 
         <TextView
@@ -34,6 +35,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
+              android:textColor="@color/yellow"
             android:text="实践" />
         <TextView
              android:id="@+id/rb_miantab_setting"
@@ -41,6 +43,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
+              android:textColor="@color/yellow"
             android:text="设置" />
         <TextView
           
@@ -48,6 +51,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
+            android:textColor="@color/yellow"
             android:text="37" />
     </LinearLayout>
 

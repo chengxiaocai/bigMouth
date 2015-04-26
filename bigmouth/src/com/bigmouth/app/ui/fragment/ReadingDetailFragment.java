@@ -39,12 +39,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.webkit.WebView;
+import android.webkit.WebView.FindListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
 import android.widget.TextView.BufferType;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -61,7 +63,7 @@ public class ReadingDetailFragment extends Fragment implements OnClickListener,
 	LayoutInflater inflater = null;
 	private ListView lvReading;
 	private View contentView;
-	
+	private ArrayList<String> allWords = new ArrayList<String>();
 	private TextView tvText;
 	private StudyActivity ac;
 
@@ -70,8 +72,9 @@ public class ReadingDetailFragment extends Fragment implements OnClickListener,
 	private ImageView btnLound;
 	private SpeechSynthesizer speechSynthesizer;
 	private ArrayList<Means> meanList = new ArrayList<Means>();
-	private TextView tvWordType,tvWordeFirst;
+	private TextView tvWordType, tvWordeFirst;
 	private LinearLayout llTranslaitonMore;
+	private GridView grid;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -80,9 +83,11 @@ public class ReadingDetailFragment extends Fragment implements OnClickListener,
 				container, false);
 		// initView();
 		// getReading();
+		grid = (GridView) contentView.findViewById(R.id.grid_word);
 		tvWordType = (TextView) contentView
 				.findViewById(R.id.tv_result_word_type);
-		llTranslaitonMore = (LinearLayout) contentView.findViewById(R.id.ll_translation_more);
+		// llTranslaitonMore = (LinearLayout)
+		// contentView.findViewById(R.id.ll_translation_more);
 		tvWordeFirst = (TextView) contentView.findViewById(R.id.tv_word_first);
 		tvText = (TextView) contentView.findViewById(R.id.tv_read_content);
 		// tvText.setText(ac.getText());
@@ -104,14 +109,15 @@ public class ReadingDetailFragment extends Fragment implements OnClickListener,
 		getEachWord(tvText);
 		tvText.setMovementMethod(LinkMovementMethod.getInstance());
 		ahc = new AsyncHttpClient();
-		contentView.findViewById(R.id.iv_readtail_back).setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				ac.changeReadingPage(null);
-			}
-		});
+		contentView.findViewById(R.id.iv_readtail_back).setOnClickListener(
+				new OnClickListener() {
+
+					@Override
+					public void onClick(View v) {
+						// TODO Auto-generated method stub
+						ac.changeReadingPage(null);
+					}
+				});
 		return contentView;
 	}
 
@@ -199,14 +205,15 @@ public class ReadingDetailFragment extends Fragment implements OnClickListener,
 	}
 
 	public void Study() {
-		
+
 		if (line.getVisibility() == View.VISIBLE) {
 			// AlphaAnimation animation = new
 			// AlphaAnimation(1.0F, 0F);
-//			TranslateAnimation animation = new TranslateAnimation(0, 0, 0, -400);
-//			animation.setDuration(100);
-//			animation.start();
-//			line.setAnimation(animation);
+			// TranslateAnimation animation = new TranslateAnimation(0, 0, 0,
+			// -400);
+			// animation.setDuration(100);
+			// animation.start();
+			// line.setAnimation(animation);
 			line.setVisibility(View.GONE);
 
 		} else {
@@ -215,10 +222,11 @@ public class ReadingDetailFragment extends Fragment implements OnClickListener,
 			 * tra.setDuration(5000); //tra.start(); tv.setAnimation(tra);
 			 * tv.startAnimation(tra);
 			 */
-//			TranslateAnimation animation = new TranslateAnimation(0, 0, -400, 0);
-//			animation.setDuration(100);
-//			animation.start();
-//			line.setAnimation(animation);
+			// TranslateAnimation animation = new TranslateAnimation(0, 0, -400,
+			// 0);
+			// animation.setDuration(100);
+			// animation.start();
+			// line.setAnimation(animation);
 
 			line.setVisibility(View.VISIBLE);
 		}
@@ -230,7 +238,15 @@ public class ReadingDetailFragment extends Fragment implements OnClickListener,
 
 	}
 
-	public void Load(final String word) {
+	public void Load(String word) {
+		if (word.contains(",")) {
+			int index = word.indexOf(",");
+			word = word.substring(0, index);
+		}
+		if (word.contains(".")) {
+			int index = word.indexOf(".");
+			word = word.substring(0, index);
+		}
 		tvResultWrod.setText(word);
 
 		RequestParams rp = new RequestParams();
@@ -271,10 +287,10 @@ public class ReadingDetailFragment extends Fragment implements OnClickListener,
 										.optJSONArray("means");
 								for (int j = 0; j < arr.length(); j++) {
 									String isLong = arr.getString(j);
-									if(isLong.length()<10){
-										
-										means.getList().add(isLong);
-									}
+									// if(isLong.length()<10){
+
+									means.getList().add(isLong);
+									// }
 								}
 								meanList.add(means);
 							}
@@ -286,7 +302,7 @@ public class ReadingDetailFragment extends Fragment implements OnClickListener,
 							Toast.makeText(getActivity(), "获取失败", 0).show();
 							tvSrcWord.setText("获取失败");
 							tvWordType.setText("");
-							
+
 						}
 
 					}
@@ -412,64 +428,120 @@ public class ReadingDetailFragment extends Fragment implements OnClickListener,
 	}
 
 	public void UpdateUi() {
-		llTranslaitonMore.removeAllViews();
+		String type;
+		Boolean isHave = false;
+		Boolean isMore = false;
+		String finaleWord = null;
+		allWords.clear();
+		// llTranslaitonMore.removeAllViews();
+
 		for (int i = 0; i < meanList.size(); i++) {
-			
+			if (isHave) {
+				break;
+			}
+
 			Means mean = meanList.get(i);
-			if (mean != null) {
-				if (i == 0) {
-					String type = mean.getPart();
-					
-						if( "n.".equals(type))
+			for (int j = 0; j < mean.getList().size(); j++) {
+				finaleWord = mean.getList().get(j);
+				if (finaleWord.length() < 10) {
+					tvSrcWord.setText(finaleWord);
+					tvWordeFirst.setText(finaleWord);
+					isHave = true;
+					type = mean.getPart();
+					if ("n.".equals(type))
 						tvWordType.setText("(名词)");
-						
-					
-						if("pron.".equals(type))
+
+					if ("pron.".equals(type))
 						tvWordType.setText("(代词)");
-				
-					
-						if("adj.".equals(type))
+
+					if ("adj.".equals(type))
 						tvWordType.setText("(形容词)");
-						
-					
-						if("num.".equals(type))
+
+					if ("num.".equals(type))
 						tvWordType.setText("(数词)");
-						
-					
-						if( "art.".equals(type))
+
+					if ("art.".equals(type))
 						tvWordType.setText("(冠词)");
-					
-					
-						if("prep.".equals(type))
+
+					if ("prep.".equals(type))
 						tvWordType.setText("(介词)");
-						
-					
-						if( "conj.".equals(type))
+
+					if ("conj.".equals(type))
 						tvWordType.setText("(连词)");
-						
-					
-						if("interj.".equals(type))
+
+					if ("interj.".equals(type))
 						tvWordType.setText("(感叹词)");
-					
+					break;
+				}
 
-					
+				// TextView tvView = new TextView(getActivity());
+				// tvView.setText(mean.getList().get(j));
+				// llTranslaitonMore.addView(tvView);
 
-						tvSrcWord.setText(mean.getList().get(0));
-						Study();
-					}
-					for(int j = 0;j<mean.getList().size();j++){
-						if(j==0){
-							tvWordeFirst.setText(mean.getList().get(0));
-							continue;
-						}
-						TextView tvView = new TextView(getActivity());
-						tvView.setText(mean.getList().get(j));
-						llTranslaitonMore.addView(tvView);
-						
+			}
+
+			Study();
+
+		}
+		for (int p = 0; p < meanList.size(); p++) {
+			Means mean1 = meanList.get(p);
+
+			if (isMore) {
+				break;
+			}
+			for (int q = 0; q < mean1.getList().size(); q++) {
+
+				String word = mean1.getList().get(q);
+				if (allWords.size()>5) {
+
+					isMore = true;
+					break;
+				}
+				if (word.length() < 5) {
+					if (!word.equals(finaleWord)) {
+
+						allWords.add(word);
 					}
 				}
 			}
 		}
-	
+		grid.setAdapter(new Mydapater());
+	}
+
+	private class Mydapater extends BaseAdapter {
+
+		@Override
+		public int getCount() {
+			// TODO Auto-generated method stub
+			return allWords.size();
+		}
+
+		@Override
+		public Object getItem(int position) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public long getItemId(int position) {
+			// TODO Auto-generated method stub
+			return 0;
+		}
+
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent) {
+			// TODO Auto-generated method stub
+			if (convertView == null) {
+				LayoutInflater li = LayoutInflater.from(getActivity());
+				convertView = li.inflate(R.layout.item_grid_extra, null);
+
+			}
+			TextView tvExtraWord = (TextView) convertView
+					.findViewById(R.id.tv_word_extra);
+			tvExtraWord.setText(allWords.get(position));
+			return convertView;
+		}
+
+	}
 
 }

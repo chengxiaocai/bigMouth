@@ -14,10 +14,9 @@
         android:layout_marginTop="20dp"
         android:background="@drawable/bg_text_color_blue"
         android:gravity="center"
-        android:textStyle="bold"
-        
         android:text="添加单词（词典）"
-        android:textColor="#9bc818" />
+        android:textColor="#9bc818"
+        android:textStyle="bold" />
 
     <ImageView
         android:layout_width="match_parent"
@@ -43,7 +42,6 @@
             android:text="7收集的单词"
             android:textColor="#c8ccbb"
             android:textSize="15sp"
-           
             android:visibility="gone" />
 
         <TextView
@@ -52,10 +50,8 @@
             android:layout_alignParentRight="true"
             android:layout_marginRight="20dp"
             android:text="编辑"
-             android:textSize="15sp"
-           
-            
-            android:textColor="#c8ccbb" />
+            android:textColor="#c8ccbb"
+            android:textSize="15sp" />
     </RelativeLayout>
 
     <View
@@ -63,17 +59,23 @@
         android:layout_height="10dp"
         android:background="@color/yellow" />
 
-    <ListView
-        android:layout_marginRight="30dp"
-        android:layout_marginLeft="30dp"
-        android:id="@+id/lv_words_list"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:listSelector="#00000000"
-        android:scrollbars="none"
-        android:divider="#00000000"
-        android:dividerHeight="10dp"
         android:layout_height="wrap_content"
         android:background="@color/yellow" >
-    </ListView>
+
+        <ListView
+            android:id="@+id/lv_words_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:background="@color/yellow"
+            android:divider="#00000000"
+            android:dividerHeight="10dp"
+            android:listSelector="#00000000"
+            android:scrollbars="none" >
+        </ListView>
+    </LinearLayout>
 
 </LinearLayout>
