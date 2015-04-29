@@ -4,10 +4,12 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
+
 import org.apache.http.Header;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import com.bigmouth.app.R;
 import com.bigmouth.app.util.DialogUtil;
 import com.bigmouth.app.util.HttpHandle;
@@ -16,6 +18,7 @@ import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestHandle;
 import com.loopj.android.http.RequestParams;
+
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.os.Bundle;
@@ -28,6 +31,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextClock;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,48 +42,57 @@ public class PractiseFragment extends Fragment {
 	private Dialog thisdialog;
 	private JSONObject obj;
 	private ArrayList<String> list = new ArrayList<String>();
-	private ArrayList<TextView>  tvList  = new ArrayList<TextView>();
+	private ArrayList<TextView> tvList = new ArrayList<TextView>();
 	private String chinese, usa;
-	private TextView tvWord;
+	private TextView tvWord, tvChineseRight, tvEnglishRight, tvChoose;
 	private View contentView;
 	private LinearLayout lineWord;
 	private LinearLayout lineGuessWord;
-	private TextView tvWord1,tvWord2,tvWord3,tvWord4,tvWord5,tvTime;
+	private LinearLayout lineRight;
+	private TextView tvWord1, tvWord2, tvWord3, tvWord4, tvWord5, tvTime,
+			tvShow;
 	private Timer time;
 	private int i = 6;
-	final Handler handler = new Handler(){  
-		    @SuppressLint("NewApi")
-			public void handleMessage(Message msg) {  
-		       	  i--;
-		       	  tvTime.setText(i+"");
-		       	  if(i==0){
-		       		  time.cancel();
-		       	  }
-		       	  if(i==3){
-		       		  boolean isEqual=false; 
-		       		  int  m = new Random().nextInt(4);
-		       		  int n= new Random().nextInt(4);
-		       		  if(n==m)
-		       			  isEqual = true;
-		       		  while(isEqual){
-		       			   n= new Random().nextInt(4);
-		       			   if(n!=m){
-		       				   isEqual=false;
-		       			   }
-		       		  }
-		       		  tvList.get(m).setBackground(getResources().getDrawable(R.drawable.bg_addword_color_gray));
-		       		  tvList.get(n).setBackground(getResources().getDrawable(R.drawable.bg_addword_color_gray));
-		       	  }
-		        
-         }    
-	   };  
-	   TimerTask task = new TimerTask(){  
-		      public void run() {  
-		      Message message = new Message();      
-		      message.what = 5;      
-		      handler.sendMessage(message);    
-		   }  
-		};
+	final Handler handler = new Handler() {
+		@SuppressLint("NewApi")
+		public void handleMessage(Message msg) {
+
+			i--;
+			tvTime.setText(i + "");
+			if (i == 0) {
+				time.cancel();
+				lineGuessWord.setVisibility(View.GONE);
+				lineRight.setVisibility(View.VISIBLE);
+				tvChineseRight.setText(chinese);
+				tvEnglishRight.setText(usa);
+				tvShow.setText("不要担心，下次谨记");
+
+			}
+			if (i == 3) {
+				int m, n;
+				while (true) {
+					m = new Random().nextInt(5);
+					if (!list.get(m).equals(chinese)) {
+						break;
+					}
+				}
+				while (true) {
+					n = new Random().nextInt(5);
+					if (!list.get(n).equals(chinese) && n != m) {
+						break;
+					}
+				}
+
+				tvList.get(m).setBackground(
+						getResources().getDrawable(
+								R.drawable.bg_addword_color_gray));
+				tvList.get(n).setBackground(
+						getResources().getDrawable(
+								R.drawable.bg_addword_color_gray));
+			}
+
+		}
+	};
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -93,46 +106,123 @@ public class PractiseFragment extends Fragment {
 	}
 
 	private void initVeiw() {
-		time  = new Timer(true);
-		
+		tvShow = (TextView) contentView.findViewById(R.id.tv_practise_show);
+		tvChoose = (TextView) contentView
+				.findViewById(R.id.tv_pratise_choose_word);
+		lineRight = (LinearLayout) contentView
+				.findViewById(R.id.line_result_word);
+		tvChineseRight = (TextView) contentView
+				.findViewById(R.id.tv_right_chinese);
+		tvEnglishRight = (TextView) contentView.findViewById(R.id.tv_right_usa);
+
 		tvTime = (TextView) contentView.findViewById(R.id.tv_practise_time);
-		tvWord1 = (TextView) contentView.findViewById(R.id.btn_pratise_wrong_word1);
+		tvWord1 = (TextView) contentView
+				.findViewById(R.id.btn_pratise_wrong_word1);
 		tvList.add(tvWord1);
-		tvWord2 = (TextView) contentView.findViewById(R.id.btn_pratise_wrong_word2);
-		tvWord3 = (TextView) contentView.findViewById(R.id.btn_pratise_wrong_word3);
-		tvWord4 = (TextView) contentView.findViewById(R.id.btn_pratise_wrong_word4);
-		tvWord5 = (TextView) contentView.findViewById(R.id.btn_pratise_wrong_word5);
+		tvWord2 = (TextView) contentView
+				.findViewById(R.id.btn_pratise_wrong_word2);
+		tvWord3 = (TextView) contentView
+				.findViewById(R.id.btn_pratise_wrong_word3);
+		tvWord4 = (TextView) contentView
+				.findViewById(R.id.btn_pratise_wrong_word4);
+		tvWord5 = (TextView) contentView
+				.findViewById(R.id.btn_pratise_wrong_word5);
 		tvList.add(tvWord2);
 		tvList.add(tvWord3);
 		tvList.add(tvWord4);
-		lineGuessWord = (LinearLayout) contentView.findViewById(R.id.line_guess_word);
+		tvList.add(tvWord5);
+		lineGuessWord = (LinearLayout) contentView
+				.findViewById(R.id.line_guess_word);
 		lineWord = (LinearLayout) contentView.findViewById(R.id.line_konw_word);
 		ahc = new AsyncHttpClient();
 		thisdialog = DialogUtil.getLoadDialog(getActivity(), "请稍后！");
 		tvWord = (TextView) contentView.findViewById(R.id.tv_pratise_word);
-		contentView.findViewById(R.id.btn_pratise_no).setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				getData();
-			}
-		});
-		contentView.findViewById(R.id.btn_practis_yes).setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				lineWord.setVisibility(View.GONE);
-				lineGuessWord.setVisibility(View.VISIBLE);
-				tvWord1.setText(list.get(0));
-				tvWord2.setText(list.get(1));
-				tvWord3.setText(list.get(2));
-				tvWord4.setText(list.get(3));
-				tvWord5.setText(list.get(4));
-				time.schedule(task, 1000, 1000);
-			}
-		});
+		contentView.findViewById(R.id.btn_pratise_no).setOnClickListener(
+				new OnClickListener() {
+
+					@Override
+					public void onClick(View v) {
+						// TODO Auto-generated method stub
+						// time.cancel();
+						// lineGuessWord.setVisibility(View.GONE);
+						lineWord.setVisibility(View.GONE);
+						lineRight.setVisibility(View.VISIBLE);
+						tvChineseRight.setText(chinese);
+						tvEnglishRight.setText(usa);
+						tvShow.setText("不要担心，下次谨记");
+
+					}
+				});
+		contentView.findViewById(R.id.btn_pratise_tonext).setOnClickListener(
+				new OnClickListener() {
+
+					@Override
+					public void onClick(View v) {
+						// TODO Auto-generated method stub
+						lineWord.setVisibility(View.VISIBLE);
+						lineRight.setVisibility(View.GONE);
+						getData();
+					}
+				});
+		contentView.findViewById(R.id.btn_practis_yes).setOnClickListener(
+				new OnClickListener() {
+
+					@SuppressLint("NewApi")
+					@Override
+					public void onClick(View v) {
+						// TODO Auto-generated method stub
+						
+						i = 6;
+						tvChoose.setText(usa);
+						tvTime.setText(i + "");
+						tvWord1.setBackground(getResources().getDrawable(
+								R.drawable.bg_text__all_coner_tooblue));
+						tvWord2.setBackground(getResources().getDrawable(
+								R.drawable.bg_text__all_coner_tooblue));
+						tvWord3.setBackground(getResources().getDrawable(
+								R.drawable.bg_text__all_coner_tooblue));
+						tvWord4.setBackground(getResources().getDrawable(
+								R.drawable.bg_text__all_coner_tooblue));
+						tvWord5.setBackground(getResources().getDrawable(
+								R.drawable.bg_text__all_coner_tooblue));
+						lineWord.setVisibility(View.GONE);
+						lineGuessWord.setVisibility(View.VISIBLE);
+						tvWord1.setText(list.get(0));
+						tvWord2.setText(list.get(1));
+						tvWord3.setText(list.get(2));
+						tvWord4.setText(list.get(3));
+						tvWord5.setText(list.get(4));
+						time = new Timer(true);
+						TimerTask task = new TimerTask() {
+							public void run() {
+								Message message = new Message();
+								message.what = 5;
+								handler.sendMessage(message);
+							}
+						};
+						time.schedule(task, 1000, 1000);
+					}
+				});
+		for (int i = 0; i < tvList.size(); i++) {
+			final TextView tv = tvList.get(i);
+			tv.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					time.cancel();
+					lineGuessWord.setVisibility(View.GONE);
+					lineRight.setVisibility(View.VISIBLE);
+					tvChineseRight.setText(chinese);
+					tvEnglishRight.setText(usa);
+					if (chinese.equals(tv.getText().toString())) {
+						tvShow.setText("不错，答对啦");
+					}else{
+						tvShow.setText("不要担心，下次谨记");
+					}
+				}
+			});
+		}
 	}
 
 	/**
@@ -152,7 +242,7 @@ public class PractiseFragment extends Fragment {
 				// TODO Auto-generated method stub
 				super.onStart();
 				Log.i("cc...cars", "start...");
-				// thisdialog.show();
+				thisdialog.show();
 			}
 
 			@Override
@@ -168,6 +258,7 @@ public class PractiseFragment extends Fragment {
 					usa = data.optString("word");
 					tvWord.setText(usa);
 					JSONArray array = data.optJSONArray("rand");
+					list.clear();
 					for (int i = 0; i < array.length(); i++) {
 						list.add(array.getString(i));
 					}
@@ -184,7 +275,9 @@ public class PractiseFragment extends Fragment {
 				// TODO Auto-generated method stub
 				super.onFinish();
 				Log.i("cc...", "finish");
-				// thisdialog.dismiss();
+				if (thisdialog.isShowing()) {
+					thisdialog.dismiss();
+				}
 			}
 
 			@Override
@@ -196,7 +289,7 @@ public class PractiseFragment extends Fragment {
 				HttpHandle hh = new HttpHandle();
 				hh.handleFaile(getActivity(), arg3);
 				if (thisdialog.isShowing()) {
-					// thisdialog.dismiss();
+					thisdialog.dismiss();
 				}
 			}
 
