@@ -1,6 +1,7 @@
 package com.bigmouth.app.ui;
 
 import org.apache.http.Header;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.bigmouth.app.R;
@@ -33,7 +34,6 @@ import com.loopj.android.http.RequestParams;
 
 public class StudyActivity extends FragmentActivity implements OnClickListener {
 	private AsyncHttpClient ahc; // 异步处理
-	private RequestHandle reqhandle;
 	private Dialog thisdialog;
 	private JSONObject obj;
 	FragmentTransaction transaction;
@@ -45,8 +45,8 @@ public class StudyActivity extends FragmentActivity implements OnClickListener {
 	TempFragment temFragment;
 	private String text;
 	private LinearLayout line;
-	private TextView tvWord, tvReading, tvPractise, tvSetting;
-
+	private TextView tvWord, tvReading, tvPractise, tvSetting,tvNum;
+    private String num;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -61,6 +61,7 @@ public class StudyActivity extends FragmentActivity implements OnClickListener {
 	private void initView() {
 		ahc = new AsyncHttpClient();
 		line = (LinearLayout) findViewById(R.id.rg_study_line);
+		tvNum = (TextView) findViewById(R.id.rb_maintab_num);
 		tvPractise = (TextView) findViewById(R.id.rb_miantab_practise);
 		tvReading = (TextView) findViewById(R.id.rb_miantab_reading);
 		tvSetting = (TextView) findViewById(R.id.rb_miantab_setting);
@@ -226,7 +227,7 @@ public class StudyActivity extends FragmentActivity implements OnClickListener {
 				PersistentUtil.getInstance()
 						.readString(this, "id", ""));
 		
-		reqhandle = ahc.post("http://app.01teacher.cn/App/GetUserPoints",
+		 ahc.post("http://app.01teacher.cn/App/GetUserPoints",
 
 		rp, new AsyncHttpResponseHandler() {
 			@Override
@@ -242,6 +243,15 @@ public class StudyActivity extends FragmentActivity implements OnClickListener {
 				// TODO Auto-generated method stub
 				super.onSuccess(content);
 				Log.i("cc...cars", "success.......");
+				try {
+					obj = new JSONObject(content);
+					JSONObject data = obj.optJSONObject("data");
+					tvNum.setText(data.optString("point"));
+					
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			
 			}
 
@@ -260,7 +270,7 @@ public class StudyActivity extends FragmentActivity implements OnClickListener {
 				super.onFailure(arg0, arg1, arg2, arg3);
 				Log.i("cc...cars", "failue.......");
 				HttpHandle hh = new HttpHandle();
-				//hh.handleFaile(this, arg3);
+				hh.handleFaile(StudyActivity.this, arg3);
 				
 			}
 
