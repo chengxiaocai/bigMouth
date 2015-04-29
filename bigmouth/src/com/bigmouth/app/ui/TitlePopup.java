@@ -1,5 +1,6 @@
 package com.bigmouth.app.ui;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -10,6 +11,7 @@ import cn.sharesdk.onekeyshare.OnekeyShare;
 
 import com.bigmouth.app.R;
 import com.bigmouth.app.scan.MipcaCaptureActivity;
+import com.bigmouth.app.util.ScreenShot;
 import com.bigmouth.app.util.Util;
 
 import android.app.Activity;
@@ -17,6 +19,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
+import android.os.Environment;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -89,6 +92,9 @@ public class TitlePopup extends PopupWindow {
 					mItemOnClickListener.onItemClick(mActionItems.get(index),
 							index);
 				if (index == 0) {
+					String filePath = Environment.getExternalStorageDirectory() + "/DCIM/"
+							+ "aaaa.png";
+					ScreenShot.shoot(ac, new File(filePath));
 					Toast.makeText(mContext, "分享获取积分", 0).show();
 					ShareSDK.initSDK(mContext);
 					OnekeyShare oks = new OnekeyShare();
@@ -105,7 +111,7 @@ public class TitlePopup extends PopupWindow {
 					// text是分享文本，所有平台都需要这个字段
 					oks.setText("我是分享文本");
 					// imagePath是图片的本地路径，Linked-In以外的平台都支持此参数
-					oks.setImagePath("/sdcard/test.jpg");// 确保SDcard下面存在此张图片
+					oks.setImagePath(filePath);// 确保SDcard下面存在此张图片
 					// url仅在微信（包括好友和朋友圈）中使用
 					oks.setUrl("http://sharesdk.cn");
 					// comment是我对这条分享的评论，仅在人人网和QQ空间使用

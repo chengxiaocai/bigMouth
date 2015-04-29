@@ -7,6 +7,9 @@ import org.apache.http.Header;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import cn.sharesdk.framework.ShareSDK;
+import cn.sharesdk.onekeyshare.OnekeyShare;
+
 import com.baidu.speechsynthesizer.SpeechSynthesizer;
 import com.baidu.speechsynthesizer.SpeechSynthesizerListener;
 import com.baidu.speechsynthesizer.publicutility.SpeechError;
@@ -16,6 +19,7 @@ import com.bigmouth.app.bean.Readings;
 import com.bigmouth.app.ui.StudyActivity;
 import com.bigmouth.app.util.Constant;
 import com.bigmouth.app.util.HttpHandle;
+import com.bigmouth.app.util.PersistentUtil;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestHandle;
@@ -23,6 +27,7 @@ import com.loopj.android.http.RequestParams;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.media.AudioManager;
 import android.os.Bundle;
@@ -66,7 +71,7 @@ public class ReadingDetailFragment extends Fragment implements OnClickListener,
 	private ArrayList<String> allWords = new ArrayList<String>();
 	private TextView tvText;
 	private StudyActivity ac;
-
+   private String strTransWords;
 	private TextView tvSrcWord, tvResultWrod;
 	private LinearLayout line;
 	private ImageView btnLound;
@@ -118,6 +123,34 @@ public class ReadingDetailFragment extends Fragment implements OnClickListener,
 						ac.changeReadingPage(null);
 					}
 				});
+		contentView.findViewById(R.id.iv_readdetial_share).setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				ShareSDK.initSDK(getActivity());
+				OnekeyShare oks = new OnekeyShare();
+				// 关闭sso授权
+				oks.disableSSOWhenAuthorize();
+
+				// 分享时Notification的图标和文字 2.5.9以后的版本不调用此方法
+				// oks.setNotification(R.drawable.ic_launcher,
+				// getString(R.string.app_name));
+				// title标题，印象笔记、邮箱、信息、微信、人人网和QQ空间使用
+				
+				// titleUrl是标题的网络链接，仅在人人网和QQ空间使用
+				
+				// text是分享文本，所有平台都需要这个字段
+				oks.setText(ac.getText().toString());
+				// imagePath是图片的本地路径，Linked-In以外的平台都支持此参数
+			
+				// url仅在微信（包括好友和朋友圈）中使用
+			
+              
+				// 启动分享GUI
+				oks.show(getActivity());
+			}
+		});
 		return contentView;
 	}
 
@@ -157,7 +190,7 @@ public class ReadingDetailFragment extends Fragment implements OnClickListener,
 				try {
 					TextView tv = (TextView) widget;
 					tv.setTextColor(Color.RED);
-					String s = tv
+					strTransWords = tv
 							.getText()
 							.subSequence(tv.getSelectionStart(),
 									tv.getSelectionEnd()).toString();
@@ -174,8 +207,8 @@ public class ReadingDetailFragment extends Fragment implements OnClickListener,
 
 					getEachWord(tvText);
 
-					Log.d("tapped on:", s);
-					Load(s);
+					Log.d("tapped on:", strTransWords);
+					Load(strTransWords);
 					// Toast.makeText(getActivity(), s, 0).show();
 
 				} catch (Exception e) {
@@ -428,6 +461,7 @@ public class ReadingDetailFragment extends Fragment implements OnClickListener,
 	}
 
 	public void UpdateUi() {
+		
 		String type;
 		Boolean isHave = false;
 		Boolean isMore = false;
@@ -479,7 +513,7 @@ public class ReadingDetailFragment extends Fragment implements OnClickListener,
 				// llTranslaitonMore.addView(tvView);
 
 			}
-
+           upLoadWord(finaleWord, strTransWords);
 			Study();
 
 		}
@@ -542,6 +576,66 @@ public class ReadingDetailFragment extends Fragment implements OnClickListener,
 			return convertView;
 		}
 
+	}
+	public void upLoadWord(String chinese,String usa){
+		if(chinese==null||usa==null){
+			return;
+		}
+		RequestParams rp = new RequestParams();
+		rp.put("UserID",
+				PersistentUtil.getInstance()
+						.readString(getActivity(), "id", ""));
+		rp.put("Word", usa);
+		rp.put("Translation", chinese);
+		// rp.put("ReadingID","");
+		reqhandle = ahc.post("http://app.01teacher.cn/App/PostUserWords",
+
+		rp, new AsyncHttpResponseHandler() {
+			@Override
+			public void onStart() {
+				// TODO Auto-generated method stub
+				super.onStart();
+				Log.i("cc...cars", "start...");
+				// thisdialog.show();
+			}
+
+			@Override
+			public void onSuccess(String content) {
+				// TODO Auto-generated method stub
+				super.onSuccess(content);
+				Log.i("cc...cars", "success.......");
+				Toast.makeText(getActivity(), "添加成功", 0).show();
+				Intent mIntent = new Intent("com.cc.getword");  
+                
+                  
+                //发送广播  
+                getActivity().sendBroadcast(mIntent); 
+
+			}
+
+			@Override
+			public void onFinish() {
+				// TODO Auto-generated method stub
+				super.onFinish();
+				Log.i("cc...", "finish");
+				// thisdialog.dismiss();
+			}
+
+			@Override
+			public void onFailure(int arg0, Header[] arg1, byte[] arg2,
+					Throwable arg3) {
+				// TODO Auto-generated method stub
+				super.onFailure(arg0, arg1, arg2, arg3);
+				Log.i("cc...cars", "failue.......");
+				HttpHandle hh = new HttpHandle();
+				hh.handleFaile(getActivity(), arg3);
+				if (thisdialog.isShowing()) {
+					// thisdialog.dismiss();
+				}
+			}
+
+		});
+		 
 	}
 
 }

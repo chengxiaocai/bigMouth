@@ -15,7 +15,7 @@ import android.view.View.OnClickListener;
 import android.widget.LinearLayout;
 
 /**
- * @author yangyu ��������������Activity����
+ * @author yangyu 
  */
 public class DialogActivity extends Activity implements OnClickListener {
 	private LinearLayout layout01, layout02, layout03, layout04;
@@ -29,10 +29,10 @@ public class DialogActivity extends Activity implements OnClickListener {
 	}
 
 	/**
-	 * ��ʼ�����
+	 * 
 	 */
 	private void initView() {
-		// �õ���������������ü����¼�
+		// 
 		layout01 = (LinearLayout) findViewById(R.id.llayout01);
 		layout02 = (LinearLayout) findViewById(R.id.llayout02);
 		layout03 = (LinearLayout) findViewById(R.id.llayout03);

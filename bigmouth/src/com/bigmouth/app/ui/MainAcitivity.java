@@ -69,12 +69,11 @@ public class MainAcitivity extends FragmentActivity implements OnClickListener {
 			}
 		});
 
-		if (temFragment == null) {
-			temFragment = new TempFragment();
-
-			transaction.add(R.id.frag_main_tab, temFragment);
+		if (playerFragment == null) {
+			playerFragment = new ClassTimeFragment();
+			transaction.add(R.id.frag_main_tab, playerFragment);
 		} else {
-			transaction.show(temFragment);
+			transaction.show(playerFragment);
 		}
 		transaction.commit();
 	}
@@ -113,22 +112,25 @@ public class MainAcitivity extends FragmentActivity implements OnClickListener {
 
 		case R.id.rb_miantab_player:
 			Log.i("ccc","3333");
-			if (playerFragment == null) {
-				playerFragment = new ClassTimeFragment();
-				transaction.add(R.id.frag_main_tab, playerFragment);
-			} else {
-				transaction.show(playerFragment);
-			}
-			break;
-
-		case R.id.rb_miantab_playing:
-			Log.i("ccc","44444");
 			if (playingFragment == null) {
 				playingFragment = new ClassRecordFragment();
 				transaction.add(R.id.frag_main_tab, playingFragment);
 			} else {
 				transaction.show(playingFragment);
 			}
+			break;
+
+		case R.id.rb_miantab_playing:
+			Log.i("ccc","44444");
+			
+			if (playerFragment == null) {
+				playerFragment = new ClassTimeFragment();
+				transaction.add(R.id.frag_main_tab, playerFragment);
+			} else {
+				transaction.show(playerFragment);
+			}
+			
+			
 			break;
 
 		}

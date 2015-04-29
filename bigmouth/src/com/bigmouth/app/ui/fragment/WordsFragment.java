@@ -18,6 +18,10 @@ import com.loopj.android.http.RequestHandle;
 import com.loopj.android.http.RequestParams;
 
 import android.app.Dialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
@@ -64,6 +68,10 @@ public class WordsFragment extends Fragment {
 	}
 
 	private void initView() {
+		IntentFilter myIntentFilter = new IntentFilter();  
+        myIntentFilter.addAction("com.cc.getword");  
+        //注册广播        
+        getActivity().registerReceiver(mBroadcastReceiver, myIntentFilter);  
 		ahc = new AsyncHttpClient();
 		thisdialog = DialogUtil.getLoadDialog(getActivity(), "请稍后！");
 		inflater = LayoutInflater.from(getActivity());
@@ -321,4 +329,15 @@ public class WordsFragment extends Fragment {
 
 		});
 	}
+	private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver(){
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			String action = intent.getAction();
+			if(action.equals("com.cc.getword")){
+				getWord();
+			}
+		}
+		
+	};
+
 }

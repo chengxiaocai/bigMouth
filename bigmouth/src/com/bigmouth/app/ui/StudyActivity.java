@@ -119,6 +119,7 @@ public class StudyActivity extends FragmentActivity implements OnClickListener {
 			Log.i("ccc", "3333");
 			if (wordsFragment == null) {
 				wordsFragment = new WordsFragment();
+				
 				transaction.add(R.id.frag_main_tab, wordsFragment);
 			} else {
 				transaction.show(wordsFragment);

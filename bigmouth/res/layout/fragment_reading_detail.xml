@@ -19,10 +19,11 @@
             android:src="@drawable/icon_back" />
 
         <ImageView
+            android:id="@+id/iv_readdetial_share"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:src="@drawable/search_clear_normal" />
+            android:src="@drawable/share" />
     </RelativeLayout>
 
     <ImageView
