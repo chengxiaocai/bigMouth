@@ -1,7 +1,12 @@
 package com.bigmouth.app.ui;
 
+import org.apache.http.Header;
+import org.json.JSONObject;
+
 import com.bigmouth.app.R;
+
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -11,6 +16,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bigmouth.app.ui.fragment.PractiseFragment;
 import com.bigmouth.app.ui.fragment.ReadingDetailFragment;
@@ -18,9 +24,18 @@ import com.bigmouth.app.ui.fragment.ReadingFragment;
 import com.bigmouth.app.ui.fragment.SettingFragment;
 import com.bigmouth.app.ui.fragment.TempFragment;
 import com.bigmouth.app.ui.fragment.WordsFragment;
+import com.bigmouth.app.util.HttpHandle;
+import com.bigmouth.app.util.PersistentUtil;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestHandle;
+import com.loopj.android.http.RequestParams;
 
 public class StudyActivity extends FragmentActivity implements OnClickListener {
-
+	private AsyncHttpClient ahc; // 异步处理
+	private RequestHandle reqhandle;
+	private Dialog thisdialog;
+	private JSONObject obj;
 	FragmentTransaction transaction;
 	ReadingFragment readingFramet;
 	PractiseFragment practiseFragment;
@@ -39,10 +54,12 @@ public class StudyActivity extends FragmentActivity implements OnClickListener {
 		setContentView(R.layout.activity_study);
 
 		initView();
+		getNum();
 
 	}
 
 	private void initView() {
+		ahc = new AsyncHttpClient();
 		line = (LinearLayout) findViewById(R.id.rg_study_line);
 		tvPractise = (TextView) findViewById(R.id.rb_miantab_practise);
 		tvReading = (TextView) findViewById(R.id.rb_miantab_reading);
@@ -201,6 +218,53 @@ public class StudyActivity extends FragmentActivity implements OnClickListener {
 
 	public String getText() {
 		return text;
+	}
+	public void getNum(){
+
+		RequestParams rp = new RequestParams();
+		rp.put("UserID",
+				PersistentUtil.getInstance()
+						.readString(this, "id", ""));
+		
+		reqhandle = ahc.post("http://app.01teacher.cn/App/GetUserPoints",
+
+		rp, new AsyncHttpResponseHandler() {
+			@Override
+			public void onStart() {
+				// TODO Auto-generated method stub
+				super.onStart();
+				Log.i("cc...cars", "start...");
+				// thisdialog.show();
+			}
+
+			@Override
+			public void onSuccess(String content) {
+				// TODO Auto-generated method stub
+				super.onSuccess(content);
+				Log.i("cc...cars", "success.......");
+			
+			}
+
+			@Override
+			public void onFinish() {
+				// TODO Auto-generated method stub
+				super.onFinish();
+				Log.i("cc...", "finish");
+				// thisdialog.dismiss();
+			}
+
+			@Override
+			public void onFailure(int arg0, Header[] arg1, byte[] arg2,
+					Throwable arg3) {
+				// TODO Auto-generated method stub
+				super.onFailure(arg0, arg1, arg2, arg3);
+				Log.i("cc...cars", "failue.......");
+				HttpHandle hh = new HttpHandle();
+				//hh.handleFaile(this, arg3);
+				
+			}
+
+		});
 	}
 
 }
