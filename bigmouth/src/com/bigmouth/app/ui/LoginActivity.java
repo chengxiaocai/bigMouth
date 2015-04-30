@@ -29,6 +29,8 @@ public class LoginActivity extends Activity {
 	private RelativeLayout reTtile;
 	private TextView tvIndex;
 	private String returnUrl;
+	private final String FILENAME = "bigmouth";
+	private Boolean isFromCode = false;
 
 	@SuppressLint("SetJavaScriptEnabled")
 	@Override
@@ -37,6 +39,11 @@ public class LoginActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.acitity_login);
 		reTtile = (RelativeLayout) findViewById(R.id.re_login_title);
+		if (PersistentUtil.getInstance().readString(LoginActivity.this, "id",
+				null) != null) {
+
+			reTtile.setVisibility(View.VISIBLE);
+		}
 		tvIndex = (TextView) findViewById(R.id.tv_lging_index);
 
 		getLogin();
@@ -70,32 +77,39 @@ public class LoginActivity extends Activity {
 		mWebView.addJavascriptInterface(myJavaScriptInterface,
 				"AndroidFunction");
 		mWebView.setWebViewClient(new WebViewClient() {
+			
 			public boolean shouldOverrideUrlLoading(WebView view, String url) {
+			    
 				view.loadUrl(url);
 				if (view.getUrl().equals(
-						"http://app.01teacher.cn/Account/LogOn")
-						|| view.getUrl().equals(
-								"http://app.01teacher.cn/Account/LogOff")) {
-
+						"http://app.01teacher.cn/Account/LogOn")) {
 					reTtile.setVisibility(View.GONE);
-				} else if (view.getUrl().equals("http://app.01teacher.cn/")) {
-					if (PersistentUtil.getInstance().readString(
-							LoginActivity.this, "id", null) != null) {
-
-						reTtile.setVisibility(View.VISIBLE);
-					}
-
-				} else if (view.getUrl().equals(returnUrl)) {
-
+					
+				} else if (view.getUrl().equals(
+						"http://app.01teacher.cn/Account/LogOff")) {
+					reTtile.setVisibility(View.GONE);
+					SharedPreferences sp = getSharedPreferences(FILENAME,
+							Context.MODE_PRIVATE);
+					
+					sp.edit().remove("id").commit();
+					sp.edit().remove("type").commit();
 				}
 
-				else {
+				else if (view.getUrl().equals("http://app.01teacher.cn/")) {
+			         reTtile.setVisibility(View.VISIBLE);
 
-					Intent intent = new Intent();
-					intent.setClass(LoginActivity.this, MainAcitivity.class);
-					intent.putExtra("url", url);
-					startActivity(intent);
-					finish();
+
+				} 
+
+				else {
+                  
+                    	
+                    	Intent intent = new Intent();
+                    	intent.setClass(LoginActivity.this, MainAcitivity.class);
+                    	intent.putExtra("url", url);
+                    	startActivity(intent);
+                    	finish();
+                  
 				}
 				Log.d("cc......", view.getUrl());
 
@@ -118,6 +132,7 @@ public class LoginActivity extends Activity {
 					PersistentUtil.getInstance().write(LoginActivity.this,
 							"type", str[2] == null ? "" : str[2].split("=")[1]);
 				}
+				
 			}
 
 		});
@@ -162,9 +177,11 @@ public class LoginActivity extends Activity {
 		if (data == null) {
 			return;
 		}
+		
 		returnUrl = data.getStringExtra("result");
-		mWebView.loadUrl(returnUrl);
-		tvIndex.setVisibility(View.VISIBLE);
+		Intent intent = new Intent(this,CodeAcitivity.class);
+		intent.putExtra("url", returnUrl);
+		startActivity(intent);
 	}
 
 }

@@ -20,6 +20,7 @@ import com.bigmouth.app.ui.fragment.CalenderFragment;
 import com.bigmouth.app.ui.fragment.ClassTimeFragment;
 import com.bigmouth.app.ui.fragment.ClassRecordFragment;
 import com.bigmouth.app.ui.fragment.TempFragment;
+import com.bigmouth.app.util.PersistentUtil;
 
 public class MainAcitivity extends FragmentActivity implements OnClickListener {
 	private TitlePopup titlePopup;
@@ -30,6 +31,8 @@ public class MainAcitivity extends FragmentActivity implements OnClickListener {
 	ClassTimeFragment playerFragment;
 	ClassRecordFragment playingFragment;
 	TempFragment temFragment;
+	private RadioButton rbMain,rbTime,rbRecord,rbCal;
+	private String type;
 	public String getUrl() {
 		return url;
 	}
@@ -44,12 +47,25 @@ public class MainAcitivity extends FragmentActivity implements OnClickListener {
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.activity_main);
+		type = PersistentUtil.getInstance().readString(this, "type","0");
 		 init();
 		initView();
 
 	}
 
 	private void initView() {
+		if("1".equals(type)){
+			
+			rbCal = (RadioButton) findViewById(R.id.rb_miantab_me);
+			rbCal.setText("Calendar");
+			rbMain = (RadioButton) findViewById(R.id.rb_miantab_invite);
+			rbMain.setText("Home");
+			rbRecord = (RadioButton) findViewById(R.id.rb_miantab_player);
+			rbRecord.setText("Message");
+			
+			rbTime = (RadioButton) findViewById(R.id.rb_miantab_playing);
+			rbTime.setText("Student");
+		}
         url = getIntent().getStringExtra("url");
 		transaction = getSupportFragmentManager().beginTransaction();
 		findViewById(R.id.rb_miantab_invite).setOnClickListener(this);

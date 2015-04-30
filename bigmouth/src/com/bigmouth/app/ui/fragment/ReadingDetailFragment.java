@@ -18,6 +18,7 @@ import com.bigmouth.app.bean.Means;
 import com.bigmouth.app.bean.Readings;
 import com.bigmouth.app.ui.StudyActivity;
 import com.bigmouth.app.util.Constant;
+import com.bigmouth.app.util.DialogUtil;
 import com.bigmouth.app.util.HttpHandle;
 import com.bigmouth.app.util.PersistentUtil;
 import com.loopj.android.http.AsyncHttpClient;
@@ -86,6 +87,7 @@ public class ReadingDetailFragment extends Fragment implements OnClickListener,
 			Bundle savedInstanceState) {
 		contentView = inflater.inflate(R.layout.fragment_reading_detail,
 				container, false);
+		thisdialog = thisdialog = DialogUtil.getLoadDialog(getActivity(), "");
 		// initView();
 		// getReading();
 		grid = (GridView) contentView.findViewById(R.id.grid_word);
@@ -297,7 +299,7 @@ public class ReadingDetailFragment extends Fragment implements OnClickListener,
 						// TODO Auto-generated method stub
 						super.onStart();
 						Log.i("cc...cars", "start...");
-						// thisdialog.show();
+						thisdialog.show();
 					}
 
 					@Override
@@ -345,7 +347,7 @@ public class ReadingDetailFragment extends Fragment implements OnClickListener,
 						// TODO Auto-generated method stub
 						super.onFinish();
 						Log.i("cc...", "finish");
-						// thisdialog.dismiss();
+						 thisdialog.dismiss();
 					}
 
 					@Override
