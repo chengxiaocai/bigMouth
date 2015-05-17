@@ -45,16 +45,22 @@ public class MainAcitivity extends FragmentActivity implements OnClickListener {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
-		setContentView(R.layout.activity_main);
+        
 		type = PersistentUtil.getInstance().readString(this, "type","0");
+		if("2".equals(type)){
+			setContentView(R.layout.activity_main_teacther);
+
+		}else{
+			
+			setContentView(R.layout.activity_main);
+		}
 		 init();
 		initView();
 
 	}
 
 	private void initView() {
-		if("1".equals(type)){
+		if("2".equals(type)){
 			
 			rbCal = (RadioButton) findViewById(R.id.rb_miantab_me);
 			rbCal.setText("Calendar");
@@ -64,6 +70,7 @@ public class MainAcitivity extends FragmentActivity implements OnClickListener {
 			rbRecord.setText("Message");
 			
 			rbTime = (RadioButton) findViewById(R.id.rb_miantab_playing);
+			
 			rbTime.setText("Student");
 		}
         url = getIntent().getStringExtra("url");
@@ -85,11 +92,11 @@ public class MainAcitivity extends FragmentActivity implements OnClickListener {
 			}
 		});
 
-		if (playerFragment == null) {
-			playerFragment = new ClassTimeFragment();
-			transaction.add(R.id.frag_main_tab, playerFragment);
+		if (temFragment == null) {
+			temFragment = new TempFragment();
+			transaction.add(R.id.frag_main_tab, temFragment);
 		} else {
-			transaction.show(playerFragment);
+			transaction.show(temFragment);
 		}
 		transaction.commit();
 	}

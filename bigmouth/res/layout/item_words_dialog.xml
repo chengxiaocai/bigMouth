@@ -1,29 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="80dp"
-    android:layout_margin="10dp"
-    android:background="@drawable/bg_word_item_corner" >
+    android:layout_height="90dp"
+    android:background="@drawable/bg_word_item_nocorner" >
 
     <LinearLayout
         android:layout_width="60dp"
-        android:layout_height="match_parent"
-        android:layout_centerVertical="true"
+        android:layout_height="90dp"
+         android:layout_centerVertical="true"
         android:layout_marginLeft="15dp"
         android:gravity="center_vertical"
         android:orientation="vertical" >
 
         <ImageView
+            android:layout_gravity="center_vertical"
             android:id="@+id/iv_words_usa"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/usa" />
 
         <ImageView
+            android:layout_gravity="center_vertical"
             android:id="@+id/iv_words_chinese"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="15dp"
             android:src="@drawable/usa" />
     </LinearLayout>
 
@@ -41,8 +42,8 @@
         android:layout_height="match_parent"
         android:layout_centerVertical="true"
         android:layout_marginLeft="65dp"
-        android:layout_marginRight="25dp"
         android:gravity="center"
+        android:layout_marginRight="45dp"
         android:orientation="vertical" >
 
         <TextView
@@ -56,17 +57,20 @@
             android:id="@+id/tv_words_chinese"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp "
+            android:layout_marginTop="20dp "
             android:src="@drawable/calendar2"
+            
             android:textColor="@color/too_green" />
     </LinearLayout>
 
     <ImageView
+        android:id="@+id/lound"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:layout_marginRight="10dp"
-        android:src="@drawable/icon_ent" />
+        android:paddingRight="20dp"
+        
+        android:src="@drawable/icon_lounding" />
 
 </RelativeLayout>

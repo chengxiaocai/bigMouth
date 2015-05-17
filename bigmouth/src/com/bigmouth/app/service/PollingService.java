@@ -139,7 +139,7 @@ public class PollingService extends Service {
 				// TODO Auto-generated method stub
 
 				super.onSuccess(content);
-				Log.i("cc...cars", "success.......");
+				Log.i("cc...msg", "success.......");
 				// Toast.makeText(getActivity(), "添加成功", 0).show();
 				try {
 					obj = new JSONObject(content);
@@ -147,15 +147,15 @@ public class PollingService extends Service {
 						JSONObject objData = obj.optJSONObject("data");
 						String title = objData.optString("title");
 						String con = objData.getString("content");
-						if (con.equals(PersistentUtil.getInstance()
-								.readString(PollingService.this, "content",
-										"  "))) {
+					    Log.i("cc....con",con);
+						if (con.equals(PersistentUtil.getInstance().readString(PollingService.this, "content","  "))) {
 							return;
 						}
 						PersistentUtil.getInstance().write(PollingService.this,
 								"content", con);
 						if (!TextUtils.isEmpty(title)
 								&& !TextUtils.isEmpty(con)) {
+							
 						}
 						showNotification(title, con);
 					}
@@ -210,7 +210,7 @@ public class PollingService extends Service {
 				// TODO Auto-generated method stub
 
 				super.onSuccess(content);
-				Log.i("cc...cars", "success.......");
+				Log.i("cc...num", "success.......");
 				// Toast.makeText(getActivity(), "添加成功", 0).show();
 				try {
 					obj = new JSONObject(content);

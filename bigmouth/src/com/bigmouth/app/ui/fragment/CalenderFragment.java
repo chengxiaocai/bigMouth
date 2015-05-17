@@ -3,6 +3,7 @@ package com.bigmouth.app.ui.fragment;
 
 
 import com.bigmouth.app.R;
+import com.bigmouth.app.util.PersistentUtil;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -16,11 +17,14 @@ import android.webkit.WebViewClient;
 public class CalenderFragment extends Fragment {
 
 	private WebView mWebView;
+	private String type;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View contentView=inflater.inflate(R.layout.fragment_player,container, false);
+		type = PersistentUtil.getInstance().readString(getActivity(), "type","0");
+
 		mWebView = (WebView) contentView.findViewById(R.id.playing_web);
 		WebSettings webSettings = mWebView.getSettings();
 		webSettings.setJavaScriptEnabled(true);
@@ -30,7 +34,13 @@ public class CalenderFragment extends Fragment {
 				return true;
 			}
 		});
-		mWebView.loadUrl("http://app.01teacher.cn/Schedule/MyCourseDate");
+		if("2".equals(type)){
+			mWebView.loadUrl("http://app.01teacher.cn/Schedule/TMyCourseDate");
+
+		}else{
+			mWebView.loadUrl("http://app.01teacher.cn/Schedule/MyCourseDate");
+			
+		}
 
 		return contentView;
 	}

@@ -7,6 +7,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.baidu.speechsynthesizer.SpeechSynthesizer;
+import com.baidu.speechsynthesizer.SpeechSynthesizerListener;
+import com.baidu.speechsynthesizer.publicutility.SpeechError;
 import com.bigmouth.app.R;
 import com.bigmouth.app.bean.Words;
 import com.bigmouth.app.util.DialogUtil;
@@ -22,6 +25,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.media.AudioManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
@@ -32,6 +36,8 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.View.OnClickListener;
 import android.webkit.WebView;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -42,7 +48,8 @@ import android.widget.Toast;
  * @author tusm
  *
  */
-public class WordsFragment extends Fragment {
+public class WordsFragment extends Fragment implements OnClickListener,
+		SpeechSynthesizerListener {
 
 	private WebView mWebView;
 	private ListView lvWords;
@@ -56,6 +63,7 @@ public class WordsFragment extends Fragment {
 	private ArrayList<Words> listWord = new ArrayList<Words>(); // 存放获取的单词
 	private WordsAdapter adapter;
 	private TextView tvWordNum; // 显示返回的单词数目
+	private SpeechSynthesizer speechSynthesizer;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -68,16 +76,68 @@ public class WordsFragment extends Fragment {
 	}
 
 	private void initView() {
-		IntentFilter myIntentFilter = new IntentFilter();  
-        myIntentFilter.addAction("com.cc.getword");  
-        //注册广播        
-        getActivity().registerReceiver(mBroadcastReceiver, myIntentFilter);  
+		speechSynthesizer = new SpeechSynthesizer(getActivity()
+				.getApplicationContext(), "holder", this);
+		// 此处需要将setApiKey方法的两个参数替换为你在百度开发者中心注册应用所得到的apiKey和secretKey
+		speechSynthesizer.setApiKey("OsxkbrvCtRuxA6ptGMbAIQTF",
+				"1UrKFZwaxAllo5uP9007QduXhkwyvvmG");
+		speechSynthesizer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+		getActivity().setVolumeControlStream(AudioManager.STREAM_MUSIC);
+
+		IntentFilter myIntentFilter = new IntentFilter();
+		myIntentFilter.addAction("com.cc.getword");
+		// 注册广播
+		getActivity().registerReceiver(mBroadcastReceiver, myIntentFilter);
 		ahc = new AsyncHttpClient();
 		thisdialog = DialogUtil.getLoadDialog(getActivity(), "请稍后！");
 		inflater = LayoutInflater.from(getActivity());
 		tvWordNum = (TextView) contentView
 				.findViewById(R.id.tv_words_show_word_num);
 		lvWords = (ListView) contentView.findViewById(R.id.lv_words_list);
+		lvWords.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					final int position, long id) {
+				// TODO Auto-generated method stub
+				final Dialog dialog = new Dialog(getActivity());
+				final TextView etWord;
+				final TextView etChinese;
+				dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+				dialog.setContentView(R.layout.item_words_dialog);
+				dialog.setTitle(null);
+				dialog.show();
+				TextView tvChinse = (TextView) dialog
+						.findViewById(R.id.tv_words_chinese);
+				tvChinse.setText(listWord.get(position).getChinese());
+
+				TextView tvUsa = (TextView) dialog
+						.findViewById(R.id.tv_words_usa);
+				tvUsa.setText(listWord.get(position).getWord());
+				dialog.findViewById(R.id.lound).setOnClickListener(
+						new OnClickListener() {
+
+							@Override
+							public void onClick(View v) {
+								// TODO Auto-generated method stub
+								new Thread(new Runnable() {
+
+									@Override
+									public void run() {
+										setParams();
+										int ret = speechSynthesizer
+												.speak(listWord.get(position)
+														.getWord());
+										if (ret != 0) {
+											Log.i("cc......", "hecheng faile!!");
+										}
+									}
+								}).start();
+							}
+						});
+
+			}
+		});
 		adapter = new WordsAdapter(listWord);
 		lvWords.setAdapter(adapter);
 		contentView.findViewById(R.id.tv_words_addword).setOnClickListener(
@@ -174,7 +234,7 @@ public class WordsFragment extends Fragment {
 			TextView tvChinse = (TextView) convertView
 					.findViewById(R.id.tv_words_chinese);
 			tvChinse.setText(listWord.get(position).getChinese());
-			
+
 			TextView tvUsa = (TextView) convertView
 					.findViewById(R.id.tv_words_usa);
 			tvUsa.setText(listWord.get(position).getWord());
@@ -217,12 +277,12 @@ public class WordsFragment extends Fragment {
 				super.onSuccess(content);
 				Log.i("cc...cars", "success.......");
 				Toast.makeText(getActivity(), "添加成功", 0).show();
-				/*Words words = new Words();
-				words.setChinese(chinese);
-				words.setWord(word);
-				listWord.add(words);
-				
-				adapter.notifyDataSetChanged();*/
+				/*
+				 * Words words = new Words(); words.setChinese(chinese);
+				 * words.setWord(word); listWord.add(words);
+				 * 
+				 * adapter.notifyDataSetChanged();
+				 */
 				getWord();
 
 			}
@@ -296,7 +356,7 @@ public class WordsFragment extends Fragment {
 
 						listWord.add(word);
 					}
-					
+
 					adapter.notifyDataSetChanged();
 
 				} catch (JSONException e) {
@@ -329,15 +389,102 @@ public class WordsFragment extends Fragment {
 
 		});
 	}
-	private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver(){
+
+	private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			String action = intent.getAction();
-			if(action.equals("com.cc.getword")){
+			if (action.equals("com.cc.getword")) {
 				getWord();
 			}
 		}
-		
+
 	};
+
+	private void setParams() {
+		speechSynthesizer.setParam(SpeechSynthesizer.PARAM_SPEAKER, "0");
+		speechSynthesizer.setParam(SpeechSynthesizer.PARAM_VOLUME, "5");
+		speechSynthesizer.setParam(SpeechSynthesizer.PARAM_SPEED, "5");
+		speechSynthesizer.setParam(SpeechSynthesizer.PARAM_PITCH, "5");
+		speechSynthesizer.setParam(SpeechSynthesizer.PARAM_AUDIO_ENCODE,
+				SpeechSynthesizer.AUDIO_ENCODE_AMR);
+		speechSynthesizer.setParam(SpeechSynthesizer.PARAM_AUDIO_RATE,
+				SpeechSynthesizer.AUDIO_BITRATE_AMR_15K85);
+		// speechSynthesizer.setParam(SpeechSynthesizer.PARAM_LANGUAGE,
+		// SpeechSynthesizer.LANGUAGE_ZH);
+		// speechSynthesizer.setParam(SpeechSynthesizer.PARAM_NUM_PRON, "0");
+		// speechSynthesizer.setParam(SpeechSynthesizer.PARAM_ENG_PRON, "0");
+		// speechSynthesizer.setParam(SpeechSynthesizer.PARAM_PUNC, "0");
+		// speechSynthesizer.setParam(SpeechSynthesizer.PARAM_BACKGROUND, "0");
+		// speechSynthesizer.setParam(SpeechSynthesizer.PARAM_STYLE, "0");
+		// speechSynthesizer.setParam(SpeechSynthesizer.PARAM_TERRITORY, "0");
+	}
+
+	@Override
+	public void onBufferProgressChanged(SpeechSynthesizer arg0, int arg1) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void onCancel(SpeechSynthesizer arg0) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void onError(SpeechSynthesizer arg0, SpeechError arg1) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void onNewDataArrive(SpeechSynthesizer arg0, byte[] arg1,
+			boolean arg2) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void onSpeechFinish(SpeechSynthesizer arg0) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void onSpeechPause(SpeechSynthesizer arg0) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void onSpeechProgressChanged(SpeechSynthesizer arg0, int arg1) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void onSpeechResume(SpeechSynthesizer arg0) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void onSpeechStart(SpeechSynthesizer arg0) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void onStartWorking(SpeechSynthesizer arg0) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void onClick(View v) {
+		// TODO Auto-generated method stub
+
+	}
 
 }
