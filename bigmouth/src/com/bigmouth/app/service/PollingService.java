@@ -10,6 +10,9 @@ import org.json.JSONObject;
 import com.bigmouth.app.R;
 import com.bigmouth.app.bean.Readings;
 import com.bigmouth.app.ui.MainAcitivity;
+import com.bigmouth.app.ui.ShowMsgActivity;
+import com.bigmouth.app.ui.SplashActivity;
+import com.bigmouth.app.util.AppShortCutUtil;
 import com.bigmouth.app.util.HttpHandle;
 import com.bigmouth.app.util.PersistentUtil;
 import com.loopj.android.http.AsyncHttpClient;
@@ -27,6 +30,7 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
+import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -53,8 +57,9 @@ public class PollingService extends Service {
 
 	@Override
 	public void onStart(Intent intent, int startId) {
-		 getReading();
-		//new PollingThread().start();
+		getUnReadMsg();
+		getUnMsgNum();
+		// new PollingThread().start();
 	}
 
 	// 初始化通知栏配置
@@ -71,17 +76,17 @@ public class PollingService extends Service {
 	}
 
 	// 弹出Notification
-	private void showNotification(String title ,String content) {
+	private void showNotification(String title, String content) {
 		mNotification.when = System.currentTimeMillis();
 		// Navigator to the new activity when click the notification title
-		Intent i = new Intent(this, MainAcitivity.class);
+		Intent i = new Intent(this, ShowMsgActivity.class);
 		i.putExtra("title", title);
 		i.putExtra("content", content);
 		PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, i,
 				PendingIntent.FLAG_UPDATE_CURRENT);
 		mNotification.setLatestEventInfo(this,
-				getResources().getString(R.string.app_name),
-				title, pendingIntent);
+				getResources().getString(R.string.app_name), title,
+				pendingIntent);
 		mManager.notify(new Random().nextInt(), mNotification);
 	}
 
@@ -97,10 +102,10 @@ public class PollingService extends Service {
 		@Override
 		public void run() {
 			System.out.println("Polling...");
-			
+
 			// 当计数能被5整除时弹出通知
-		//	getReading()
-			
+			// getReading()
+
 			// AcquireWakeLock();
 			System.out.println("New message!");
 
@@ -113,12 +118,11 @@ public class PollingService extends Service {
 		System.out.println("Service:onDestroy");
 	}
 
-	public void getReading() {
+	public void getUnReadMsg() {
 
 		RequestParams rp = new RequestParams();
-		rp.put("UserID",
-				PersistentUtil.getInstance()
-						.readString(this, "id", ""));
+		rp.put("UserID", PersistentUtil.getInstance()
+				.readString(this, "id", ""));
 		reqhandle = ahc.post("http://app.01teacher.cn/App/GetUserMsg",
 
 		rp, new AsyncHttpResponseHandler() {
@@ -138,16 +142,18 @@ public class PollingService extends Service {
 				// Toast.makeText(getActivity(), "添加成功", 0).show();
 				try {
 					obj = new JSONObject(content);
-					if(obj.optBoolean("success")){
-						//String title = obj.optString("title");
-					//	String con = obj.getString("content");
-						showNotification("第一次扫描，学员开始上课","外教名称：Anastasia Zueva<br />手机号码：13122637353<br />学员中英文名：黄艺琳<br />手机号码：13818631889<br />上课日期：2015-04-06<br />开始上课时间：16:28");
+					if (obj.optBoolean("success")) {
+						JSONObject objData = obj.optJSONObject("data");
+						String title = objData.optString("title");
+						String con = objData.getString("content");
+						if (!TextUtils.isEmpty(title)
+								&& !TextUtils.isEmpty(con)) {
+						}
+						showNotification(title, con);
 					}
 
-					
-
 				} catch (JSONException e) {
-					
+
 					e.printStackTrace();
 				}
 
@@ -169,10 +175,73 @@ public class PollingService extends Service {
 				Log.i("cc...cars", "failue.......");
 				HttpHandle hh = new HttpHandle();
 				hh.handleFaile(PollingService.this, arg3);
-				
+
 			}
 
 		});
 	}
 
+	public void getUnMsgNum() {
+
+		RequestParams rp = new RequestParams();
+		rp.put("UserID", PersistentUtil.getInstance()
+				.readString(this, "id", ""));
+		reqhandle = ahc.post("http://app.01teacher.cn/App/GetUserMsgNum",
+
+		rp, new AsyncHttpResponseHandler() {
+			@Override
+			public void onStart() {
+				// TODO Auto-generated method stub
+				super.onStart();
+				Log.i("cc...getMsg", "start...");
+				// thisdialog.show();
+			}
+
+			@Override
+			public void onSuccess(String content) {
+				// TODO Auto-generated method stub
+				super.onSuccess(content);
+				Log.i("cc...cars", "success.......");
+				// Toast.makeText(getActivity(), "添加成功", 0).show();
+				try {
+					obj = new JSONObject(content);
+					if (obj.optBoolean("success")) {
+						String num = obj.optString("number");
+						if (!num.equals(PersistentUtil.getInstance().readString(PollingService.this,"num", "  "))) {
+
+							AppShortCutUtil.addNumShortCut(PollingService.this,
+									SplashActivity.class, true, num, false);
+							PersistentUtil.getInstance().write(PollingService.this,"num", num);
+						}
+
+					}
+
+				} catch (JSONException e) {
+
+					e.printStackTrace();
+				}
+
+			}
+
+			@Override
+			public void onFinish() {
+				// TODO Auto-generated method stub
+				super.onFinish();
+				Log.i("cc...", "finish");
+				// thisdialog.dismiss();
+			}
+
+			@Override
+			public void onFailure(int arg0, Header[] arg1, byte[] arg2,
+					Throwable arg3) {
+				// TODO Auto-generated method stub
+				super.onFailure(arg0, arg1, arg2, arg3);
+				Log.i("cc...cars", "failue.......");
+				HttpHandle hh = new HttpHandle();
+				hh.handleFaile(PollingService.this, arg3);
+
+			}
+
+		});
+	}
 }
