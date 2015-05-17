@@ -32,6 +32,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.media.AudioManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
@@ -55,6 +56,7 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -81,12 +83,16 @@ public class ReadingDetailFragment extends Fragment implements OnClickListener,
 	private TextView tvWordType, tvWordeFirst;
 	private LinearLayout llTranslaitonMore;
 	private GridView grid;
+	private ScrollView scroll;
+	private Handler handle;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		contentView = inflater.inflate(R.layout.fragment_reading_detail,
 				container, false);
+		handle = new Handler();
+		scroll = (ScrollView) contentView.findViewById(R.id.scroll_readdetail);
 		thisdialog = thisdialog = DialogUtil.getLoadDialog(getActivity(), "");
 		// initView();
 		// getReading();
@@ -240,7 +246,6 @@ public class ReadingDetailFragment extends Fragment implements OnClickListener,
 	}
 
 	public void Study() {
-
 		if (line.getVisibility() == View.VISIBLE) {
 			// AlphaAnimation animation = new
 			// AlphaAnimation(1.0F, 0F);
@@ -264,6 +269,13 @@ public class ReadingDetailFragment extends Fragment implements OnClickListener,
 			// line.setAnimation(animation);
 
 			line.setVisibility(View.VISIBLE);
+			handle.post(new Runnable() {
+			    @Override
+			    public void run() {
+			        scroll.fullScroll(ScrollView.FOCUS_DOWN);
+			    }
+			});
+
 		}
 
 		// if (tv.VISIBLE==View.INVISIBLE) {
@@ -480,8 +492,8 @@ public class ReadingDetailFragment extends Fragment implements OnClickListener,
 			for (int j = 0; j < mean.getList().size(); j++) {
 				finaleWord = mean.getList().get(j);
 				if (finaleWord.length() < 10) {
-					tvSrcWord.setText(finaleWord);
-					tvWordeFirst.setText(finaleWord);
+					tvSrcWord.setText(finaleWord.trim());
+					tvWordeFirst.setText(finaleWord.trim());
 					isHave = true;
 					type = mean.getPart();
 					if ("n.".equals(type))

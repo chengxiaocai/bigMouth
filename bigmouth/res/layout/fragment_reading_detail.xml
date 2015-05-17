@@ -38,6 +38,7 @@
         android:background="@color/yellow" />
 
     <ScrollView
+        android:id="@+id/scroll_readdetail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
