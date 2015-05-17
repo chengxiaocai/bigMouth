@@ -137,6 +137,7 @@ public class PollingService extends Service {
 			@Override
 			public void onSuccess(String content) {
 				// TODO Auto-generated method stub
+
 				super.onSuccess(content);
 				Log.i("cc...cars", "success.......");
 				// Toast.makeText(getActivity(), "添加成功", 0).show();
@@ -146,6 +147,13 @@ public class PollingService extends Service {
 						JSONObject objData = obj.optJSONObject("data");
 						String title = objData.optString("title");
 						String con = objData.getString("content");
+						if (con.equals(PersistentUtil.getInstance()
+								.readString(PollingService.this, "content",
+										"  "))) {
+							return;
+						}
+						PersistentUtil.getInstance().write(PollingService.this,
+								"content", con);
 						if (!TextUtils.isEmpty(title)
 								&& !TextUtils.isEmpty(con)) {
 						}
@@ -200,6 +208,7 @@ public class PollingService extends Service {
 			@Override
 			public void onSuccess(String content) {
 				// TODO Auto-generated method stub
+
 				super.onSuccess(content);
 				Log.i("cc...cars", "success.......");
 				// Toast.makeText(getActivity(), "添加成功", 0).show();
@@ -207,11 +216,13 @@ public class PollingService extends Service {
 					obj = new JSONObject(content);
 					if (obj.optBoolean("success")) {
 						String num = obj.optString("number");
-						if (!num.equals(PersistentUtil.getInstance().readString(PollingService.this,"num", "  "))) {
+						if (!num.equals(PersistentUtil.getInstance()
+								.readString(PollingService.this, "num", "  "))) {
 
 							AppShortCutUtil.addNumShortCut(PollingService.this,
 									SplashActivity.class, true, num, false);
-							PersistentUtil.getInstance().write(PollingService.this,"num", num);
+							PersistentUtil.getInstance().write(
+									PollingService.this, "num", num);
 						}
 
 					}
