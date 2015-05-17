@@ -28,7 +28,7 @@
     <application
         android:name="com.bigmouth.app.ui.BigMouthApplication"
         android:allowBackup="true"
-        android:icon="@drawable/splash"
+        android:icon="@drawable/log"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
@@ -76,6 +76,10 @@
             android:theme="@android:style/Theme.NoTitleBar" >
         </activity>
         <activity
+            android:name="com.bigmouth.app.ui.ShowMsgActivity"
+            android:theme="@android:style/Theme.NoTitleBar" >
+        </activity>
+        <activity
             android:name="com.bigmouth.app.ui.StudyActivity"
             android:theme="@android:style/Theme.NoTitleBar" >
         </activity>
@@ -100,6 +104,12 @@
             android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
+        <service android:name="com.bigmouth.app.service.PollingService" >
+            <intent-filter>
+                <action android:name="com.ryantang.service.PollingService" />
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>

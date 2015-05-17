@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">bigmouth</string>
+    <string name="app_name">大嘴外教</string>
     <string name="hello_world">Hello world!</string>
     <string name="scan_toast">请将二维码放入框中</string>
     <string name="flight_open">打开闪光灯</string>
