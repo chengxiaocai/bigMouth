@@ -30,6 +30,7 @@ public class LoginActivity extends Activity {
 	private TextView tvIndex;
 	private String returnUrl;
 	private final String FILENAME = "bigmouth";
+	private String type;
 	private Boolean isFromCode = false;
 
 	@SuppressLint("SetJavaScriptEnabled")
@@ -41,8 +42,20 @@ public class LoginActivity extends Activity {
 		reTtile = (RelativeLayout) findViewById(R.id.re_login_title);
 		if (PersistentUtil.getInstance().readString(LoginActivity.this, "id",
 				null) != null) {
-
+			type = PersistentUtil.getInstance().readString(this, "type", "0");
 			reTtile.setVisibility(View.VISIBLE);
+//			if ("2".equals(type)) {
+//				findViewById(R.id.iv_login_read).setVisibility(
+//						View.GONE);
+//				findViewById(R.id.iv_login_scan).setVisibility(
+//						View.VISIBLE);
+//			} if("1".equals(type)){
+//				findViewById(R.id.iv_login_scan).setVisibility(
+//						View.GONE);
+//				findViewById(R.id.iv_login_read).setVisibility(
+//						View.VISIBLE);
+//
+//			}
 		}
 		tvIndex = (TextView) findViewById(R.id.tv_lging_index);
 
@@ -68,6 +81,19 @@ public class LoginActivity extends Activity {
 						startActivityForResult(intent, 1);
 					}
 				});
+		findViewById(R.id.iv_login_read).setOnClickListener(
+				new OnClickListener() {
+					
+					@Override
+					public void onClick(View v) {
+						// TODO Auto-generated method stub
+						Intent intent3 = new Intent(LoginActivity.this,
+								StudyActivity.class);
+						
+						startActivity(intent3);
+						finish();
+					}
+				});
 		mWebView = (WebView) findViewById(R.id.login);
 		WebSettings webSettings = mWebView.getSettings();
 		webSettings.setJavaScriptEnabled(true);
@@ -77,39 +103,40 @@ public class LoginActivity extends Activity {
 		mWebView.addJavascriptInterface(myJavaScriptInterface,
 				"AndroidFunction");
 		mWebView.setWebViewClient(new WebViewClient() {
-			
+
 			public boolean shouldOverrideUrlLoading(WebView view, String url) {
-			    
+
 				view.loadUrl(url);
 				if (view.getUrl().equals(
 						"http://app.01teacher.cn/Account/LogOn")) {
 					reTtile.setVisibility(View.GONE);
-					
+
 				} else if (view.getUrl().equals(
 						"http://app.01teacher.cn/Account/LogOff")) {
 					reTtile.setVisibility(View.GONE);
 					SharedPreferences sp = getSharedPreferences(FILENAME,
 							Context.MODE_PRIVATE);
-					
+
 					sp.edit().remove("id").commit();
 					sp.edit().remove("type").commit();
 				}
 
 				else if (view.getUrl().equals("http://app.01teacher.cn/")) {
-			         reTtile.setVisibility(View.VISIBLE);
+					reTtile.setVisibility(View.VISIBLE);
+					type = PersistentUtil.getInstance().readString(LoginActivity.this,
+							"type", "0");
 
 
-				} 
+				}
 
 				else {
-                  
-                    	
-                    	Intent intent = new Intent();
-                    	intent.setClass(LoginActivity.this, MainAcitivity.class);
-                    	intent.putExtra("url", url);
-                    	startActivity(intent);
-                    	finish();
-                  
+
+					Intent intent = new Intent();
+					intent.setClass(LoginActivity.this, MainAcitivity.class);
+					intent.putExtra("url", url);
+					startActivity(intent);
+					finish();
+
 				}
 				Log.d("cc......", view.getUrl());
 
@@ -131,8 +158,25 @@ public class LoginActivity extends Activity {
 							"id", str[1] == null ? "" : str[1].split("=")[1]);
 					PersistentUtil.getInstance().write(LoginActivity.this,
 							"type", str[2] == null ? "" : str[2].split("=")[1]);
+					type = PersistentUtil.getInstance().readString(LoginActivity.this,
+							"type", "0");
+
+					if ("2".equals(type)) {
+						findViewById(R.id.iv_login_read).setVisibility(
+								View.GONE);
+						findViewById(R.id.iv_login_scan).setVisibility(
+								View.VISIBLE);
+						
+					} if("1".equals(type)){
+						findViewById(R.id.iv_login_scan).setVisibility(
+								View.GONE);
+						findViewById(R.id.iv_login_read).setVisibility(
+								View.VISIBLE);
+						
+
+					}
 				}
-				
+
 			}
 
 		});
@@ -177,9 +221,9 @@ public class LoginActivity extends Activity {
 		if (data == null) {
 			return;
 		}
-		
+
 		returnUrl = data.getStringExtra("result");
-		Intent intent = new Intent(this,CodeAcitivity.class);
+		Intent intent = new Intent(this, CodeAcitivity.class);
 		intent.putExtra("url", returnUrl);
 		startActivity(intent);
 	}
