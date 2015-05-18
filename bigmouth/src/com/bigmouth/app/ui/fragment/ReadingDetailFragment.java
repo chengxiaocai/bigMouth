@@ -29,6 +29,7 @@ import com.loopj.android.http.RequestParams;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
+import android.gesture.Prediction;
 import android.graphics.Color;
 import android.media.AudioManager;
 import android.os.Bundle;
@@ -74,7 +75,7 @@ public class ReadingDetailFragment extends Fragment implements OnClickListener,
 	private ArrayList<String> allWords = new ArrayList<String>();
 	private TextView tvText;
 	private StudyActivity ac;
-   private String strTransWords;
+	private String strTransWords;
 	private TextView tvSrcWord, tvResultWrod;
 	private LinearLayout line;
 	private ImageView btnLound;
@@ -85,6 +86,7 @@ public class ReadingDetailFragment extends Fragment implements OnClickListener,
 	private GridView grid;
 	private ScrollView scroll;
 	private Handler handle;
+	private String prWord = "cc"; // 记录是不是点击的上个单词
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -131,34 +133,34 @@ public class ReadingDetailFragment extends Fragment implements OnClickListener,
 						ac.changeReadingPage(null);
 					}
 				});
-		contentView.findViewById(R.id.iv_readdetial_share).setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				ShareSDK.initSDK(getActivity());
-				OnekeyShare oks = new OnekeyShare();
-				// 关闭sso授权
-				oks.disableSSOWhenAuthorize();
+		contentView.findViewById(R.id.iv_readdetial_share).setOnClickListener(
+				new OnClickListener() {
 
-				// 分享时Notification的图标和文字 2.5.9以后的版本不调用此方法
-				// oks.setNotification(R.drawable.ic_launcher,
-				// getString(R.string.app_name));
-				// title标题，印象笔记、邮箱、信息、微信、人人网和QQ空间使用
-				
-				// titleUrl是标题的网络链接，仅在人人网和QQ空间使用
-				
-				// text是分享文本，所有平台都需要这个字段
-				oks.setText(ac.getText().toString());
-				// imagePath是图片的本地路径，Linked-In以外的平台都支持此参数
-			
-				// url仅在微信（包括好友和朋友圈）中使用
-			
-              
-				// 启动分享GUI
-				oks.show(getActivity());
-			}
-		});
+					@Override
+					public void onClick(View v) {
+						// TODO Auto-generated method stub
+						ShareSDK.initSDK(getActivity());
+						OnekeyShare oks = new OnekeyShare();
+						// 关闭sso授权
+						oks.disableSSOWhenAuthorize();
+
+						// 分享时Notification的图标和文字 2.5.9以后的版本不调用此方法
+						// oks.setNotification(R.drawable.ic_launcher,
+						// getString(R.string.app_name));
+						// title标题，印象笔记、邮箱、信息、微信、人人网和QQ空间使用
+
+						// titleUrl是标题的网络链接，仅在人人网和QQ空间使用
+
+						// text是分享文本，所有平台都需要这个字段
+						oks.setText(ac.getText().toString());
+						// imagePath是图片的本地路径，Linked-In以外的平台都支持此参数
+
+						// url仅在微信（包括好友和朋友圈）中使用
+
+						// 启动分享GUI
+						oks.show(getActivity());
+					}
+				});
 		return contentView;
 	}
 
@@ -216,13 +218,20 @@ public class ReadingDetailFragment extends Fragment implements OnClickListener,
 					getEachWord(tvText);
 
 					Log.d("tapped on:", strTransWords);
-					Load(strTransWords);
+					if (strTransWords.equals(prWord)) {
+						return;
+					} else {
+						line.setVisibility(View.GONE);
+
+						Load(strTransWords);
+						prWord = strTransWords;
+					}
 					// Toast.makeText(getActivity(), s, 0).show();
 
 				} catch (Exception e) {
 					// TODO: handle exception
 					Log.i("cc", "hahahfhahdfiaofhioehfieo");
-					Toast.makeText(getActivity(), "haha", 0).show();
+
 				}
 
 			}
@@ -246,37 +255,36 @@ public class ReadingDetailFragment extends Fragment implements OnClickListener,
 	}
 
 	public void Study() {
-		if (line.getVisibility() == View.VISIBLE) {
-			// AlphaAnimation animation = new
-			// AlphaAnimation(1.0F, 0F);
-			// TranslateAnimation animation = new TranslateAnimation(0, 0, 0,
-			// -400);
-			// animation.setDuration(100);
-			// animation.start();
-			// line.setAnimation(animation);
-			line.setVisibility(View.GONE);
+		// if (line.getVisibility() == View.VISIBLE) {
+		// AlphaAnimation animation = new
+		// AlphaAnimation(1.0F, 0F);
+		// TranslateAnimation animation = new TranslateAnimation(0, 0, 0,
+		// -400);
+		// animation.setDuration(100);
+		// animation.start();
+		// line.setAnimation(animation);
 
-		} else {
-			/*
-			 * TranslateAnimation tra= new TranslateAnimation(0, 0, 0.0F, 1.0F);
-			 * tra.setDuration(5000); //tra.start(); tv.setAnimation(tra);
-			 * tv.startAnimation(tra);
-			 */
-			// TranslateAnimation animation = new TranslateAnimation(0, 0, -400,
-			// 0);
-			// animation.setDuration(100);
-			// animation.start();
-			// line.setAnimation(animation);
+		// } else {
+		/*
+		 * TranslateAnimation tra= new TranslateAnimation(0, 0, 0.0F, 1.0F);
+		 * tra.setDuration(5000); //tra.start(); tv.setAnimation(tra);
+		 * tv.startAnimation(tra);
+		 */
+		// TranslateAnimation animation = new TranslateAnimation(0, 0, -400,
+		// 0);
+		// animation.setDuration(100);
+		// animation.start();
+		// line.setAnimation(animation);
 
-			line.setVisibility(View.VISIBLE);
-			handle.post(new Runnable() {
-			    @Override
-			    public void run() {
-			        scroll.fullScroll(ScrollView.FOCUS_DOWN);
-			    }
-			});
+		line.setVisibility(View.VISIBLE);
+		handle.post(new Runnable() {
+			@Override
+			public void run() {
+				scroll.fullScroll(ScrollView.FOCUS_DOWN);
+			}
+		});
 
-		}
+		// }
 
 		// if (tv.VISIBLE==View.INVISIBLE) {
 		// tv.setVisibility(View.VISIBLE);
@@ -359,7 +367,7 @@ public class ReadingDetailFragment extends Fragment implements OnClickListener,
 						// TODO Auto-generated method stub
 						super.onFinish();
 						Log.i("cc...", "finish");
-						 thisdialog.dismiss();
+						thisdialog.dismiss();
 					}
 
 					@Override
@@ -475,7 +483,7 @@ public class ReadingDetailFragment extends Fragment implements OnClickListener,
 	}
 
 	public void UpdateUi() {
-		
+
 		String type;
 		Boolean isHave = false;
 		Boolean isMore = false;
@@ -527,7 +535,7 @@ public class ReadingDetailFragment extends Fragment implements OnClickListener,
 				// llTranslaitonMore.addView(tvView);
 
 			}
-           upLoadWord(finaleWord, strTransWords);
+			upLoadWord(finaleWord, strTransWords);
 			Study();
 
 		}
@@ -540,7 +548,7 @@ public class ReadingDetailFragment extends Fragment implements OnClickListener,
 			for (int q = 0; q < mean1.getList().size(); q++) {
 
 				String word = mean1.getList().get(q);
-				if (allWords.size()>5) {
+				if (allWords.size() > 5) {
 
 					isMore = true;
 					break;
@@ -591,8 +599,9 @@ public class ReadingDetailFragment extends Fragment implements OnClickListener,
 		}
 
 	}
-	public void upLoadWord(String chinese,String usa){
-		if(chinese==null||usa==null){
+
+	public void upLoadWord(String chinese, String usa) {
+		if (chinese == null || usa == null) {
 			return;
 		}
 		RequestParams rp = new RequestParams();
@@ -619,11 +628,10 @@ public class ReadingDetailFragment extends Fragment implements OnClickListener,
 				super.onSuccess(content);
 				Log.i("cc...cars", "success.......");
 				Toast.makeText(getActivity(), "添加成功", 0).show();
-				Intent mIntent = new Intent("com.cc.getword");  
-                
-                  
-                //发送广播  
-                getActivity().sendBroadcast(mIntent); 
+				Intent mIntent = new Intent("com.cc.getword");
+
+				// 发送广播
+				getActivity().sendBroadcast(mIntent);
 
 			}
 
@@ -649,7 +657,7 @@ public class ReadingDetailFragment extends Fragment implements OnClickListener,
 			}
 
 		});
-		 
+
 	}
 
 }

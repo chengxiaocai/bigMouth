@@ -31,8 +31,9 @@ public class MainAcitivity extends FragmentActivity implements OnClickListener {
 	ClassTimeFragment playerFragment;
 	ClassRecordFragment playingFragment;
 	TempFragment temFragment;
-	private RadioButton rbMain,rbTime,rbRecord,rbCal;
+	private RadioButton rbMain, rbTime, rbRecord, rbCal;
 	private String type;
+
 	public String getUrl() {
 		return url;
 	}
@@ -40,40 +41,41 @@ public class MainAcitivity extends FragmentActivity implements OnClickListener {
 	public void setUrl(String url) {
 		this.url = url;
 	}
+
 	public String url;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-        
-		type = PersistentUtil.getInstance().readString(this, "type","0");
-		if("2".equals(type)){
+
+		type = PersistentUtil.getInstance().readString(this, "type", "0");
+		if ("2".equals(type)) {
 			setContentView(R.layout.activity_main_teacther);
 
-		}else{
-			
+		} else {
+
 			setContentView(R.layout.activity_main);
 		}
-		 init();
+		init();
 		initView();
 
 	}
 
 	private void initView() {
-		if("2".equals(type)){
-			
+		if ("2".equals(type)) {
+
 			rbCal = (RadioButton) findViewById(R.id.rb_miantab_me);
 			rbCal.setText("Calendar");
 			rbMain = (RadioButton) findViewById(R.id.rb_miantab_invite);
 			rbMain.setText("Home");
 			rbRecord = (RadioButton) findViewById(R.id.rb_miantab_player);
 			rbRecord.setText("Message");
-			
+
 			rbTime = (RadioButton) findViewById(R.id.rb_miantab_playing);
-			
+
 			rbTime.setText("Student");
 		}
-        url = getIntent().getStringExtra("url");
+		url = getIntent().getStringExtra("url");
 		transaction = getSupportFragmentManager().beginTransaction();
 		findViewById(R.id.rb_miantab_invite).setOnClickListener(this);
 		RadioButton rb_invite = (RadioButton) findViewById(R.id.rb_miantab_invite);
@@ -86,8 +88,10 @@ public class MainAcitivity extends FragmentActivity implements OnClickListener {
 		titleBtn.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				/*startActivity(new Intent(MainAcitivity.this,
-						DialogActivity.class));*/
+				/*
+				 * startActivity(new Intent(MainAcitivity.this,
+				 * DialogActivity.class));
+				 */
 				titlePopup.show(v);
 			}
 		});
@@ -109,21 +113,20 @@ public class MainAcitivity extends FragmentActivity implements OnClickListener {
 		int id = v.getId();
 		switch (id) {
 		case R.id.rb_miantab_invite:
-			Log.i("ccc","1111");
-			Intent in = new Intent(this,LoginActivity.class);
+			Log.i("ccc", "1111");
+			Intent in = new Intent(this, LoginActivity.class);
 			startActivity(in);
 			finish();
-			/*if (inviteFramet == null) {
-				inviteFramet = new IndexFragment();
-
-				transaction.add(R.id.frag_main_tab, inviteFramet);
-			} else {
-				transaction.show(inviteFramet);
-			}*/
+			/*
+			 * if (inviteFramet == null) { inviteFramet = new IndexFragment();
+			 * 
+			 * transaction.add(R.id.frag_main_tab, inviteFramet); } else {
+			 * transaction.show(inviteFramet); }
+			 */
 			break;
 
 		case R.id.rb_miantab_me:
-			Log.i("ccc","2222");
+			Log.i("ccc", "2222");
 			if (meFragment == null) {
 				meFragment = new CalenderFragment();
 
@@ -134,7 +137,7 @@ public class MainAcitivity extends FragmentActivity implements OnClickListener {
 			break;
 
 		case R.id.rb_miantab_player:
-			Log.i("ccc","3333");
+			Log.i("ccc", "3333");
 			if (playingFragment == null) {
 				playingFragment = new ClassRecordFragment();
 				transaction.add(R.id.frag_main_tab, playingFragment);
@@ -144,16 +147,15 @@ public class MainAcitivity extends FragmentActivity implements OnClickListener {
 			break;
 
 		case R.id.rb_miantab_playing:
-			Log.i("ccc","44444");
-			
+			Log.i("ccc", "44444");
+
 			if (playerFragment == null) {
 				playerFragment = new ClassTimeFragment();
 				transaction.add(R.id.frag_main_tab, playerFragment);
 			} else {
 				transaction.show(playerFragment);
 			}
-			
-			
+
 			break;
 
 		}
@@ -182,15 +184,46 @@ public class MainAcitivity extends FragmentActivity implements OnClickListener {
 			transaction.hide(playingFragment);
 		}
 	}
-	public  void init(){
-		
-		
-		
-		titlePopup = new TitlePopup(this, LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT,this);
-		titlePopup.addAction(new ActionItem(this, "分享", R.drawable.mm_title_btn_receiver_normal));
-		titlePopup.addAction(new ActionItem(this, "扫描", R.drawable.mm_title_btn_set_normal));
-		titlePopup.addAction(new ActionItem(this, "阅读", R.drawable.mm_title_btn_share_normal));
+
+	public void init() {
+		titlePopup = new TitlePopup(this, LayoutParams.WRAP_CONTENT,
+				LayoutParams.WRAP_CONTENT, this);
+		titlePopup.addAction(new ActionItem(this, "分享",
+				R.drawable.mm_title_btn_receiver_normal));
+		if ("2".equals(type)) {
+
+			titlePopup.addAction(new ActionItem(this, "扫描",
+					R.drawable.mm_title_btn_set_normal));
+		}
+		if ("1".equals(type)) {
+
+			titlePopup.addAction(new ActionItem(this, "阅读",
+					R.drawable.mm_title_btn_share_normal));
+		}
+
 	}
-	
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		// TODO Auto-generated method stub
+		super.onActivityResult(requestCode, resultCode, data);
+		if (data == null) {
+			return;
+		}
+
+		String returnUrl = data.getStringExtra("result");
+		if (returnUrl != null) {
+			url = returnUrl;
+			transaction = getSupportFragmentManager().beginTransaction();
+			hideFragments(transaction);
+			//if (temFragment == null) {
+				temFragment = new TempFragment();
+				transaction.add(R.id.frag_main_tab, temFragment);
+		//	} else {
+				transaction.show(temFragment);
+		//	}
+			transaction.commit();
+		}
+	}
 
 }

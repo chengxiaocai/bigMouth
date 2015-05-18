@@ -11,6 +11,7 @@ import cn.sharesdk.onekeyshare.OnekeyShare;
 
 import com.bigmouth.app.R;
 import com.bigmouth.app.scan.MipcaCaptureActivity;
+import com.bigmouth.app.util.PersistentUtil;
 import com.bigmouth.app.util.ScreenShot;
 import com.bigmouth.app.util.Util;
 
@@ -41,7 +42,7 @@ public class TitlePopup extends PopupWindow {
 	private Context mContext;
 	private Rect mRect = new Rect();
 	private final int[] mLocation = new int[2];
-
+    private String Type ;
 	private int mScreenWidth;
 	private int mScreenHeight;
 	private boolean mIsDirty;
@@ -66,6 +67,8 @@ public class TitlePopup extends PopupWindow {
 	public TitlePopup(Context context, int width, int height,Activity ac) {
 		this.ac = ac;
 		this.mContext = context;
+		Type = PersistentUtil.getInstance().readString(context, "type","0");
+
 		setFocusable(true);
 		setTouchable(true);
 		setOutsideTouchable(true);
@@ -150,17 +153,20 @@ public class TitlePopup extends PopupWindow {
 
 					
 				
-				} else if(index==1) {
+				} 
+				else if(index==1) {
+					if("2".equals(Type)){
 					Intent intent3 = new Intent(mContext,
 							MipcaCaptureActivity.class);
 					
 					ac.startActivityForResult(intent3, 1);
-					
-				}else{
-					Intent intent3 = new Intent(mContext,
-							StudyActivity.class);
-					
-					ac.startActivityForResult(intent3, 1);
+					}
+					if("1".equals(Type)){
+						Intent intent3 = new Intent(mContext,
+								StudyActivity.class);
+						
+						ac.startActivityForResult(intent3, 1);
+					}
 				}
 			}
 		});

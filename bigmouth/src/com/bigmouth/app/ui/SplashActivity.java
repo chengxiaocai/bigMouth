@@ -53,11 +53,14 @@ public class SplashActivity extends Activity {
 	String appVersion;
 	DisplayImageOptions options; // DisplayImageOptions是用于设置图片显示的类
 	ImageView iv_temp;
+	private String  localUrl;
+	private String strUrl="cc";
 
 	@SuppressLint("HandlerLeak")
 	private Handler handle = new Handler() {
 		public void handleMessage(android.os.Message msg) {
-			if (isFirst || !appVersion.equals(getVersionName())) {
+			if (!localUrl.equals(strUrl)) {
+				PersistentUtil.getInstance().write(SplashActivity.this, "urll", strUrl);
 				if(imgUrl.size()<=0){
 					startActivity(new Intent(SplashActivity.this,
 							LoginActivity.class));
@@ -81,6 +84,7 @@ public class SplashActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_splash);
+		localUrl = PersistentUtil.getInstance().readString(this, "urll", "img");
 		com.bigmouth.app.util.AppShortCutUtil.addNumShortCut(SplashActivity.this,
 				SplashActivity.class, true,
 				"0",false);
@@ -95,9 +99,9 @@ public class SplashActivity extends Activity {
 				true);
 		appVersion = PersistentUtil.getInstance().readString(this, "version",
 				"1.0");
-		if (isFirst || !appVersion.equals(getVersionName())) {
+		//if (isFirst || !appVersion.equals(getVersionName())) {
 			LoadImgs();
-		}
+		//}
 		iv_splash = (ImageView) findViewById(R.id.bg_splash);
 		Animation animation = AnimationUtils.loadAnimation(this,
 				R.anim.alpha_splash);
@@ -167,6 +171,7 @@ public class SplashActivity extends Activity {
 			protected void onPostExecute(String response) {
 				// TODO Auto-generated method stub
 				super.onPostExecute(response);
+				strUrl = response;
 				if (response != null) {
 					Log.i("cc....response", response);
 					try {

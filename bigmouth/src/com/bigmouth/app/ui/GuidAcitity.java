@@ -63,8 +63,8 @@ public class GuidAcitity extends Activity {
 		llIndexImg = (LinearLayout) findViewById(R.id.ll_guid_indeximg);
 		ivIndexList = new ArrayList<ImageView>();
 		imgUrl = getIntent().getStringArrayListExtra("img");
-		PersistentUtil.getInstance().write(this, "isFirst", false);
-		PersistentUtil.getInstance().write(this, "version", getVersionName());
+		//PersistentUtil.getInstance().write(this, "isFirst", false);
+		//PersistentUtil.getInstance().write(this, "version", getVersionName());
 		initWidgets();
 		// 把要显示的View装入数组
 		LayoutInflater li = LayoutInflater.from(this);

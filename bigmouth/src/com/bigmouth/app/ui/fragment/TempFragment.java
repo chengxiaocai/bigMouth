@@ -33,7 +33,7 @@ public class TempFragment extends Fragment {
 				return true;
 			}
 		});
-		mWebView.loadUrl("http://app.01teacher.cn/StudentPeriod/My");
+		//mWebView.loadUrl("http://app.01teacher.cn/StudentPeriod/My");
 		mWebView.loadUrl(url);
 		return contentView;
 	}
