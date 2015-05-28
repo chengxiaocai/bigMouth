@@ -16,6 +16,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import cn.jpush.android.api.JPushInterface;
+
 import com.bigmouth.app.R;
 import com.bigmouth.app.util.PersistentUtil;
 import com.bigmouth.app.util.StreamTools;
@@ -196,5 +198,16 @@ public class SplashActivity extends Activity {
 
 		}.execute("http://app.01teacher.cn/App/GetGuideImages");
 	}
-
+    @Override
+    protected void onResume() {
+    	// TODO Auto-generated method stub
+    	super.onResume();
+    	JPushInterface.onResume(this);
+    }
+    @Override
+    protected void onPause() {
+    	// TODO Auto-generated method stub
+    	super.onPause();
+    	JPushInterface.onPause(this);
+    }
 }

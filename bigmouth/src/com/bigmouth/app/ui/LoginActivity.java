@@ -1,11 +1,15 @@
 package com.bigmouth.app.ui;
 
+import java.util.LinkedHashSet;
+import java.util.Set;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -17,6 +21,9 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import cn.jpush.android.api.JPushInterface;
+import cn.jpush.android.api.TagAliasCallback;
 
 import com.bigmouth.app.R;
 import com.bigmouth.app.scan.MipcaCaptureActivity;
@@ -32,6 +39,8 @@ public class LoginActivity extends Activity {
 	private final String FILENAME = "bigmouth";
 	private String type;
 	private Boolean isFromCode = false;
+	
+	private static final int MSG_SET_TAGS = 1002;
 
 	@SuppressLint("SetJavaScriptEnabled")
 	@Override
@@ -160,7 +169,7 @@ public class LoginActivity extends Activity {
 							"type", str[2] == null ? "" : str[2].split("=")[1]);
 					type = PersistentUtil.getInstance().readString(LoginActivity.this,
 							"type", "0");
-
+					setTag(type);
 					if ("2".equals(type)) {
 						findViewById(R.id.iv_login_read).setVisibility(
 								View.GONE);
@@ -227,5 +236,65 @@ public class LoginActivity extends Activity {
 		intent.putExtra("url", returnUrl);
 		startActivity(intent);
 	}
+	public void setTag(String tag ){
+		Log.i("cc", "set tag"+tag);
+		// ","隔开的多个 转换成 Set
+				String[] sArray = tag.split(",");
+				Set<String> tagSet = new LinkedHashSet<String>();
+				for (String sTagItme : sArray) {
+					
+					tagSet.add(sTagItme);
+				}
+				
+				//调用JPush API设置Tag
+				mHandler.sendMessage(mHandler.obtainMessage(MSG_SET_TAGS, tagSet));
+
+	}
+	 @SuppressLint("HandlerLeak")
+	private final Handler mHandler = new Handler() {
+	        @SuppressWarnings("unchecked")
+			@Override
+	        public void handleMessage(android.os.Message msg) {
+	            super.handleMessage(msg);
+	            switch (msg.what) {
+	          
+	                
+	            case MSG_SET_TAGS:
+	                Log.d("cc", "Set tags in handler.");
+	                JPushInterface.setAliasAndTags(getApplicationContext(), null, (Set<String>) msg.obj, mTagsCallback);
+	                break;
+	                
+	            default:
+	                Log.i("cc", "Unhandled msg - " + msg.what);
+	            }
+	        }
+	    };
+	    private final TagAliasCallback mTagsCallback = new TagAliasCallback() {
+
+	        @Override
+	        public void gotResult(int code, String alias, Set<String> tags) {
+	            String logs ;
+	            switch (code) {
+	            case 0:
+	                logs = "Set tag and alias success";
+	                Log.i("cc", logs);
+	                break;
+	                
+	            case 6002:
+	            	 logs = "Set tag and alias faile";
+		                Log.i("cc", logs);
+	                	mHandler.sendMessageDelayed(mHandler.obtainMessage(MSG_SET_TAGS, tags), 1000 * 60);
+	               
+	                break;
+	            
+	            default:
+	                logs = "Failed with errorCode = " + code;
+	                Log.e("cc", logs);
+	            }
+	            
+	           
+	        }
+	        
+	    };
 
 }

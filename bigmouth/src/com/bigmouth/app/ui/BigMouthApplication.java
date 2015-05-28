@@ -5,6 +5,8 @@ import android.app.Application;
 import android.content.Context;
 import android.os.Build;
 
+import cn.jpush.android.api.JPushInterface;
+
 import com.bigmouth.app.service.PollingService;
 import com.bigmouth.app.util.PollingUtils;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
@@ -31,8 +33,10 @@ public class BigMouthApplication extends Application {
 		 */
 
 		super.onCreate();
-		PollingUtils.startPollingService(this, 5, PollingService.class,
-				PollingService.ACTION);
+		 JPushInterface.setDebugMode(true); 	// 设置开启日志,发布时请关闭日志
+         JPushInterface.init(this);     		// 初始化 JPush
+		/*PollingUtils.startPollingService(this, 5, PollingService.class,
+				PollingService.ACTION);*/
 
 		initImageLoader(getApplicationContext());
 
