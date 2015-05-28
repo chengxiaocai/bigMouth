@@ -8,7 +8,6 @@ import android.os.Build;
 import cn.jpush.android.api.JPushInterface;
 
 import com.bigmouth.app.service.PollingService;
-import com.bigmouth.app.util.PollingUtils;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;

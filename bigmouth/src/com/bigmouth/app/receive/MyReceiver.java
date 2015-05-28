@@ -3,7 +3,10 @@ package com.bigmouth.app.receive;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.bigmouth.app.service.PollingService;
 import com.bigmouth.app.ui.ShowMsgActivity;
+import com.bigmouth.app.ui.SplashActivity;
+import com.bigmouth.app.util.AppShortCutUtil;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -27,12 +30,7 @@ public class MyReceiver extends BroadcastReceiver {
         Bundle bundle = intent.getExtras();
 		Log.d(TAG, "[MyReceiver] onReceive - " + intent.getAction() + ", extras: " + printBundle(bundle));
 		
-        if (JPushInterface.ACTION_REGISTRATION_ID.equals(intent.getAction())) {
-            String regId = bundle.getString(JPushInterface.EXTRA_REGISTRATION_ID);
-            Log.d(TAG, "[MyReceiver] 接收Registration Id : " + regId);
-            //send the Registration Id to your server...
-                        
-        } else if (JPushInterface.ACTION_MESSAGE_RECEIVED.equals(intent.getAction())) {
+        if (JPushInterface.ACTION_MESSAGE_RECEIVED.equals(intent.getAction())) {
         	Log.d(TAG, "[MyReceiver] 接收到推送下来的自定义消息: " + bundle.getString(JPushInterface.EXTRA_MESSAGE));
         	processCustomMessage(context, bundle);
         
@@ -81,6 +79,7 @@ public class MyReceiver extends BroadcastReceiver {
 	
 	//send msg to MainActivity
 	private void processCustomMessage(Context context, Bundle bundle) {
+		Log.i("cc", "zi ding yi  msg  is receive....");
 //		if (MainActivity.isForeground) {
 //			String message = bundle.getString(JPushInterface.EXTRA_MESSAGE);
 //			String extras = bundle.getString(JPushInterface.EXTRA_EXTRA);
@@ -99,5 +98,13 @@ public class MyReceiver extends BroadcastReceiver {
 //			}
 //			context.sendBroadcast(msgIntent);
 //		}
+		try {
+			String message = bundle.getString(JPushInterface.EXTRA_MESSAGE);
+			AppShortCutUtil.addNumShortCut(context,
+					SplashActivity.class, true, "4", false);
+		} catch (Exception e) {
+			Log.i("cc", "num is not available....");
+		}
+		
 	}
 }
