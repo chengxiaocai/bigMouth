@@ -41,6 +41,7 @@ public class LoginActivity extends Activity {
 	private Boolean isFromCode = false;
 	
 	private static final int MSG_SET_TAGS = 1002;
+	private static final int MSG_SET_ALIAS = 1001;
 
 	@SuppressLint("SetJavaScriptEnabled")
 	@Override
@@ -169,7 +170,7 @@ public class LoginActivity extends Activity {
 							"type", str[2] == null ? "" : str[2].split("=")[1]);
 					type = PersistentUtil.getInstance().readString(LoginActivity.this,
 							"type", "0");
-					setTag(type);
+					setAlias(str[1].split("=")[1]);
 					if ("2".equals(type)) {
 						findViewById(R.id.iv_login_read).setVisibility(
 								View.GONE);
@@ -236,18 +237,9 @@ public class LoginActivity extends Activity {
 		intent.putExtra("url", returnUrl);
 		startActivity(intent);
 	}
-	public void setTag(String tag ){
-		Log.i("cc", "set tag"+tag);
-		// ","隔开的多个 转换成 Set
-				String[] sArray = tag.split(",");
-				Set<String> tagSet = new LinkedHashSet<String>();
-				for (String sTagItme : sArray) {
-					
-					tagSet.add(sTagItme);
-				}
-				
-				//调用JPush API设置Tag
-				mHandler.sendMessage(mHandler.obtainMessage(MSG_SET_TAGS, tagSet));
+	public void setAlias(String userid ){
+		Log.i("cc", "set alias"+userid);
+		mHandler.sendMessage(mHandler.obtainMessage(MSG_SET_ALIAS, userid));
 
 	}
 	 @SuppressLint("HandlerLeak")
@@ -257,19 +249,20 @@ public class LoginActivity extends Activity {
 	        public void handleMessage(android.os.Message msg) {
 	            super.handleMessage(msg);
 	            switch (msg.what) {
-	          
-	                
-	            case MSG_SET_TAGS:
-	                Log.d("cc", "Set tags in handler.");
-	                JPushInterface.setAliasAndTags(getApplicationContext(), null, (Set<String>) msg.obj, mTagsCallback);
+	            case MSG_SET_ALIAS:
+	                Log.d("ccs", "Set alias in handler.");
+	                JPushInterface.setAliasAndTags(getApplicationContext(), (String) msg.obj, null, mAliasCallback);
 	                break;
+	                
+	           
 	                
 	            default:
 	                Log.i("cc", "Unhandled msg - " + msg.what);
 	            }
 	        }
 	    };
-	    private final TagAliasCallback mTagsCallback = new TagAliasCallback() {
+	   
+	    private final TagAliasCallback mAliasCallback = new TagAliasCallback() {
 
 	        @Override
 	        public void gotResult(int code, String alias, Set<String> tags) {
@@ -281,20 +274,21 @@ public class LoginActivity extends Activity {
 	                break;
 	                
 	            case 6002:
-	            	 logs = "Set tag and alias faile";
-		                Log.i("cc", logs);
-	                	mHandler.sendMessageDelayed(mHandler.obtainMessage(MSG_SET_TAGS, tags), 1000 * 60);
+	                logs = "Failed to set alias and tags due to timeout. Try again after 60s.";
+	                Log.i("cc", logs);
+                	mHandler.sendMessageDelayed(mHandler.obtainMessage(MSG_SET_ALIAS, alias), 1000 * 60);
+
 	               
 	                break;
 	            
 	            default:
 	                logs = "Failed with errorCode = " + code;
-	                Log.e("cc", logs);
+	                
 	            }
 	            
-	           
+	            
 	        }
-	        
-	    };
+		    
+		};
 
 }
