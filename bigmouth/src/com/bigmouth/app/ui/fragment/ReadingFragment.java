@@ -19,10 +19,13 @@ import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestHandle;
 import com.loopj.android.http.RequestParams;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -35,6 +38,7 @@ import android.webkit.WebViewClient;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -51,6 +55,9 @@ public class ReadingFragment extends Fragment {
 	private View contentView;
 	private ReadingsAdapter adapter;
 	private  StudyActivity  ac;//父activitiy对象；
+	private String id;
+	private ImageLoader mImageLoader;
+	private DisplayImageOptions options;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -71,7 +78,12 @@ public class ReadingFragment extends Fragment {
 
 	public void initView() {
 	
-		
+		mImageLoader = ImageLoader.getInstance();
+		options = new DisplayImageOptions.Builder()
+				.showStubImage(R.drawable.log)
+				.showImageForEmptyUri(R.drawable.log).cacheInMemory(true)
+				.cacheOnDisc(true).bitmapConfig(Bitmap.Config.RGB_565).build();
+
 		lvReading = (ListView) contentView.findViewById(R.id.lv_reading_list);
 		adapter = new ReadingsAdapter(readList);
 		lvReading.setAdapter(adapter);
@@ -82,7 +94,8 @@ public class ReadingFragment extends Fragment {
 					int position, long id) {
 				// TODO Auto-generated method stub
 				Intent in = new Intent ();
-				in.putExtra("text",readList.get(position).getText());
+			
+				in.putExtra("text",readList.get(position).getId());
 				ac.changeReadingPage(in);
 			}
 		});
@@ -95,7 +108,7 @@ public class ReadingFragment extends Fragment {
 	public void getReading() {
 
 		RequestParams rp = new RequestParams();
-	
+	  
 
 		reqhandle = ahc.post("http://app.01teacher.cn/App/GetReadings",
 
@@ -123,10 +136,14 @@ public class ReadingFragment extends Fragment {
                         
 						Readings read= new Readings();
 						read.setId(array.getJSONObject(i).optString("id"));
-						read.setText(array.getJSONObject(i).optString("text"));
+						read.setTitle(array.getJSONObject(i).optString("title"));
+						read.setDate(array.getJSONObject(i).optString("date"));
+						read.setImg(array.getJSONObject(i).optString("img"));
+						read.setSource(array.getJSONObject(i).optString("source"));
+						
 						readList.add(read);
-						adapter.notifyDataSetChanged();
 					}
+					adapter.notifyDataSetChanged();
 
 				} catch (JSONException e) {
 					Toast.makeText(getActivity(), "获取文章列表失败", 0).show();
@@ -193,11 +210,18 @@ public class ReadingFragment extends Fragment {
 			}
 			if (convertView == null) {
 				convertView = inflater.inflate(R.layout.item_reading, null);
-				TextView tvText = (TextView) convertView.findViewById(R.id.tv_reading_text);
-				tvText.setText(listReadings.get(position).getText());
 				
 				
 			}
+			TextView tvText = (TextView) convertView.findViewById(R.id.tv_reading_title);
+			tvText.setText(listReadings.get(position).getTitle());
+			TextView tvDate = (TextView) convertView.findViewById(R.id.tv_reading_data);
+			tvDate.setText(listReadings.get(position).getDate());
+			
+			TextView tvSource = (TextView) convertView.findViewById(R.id.tv_reading_source);
+			tvSource.setText(listReadings.get(position).getSource());
+			ImageView img = (ImageView) convertView.findViewById(R.id.iv_reading_img);
+			ImageLoader.getInstance().displayImage(listReadings.get(position).getImg(), img, options);
 			return convertView;
 		}
 

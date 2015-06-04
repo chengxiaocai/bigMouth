@@ -101,7 +101,7 @@ public class MyReceiver extends BroadcastReceiver {
 		try {
 			String message = bundle.getString(JPushInterface.EXTRA_MESSAGE);
 			AppShortCutUtil.addNumShortCut(context,
-					SplashActivity.class, true, "4", false);
+					SplashActivity.class, true, message, false);
 		} catch (Exception e) {
 			Log.i("cc", "num is not available....");
 		}

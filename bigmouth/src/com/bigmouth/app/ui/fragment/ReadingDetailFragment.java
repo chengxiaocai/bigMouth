@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.http.Header;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import cn.sharesdk.framework.ShareSDK;
@@ -120,8 +121,8 @@ public class ReadingDetailFragment extends Fragment implements OnClickListener,
 		line = (LinearLayout) contentView.findViewById(R.id.line_read);
 		tvResultWrod = (TextView) contentView.findViewById(R.id.tv_result_word);
 		tvSrcWord = (TextView) contentView.findViewById(R.id.tv_src_word);
-		tvText.setText(ac.getText(), BufferType.SPANNABLE);
-		getEachWord(tvText);
+		// tvText.setText(ac.getText(), BufferType.SPANNABLE);
+		// getEachWord(tvText);
 		tvText.setMovementMethod(LinkMovementMethod.getInstance());
 		ahc = new AsyncHttpClient();
 		contentView.findViewById(R.id.iv_readtail_back).setOnClickListener(
@@ -161,6 +162,8 @@ public class ReadingDetailFragment extends Fragment implements OnClickListener,
 						oks.show(getActivity());
 					}
 				});
+		getReading(ac.getText());
+
 		return contentView;
 	}
 
@@ -658,6 +661,74 @@ public class ReadingDetailFragment extends Fragment implements OnClickListener,
 
 		});
 
+	}
+
+	public void getReading(String id) {
+
+		RequestParams rp = new RequestParams();
+		rp.put("id", id);
+
+		reqhandle = ahc.post("http://app.01teacher.cn/App/GetReadingsByID",
+
+		rp, new AsyncHttpResponseHandler() {
+			@Override
+			public void onStart() {
+				// TODO Auto-generated method stub
+				super.onStart();
+				Log.i("cc...cars", "start...");
+				// thisdialog.show();
+			}
+
+			@Override
+			public void onSuccess(String content) {
+				// TODO Auto-generated method stub
+				super.onSuccess(content);
+				Log.i("cc...cars", "success.......");
+				// Toast.makeText(getActivity(), "添加成功", 0).show();
+				try {
+					obj = new JSONObject(content);
+
+					Readings read = new Readings();
+					read.setId(obj.optString("id"));
+					read.setTitle(obj.optString("title"));
+					read.setDate(obj.optString("date"));
+					read.setImg(obj.optString("img"));
+					read.setSource(obj.optString("source"));
+					read.setText(obj.optString("text"));
+					tvText.setText(read.getText(), BufferType.SPANNABLE);
+					 getEachWord(tvText);
+					 
+					
+
+				} catch (JSONException e) {
+					Toast.makeText(getActivity(), "获取文章失败", 0).show();
+					e.printStackTrace();
+				}
+
+			}
+
+			@Override
+			public void onFinish() {
+				// TODO Auto-generated method stub
+				super.onFinish();
+				Log.i("cc...", "finish");
+				// thisdialog.dismiss();
+			}
+
+			@Override
+			public void onFailure(int arg0, Header[] arg1, byte[] arg2,
+					Throwable arg3) {
+				// TODO Auto-generated method stub
+				super.onFailure(arg0, arg1, arg2, arg3);
+				Log.i("cc...cars", "failue.......");
+				HttpHandle hh = new HttpHandle();
+				hh.handleFaile(getActivity(), arg3);
+				if (thisdialog.isShowing()) {
+					// thisdialog.dismiss();
+				}
+			}
+
+		});
 	}
 
 }

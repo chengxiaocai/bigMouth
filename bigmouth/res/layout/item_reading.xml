@@ -2,18 +2,48 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="10dp"
     android:background="@drawable/bg_word_item_corner"
-    android:orientation="vertical" >
-   
-    <TextView 
-        android:id="@+id/tv_reading_text"
+    android:orientation="vertical"
+    android:padding="10dp" >
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:textColor="@color/green"
-        android:textSize="18sp"
-        android:textStyle="bold"
         android:layout_height="wrap_content"
-        />
-    
+        android:orientation="horizontal" >
+
+        <ImageView
+            android:layout_gravity="center_vertical"
+            android:id="@+id/iv_reading_img"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/log" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/tv_reading_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="I hava a  dream!"
+                android:textColor="#000000"
+                android:textSize="22sp" />
+
+            <TextView
+                android:id="@+id/tv_reading_data"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="I hava a  dream!" />
+
+            <TextView
+                android:id="@+id/tv_reading_source"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="I hava a  dream!" />
+        </LinearLayout>
+    </LinearLayout>
 
 </LinearLayout>

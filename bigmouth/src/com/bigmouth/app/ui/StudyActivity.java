@@ -276,5 +276,18 @@ public class StudyActivity extends FragmentActivity implements OnClickListener {
 
 		});
 	}
+	@Override
+	public void onBackPressed() {
+		// TODO Auto-generated method stub
+		
+		Intent in = new Intent(this, LoginActivity.class);
+		startActivity(in);
+		finish();
+	}
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		// TODO Auto-generated method stub
+		//super.onSaveInstanceState(outState);
+	}
 
 }
