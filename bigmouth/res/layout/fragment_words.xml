@@ -2,80 +2,25 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/light_yellow"
     android:orientation="vertical" >
-
-    <TextView
-        android:id="@+id/tv_words_addword"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/bg_text_color_blue"
-        android:gravity="center"
-        android:text="添加单词（词典）"
-        android:textColor="#9bc818"
-        android:textStyle="bold" />
-
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:src="@drawable/top" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="10dp"
-        android:background="@color/yellow" />
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/yellow" >
-
-        <TextView
-            android:id="@+id/tv_words_show_word_num"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:text="7收集的单词"
-            android:textColor="#c8ccbb"
-            android:textSize="15sp"
-            android:visibility="gone" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="20dp"
-            android:text="编辑"
-            android:textColor="#c8ccbb"
-            android:textSize="15sp" />
-    </RelativeLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="10dp"
-        android:background="@color/yellow" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/yellow" >
+        android:layout_height="wrap_content" >
 
-        <ListView
-            android:id="@+id/lv_words_list"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
-            android:background="@color/yellow"
-            android:divider="#00000000"
-            android:dividerHeight="10dp"
-            android:listSelector="#00000000"
-            android:scrollbars="none" >
-        </ListView>
+        <GridView
+            android:layout_marginLeft="40px"
+            android:layout_marginRight="40px"
+            android:id="@+id/gv_words"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:horizontalSpacing="40px"
+            android:listSelector="@null"
+            android:numColumns="3"
+            android:smoothScrollbar="true"
+            android:soundEffectsEnabled="true"
+            android:stretchMode="columnWidth"
+            android:verticalSpacing="40px" />
     </LinearLayout>
 
 </LinearLayout>

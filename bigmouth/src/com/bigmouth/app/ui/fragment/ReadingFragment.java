@@ -12,6 +12,7 @@ import com.bigmouth.app.bean.Readings;
 import com.bigmouth.app.bean.Words;
 import com.bigmouth.app.ui.MainAcitivity;
 import com.bigmouth.app.ui.StudyActivity;
+import com.bigmouth.app.ui.StudyActivity1;
 import com.bigmouth.app.util.DialogUtil;
 import com.bigmouth.app.util.HttpHandle;
 import com.bigmouth.app.util.PersistentUtil;
@@ -54,7 +55,7 @@ public class ReadingFragment extends Fragment {
 	private ListView lvReading;
 	private View contentView;
 	private ReadingsAdapter adapter;
-	private  StudyActivity  ac;//父activitiy对象；
+	private  StudyActivity1  ac;//父activitiy对象；
 	private String id;
 	private ImageLoader mImageLoader;
 	private DisplayImageOptions options;
@@ -73,7 +74,7 @@ public class ReadingFragment extends Fragment {
 	public void onAttach(Activity activity) {
 		// TODO Auto-generated method stub
 		super.onAttach(activity);
-		ac =  (StudyActivity) activity;
+		ac =  (StudyActivity1) activity;
 	}
 
 	public void initView() {

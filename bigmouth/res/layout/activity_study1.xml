@@ -1,0 +1,119 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_main" >
+
+    <RelativeLayout
+        android:id="@+id/re_title"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="#00000000" >
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="5dp"
+            android:src="@drawable/back" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:orientation="horizontal" >
+
+            <ImageView
+                android:layout_width="15dp"
+                android:layout_height="25dp"
+                android:src="@drawable/icon_point" />
+
+            <TextView
+                android:id="@+id/tv_title_point"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="4dp"
+                android:text="20"
+                android:textColor="#ff6600"
+                android:textSize="18sp" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_title_addword"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="5dp"
+            android:text="+添加单词"
+            android:textColor="#ffffff"
+            android:textSize="18sp" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_below="@id/re_title"
+        android:id="@+id/frag_main_tab"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="70dp"
+        android:orientation="vertical" >
+    </LinearLayout>
+
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_alignParentBottom="true"
+        android:background="#8cc321"
+        android:orientation="horizontal" >
+
+        <RadioButton
+            android:id="@+id/rb_miantab_words"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="10"
+            android:button="@null"
+            android:drawableTop="@drawable/icon_bottom1_selector"
+            android:gravity="center"
+            android:padding="8dp"
+            android:text="文字"
+            android:textColor="@color/blue" />
+
+        <RadioButton
+            android:id="@+id/rb_miantab_reading"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="10"
+            android:button="@null"
+            android:drawableTop="@drawable/icon_bottom2_selector"
+            android:gravity="center"
+            android:padding="8dp"
+            android:text="阅读"
+            android:textColor="@color/blue" />
+
+        <RadioButton
+            android:id="@+id/rb_miantab_practise"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="10"
+            android:button="@null"
+            android:drawableTop="@drawable/icon_bottom3_selector"
+            android:gravity="center"
+            android:padding="8dp"
+            android:text="实践"
+            android:textColor="@color/blue" />
+
+        <RadioButton
+            android:id="@+id/rb_miantab_setting"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="10"
+            android:button="@null"
+            android:drawableTop="@drawable/icon_bottom4_selector"
+            android:gravity="center"
+            android:text="设置"
+            android:textColor="@color/blue" />
+    </RadioGroup>
+
+</RelativeLayout>

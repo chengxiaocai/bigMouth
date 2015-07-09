@@ -66,5 +66,17 @@
     <color name="text_gray">#fffff2</color>
     <color name="text_green">#fffff2</color>
     <color name="too_green">#51621e</color>
+    <color name="color1">#f3ba23</color>
+    <color name="color2">#bd1515</color>
+    <color name="color3">#8a0988</color>
+    <color name="color4">#02a4ef</color>
+    <color name="color5">#5d5d5d</color>
+    <color name="color6">#00aaaa</color>
+    <color name="color7">#3d6318</color>
+    <color name="color8">#d39d09</color>
+    <color name="color9">#83ba20</color>
+    <color name="color10">#e56c19</color>
+    <color name="color11">#691bb7</color>
+    <color name="color12">#2773ed</color>
 
 </resources>

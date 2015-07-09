@@ -98,7 +98,7 @@ public class LoginActivity extends Activity {
 					public void onClick(View v) {
 						// TODO Auto-generated method stub
 						Intent intent3 = new Intent(LoginActivity.this,
-								StudyActivity.class);
+								StudyActivity1.class);
 						
 						startActivity(intent3);
 						finish();

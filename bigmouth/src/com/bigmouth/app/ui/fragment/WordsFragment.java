@@ -1,6 +1,7 @@
 package com.bigmouth.app.ui.fragment;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import org.apache.http.Header;
 import org.json.JSONArray;
@@ -13,6 +14,7 @@ import com.baidu.speechsynthesizer.publicutility.SpeechError;
 import com.bigmouth.app.R;
 import com.bigmouth.app.bean.Words;
 import com.bigmouth.app.util.DialogUtil;
+import com.bigmouth.app.util.DisplayUtil;
 import com.bigmouth.app.util.HttpHandle;
 import com.bigmouth.app.util.PersistentUtil;
 import com.loopj.android.http.AsyncHttpClient;
@@ -20,6 +22,7 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestHandle;
 import com.loopj.android.http.RequestParams;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -36,10 +39,12 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.View.OnClickListener;
 import android.webkit.WebView;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
+import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -53,6 +58,9 @@ public class WordsFragment extends Fragment implements OnClickListener,
 
 	private WebView mWebView;
 	private ListView lvWords;
+	private GridView grWords;
+	private int Color [] = new int[]{R.color.color1,R.color.color3,R.color.color4,R.color.color5,R.color.color6,R.color.color7,R.color.color8,R.color.color9,R.color.color10,R.color.color11,R.color.color12};
+	
 	private View contentView = null;
 	LayoutInflater inflater = null;
 	private AsyncHttpClient ahc; // 异步处理
@@ -65,6 +73,7 @@ public class WordsFragment extends Fragment implements OnClickListener,
 	private TextView tvWordNum; // 显示返回的单词数目
 	private SpeechSynthesizer speechSynthesizer;
 
+	@SuppressLint("ResourceAsColor")
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -72,6 +81,7 @@ public class WordsFragment extends Fragment implements OnClickListener,
 				false);
 		initView();
 		getWord();
+		//contentView.setBackgroundColor(R.color.yellow);
 		return contentView;
 	}
 
@@ -91,10 +101,8 @@ public class WordsFragment extends Fragment implements OnClickListener,
 		ahc = new AsyncHttpClient();
 		thisdialog = DialogUtil.getLoadDialog(getActivity(), "请稍后！");
 		inflater = LayoutInflater.from(getActivity());
-		tvWordNum = (TextView) contentView
-				.findViewById(R.id.tv_words_show_word_num);
-		lvWords = (ListView) contentView.findViewById(R.id.lv_words_list);
-		lvWords.setOnItemClickListener(new OnItemClickListener() {
+		grWords = (GridView) contentView.findViewById(R.id.gv_words);
+		grWords.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
@@ -139,61 +147,8 @@ public class WordsFragment extends Fragment implements OnClickListener,
 			}
 		});
 		adapter = new WordsAdapter(listWord);
-		lvWords.setAdapter(adapter);
-		contentView.findViewById(R.id.tv_words_addword).setOnClickListener(
-				new OnClickListener() {
-
-					@Override
-					public void onClick(View v) {
-						// TODO Auto-generated method stub
-						final Dialog dialog = new Dialog(getActivity());
-						final EditText etWord;
-						final EditText etChinese;
-						dialog.getWindow().requestFeature(
-								Window.FEATURE_NO_TITLE);
-						dialog.setContentView(R.layout.item_dialog_addword);
-						dialog.setTitle(null);
-						dialog.show();
-						etChinese = (EditText) dialog
-								.findViewById(R.id.et_chiniese);
-						etWord = (EditText) dialog.findViewById(R.id.et_word);
-						dialog.findViewById(R.id.btn_dialog_word_addword_ok)
-								.setOnClickListener(new OnClickListener() {
-
-									@Override
-									public void onClick(View v) {
-										// TODO Auto-generated method stub
-										if (TextUtils.isEmpty(etChinese
-												.getText().toString().trim())) {
-											Toast.makeText(getActivity(),
-													"请输入翻译内容", 0).show();
-											return;
-										}
-										if (TextUtils.isEmpty(etWord.getText()
-												.toString().trim())) {
-											Toast.makeText(getActivity(),
-													"请输入单词", 0).show();
-											return;
-										}
-										dialog.dismiss();
-										addWord(etWord.getText().toString()
-												.trim(), etChinese.getText()
-												.toString().trim());
-									}
-								});
-						dialog.findViewById(R.id.btn_dialog_word_addword_no)
-								.setOnClickListener(new OnClickListener() {
-
-									@Override
-									public void onClick(View v) {
-										// TODO Auto-generated method stub
-										dialog.dismiss();
-									}
-								});
-
-					}
-				});
-
+		grWords.setAdapter(adapter);
+		
 	}
 
 	private class WordsAdapter extends BaseAdapter {
@@ -230,6 +185,8 @@ public class WordsFragment extends Fragment implements OnClickListener,
 			}
 			if (convertView == null) {
 				convertView = inflater.inflate(R.layout.item_words, null);
+	           convertView.setLayoutParams(new AbsListView.LayoutParams((DisplayUtil.getWidth(getActivity())-160)/3, (DisplayUtil.getWidth(getActivity())-160)/3));// 动态设置item的高度  
+
 			}
 			TextView tvChinse = (TextView) convertView
 					.findViewById(R.id.tv_words_chinese);
@@ -238,6 +195,7 @@ public class WordsFragment extends Fragment implements OnClickListener,
 			TextView tvUsa = (TextView) convertView
 					.findViewById(R.id.tv_words_usa);
 			tvUsa.setText(listWord.get(position).getWord());
+			convertView.setBackgroundColor(getResources().getColor(Color[new Random().nextInt(11) ]));
 			return convertView;
 		}
 
@@ -342,8 +300,7 @@ public class WordsFragment extends Fragment implements OnClickListener,
 				try {
 					obj = new JSONObject(content);
 					strWordNum = obj.optString("count");
-					tvWordNum.setVisibility(View.VISIBLE);
-					tvWordNum.setText(strWordNum + "收集的单词");
+				
 					JSONArray array = obj.getJSONArray("data");
 					for (int i = 0; i < array.length(); i++) {
 
@@ -352,8 +309,12 @@ public class WordsFragment extends Fragment implements OnClickListener,
 								"translation"));
 						word.setId(array.getJSONObject(i).optString("id"));
 						word.setWord(array.getJSONObject(i).optString("word"));
-
-						listWord.add(word);
+                        if(word.getChinese().length()>10){
+                        	
+                        }else{
+                        	
+                        	listWord.add(word);
+                        }
 					}
 
 					adapter.notifyDataSetChanged();
