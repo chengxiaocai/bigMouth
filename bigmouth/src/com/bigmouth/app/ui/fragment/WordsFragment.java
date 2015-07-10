@@ -107,43 +107,45 @@ public class WordsFragment extends Fragment implements OnClickListener,
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					final int position, long id) {
+				view.setLayoutParams(new AbsListView.LayoutParams(((DisplayUtil.getWidth(getActivity())-160)/3)*2+40, ((DisplayUtil.getWidth(getActivity())-160)/3)*2+40));// 动态设置item的高度  
+
 				// TODO Auto-generated method stub
-				final Dialog dialog = new Dialog(getActivity());
-				final TextView etWord;
-				final TextView etChinese;
-				dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
-				dialog.setContentView(R.layout.item_words_dialog);
-				dialog.setTitle(null);
-				dialog.show();
-				TextView tvChinse = (TextView) dialog
-						.findViewById(R.id.tv_words_chinese);
-				tvChinse.setText(listWord.get(position).getChinese());
-
-				TextView tvUsa = (TextView) dialog
-						.findViewById(R.id.tv_words_usa);
-				tvUsa.setText(listWord.get(position).getWord());
-				dialog.findViewById(R.id.lound).setOnClickListener(
-						new OnClickListener() {
-
-							@Override
-							public void onClick(View v) {
-								// TODO Auto-generated method stub
-								new Thread(new Runnable() {
-
-									@Override
-									public void run() {
-										setParams();
-										int ret = speechSynthesizer
-												.speak(listWord.get(position)
-														.getWord());
-										if (ret != 0) {
-											Log.i("cc......", "hecheng faile!!");
-										}
-									}
-								}).start();
-							}
-						});
-
+//				final Dialog dialog = new Dialog(getActivity());
+//				final TextView etWord;
+//				final TextView etChinese;
+//				dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+//				dialog.setContentView(R.layout.item_words_dialog);
+//				dialog.setTitle(null);
+//				dialog.show();
+//				TextView tvChinse = (TextView) dialog
+//						.findViewById(R.id.tv_words_chinese);
+//				tvChinse.setText(listWord.get(position).getChinese());
+//
+//				TextView tvUsa = (TextView) dialog
+//						.findViewById(R.id.tv_words_usa);
+//				tvUsa.setText(listWord.get(position).getWord());
+//				dialog.findViewById(R.id.lound).setOnClickListener(
+//						new OnClickListener() {
+//
+//							@Override
+//							public void onClick(View v) {
+//								// TODO Auto-generated method stub
+//								new Thread(new Runnable() {
+//
+//									@Override
+//									public void run() {
+//										setParams();
+//										int ret = speechSynthesizer
+//												.speak(listWord.get(position)
+//														.getWord());
+//										if (ret != 0) {
+//											Log.i("cc......", "hecheng faile!!");
+//										}
+//									}
+//								}).start();
+//							}
+//						});
+//
 			}
 		});
 		adapter = new WordsAdapter(listWord);

@@ -49,8 +49,8 @@
     <color name="possible_result_points">#c0ffff00</color>
     <color name="gray_ligth">#f0eced</color>
     <color name="gray_ligth_second">#e7e7e7</color>
-    <color name="bg_classify_fond_gray">#8c8c8c</color>
-    <color name="bg_classify_fond_red">#db321b</color>
+    <color name="bg_classify_fond_gray">#ffffff</color>
+    <color name="bg_classify_fond_red">#dcdb0a</color>
     <color name="white">#ffffff</color>
     <color name="black">#000000</color>
     <color name="transprent">#00000000</color>

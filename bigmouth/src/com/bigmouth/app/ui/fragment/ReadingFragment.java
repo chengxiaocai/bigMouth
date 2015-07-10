@@ -1,6 +1,7 @@
 package com.bigmouth.app.ui.fragment;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import org.apache.http.Header;
 import org.json.JSONArray;
@@ -41,6 +42,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -50,35 +52,38 @@ public class ReadingFragment extends Fragment {
 	private RequestHandle reqhandle;
 	private Dialog thisdialog;
 	private JSONObject obj;
-	private ArrayList< Readings> readList = new ArrayList<Readings>();
+	private ArrayList<Readings> readList = new ArrayList<Readings>();
 	LayoutInflater inflater = null;
 	private ListView lvReading;
 	private View contentView;
 	private ReadingsAdapter adapter;
-	private  StudyActivity1  ac;//父activitiy对象；
+	private StudyActivity1 ac;// 父activitiy对象；
 	private String id;
 	private ImageLoader mImageLoader;
 	private DisplayImageOptions options;
+	private int Color [] = new int[]{R.color.color1,R.color.color3,R.color.color4,R.color.color5,R.color.color6,R.color.color7,R.color.color8,R.color.color9,R.color.color10,R.color.color11,R.color.color12};
+
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		     contentView = inflater.inflate(R.layout.fragment_reading,
-				container, false);
+		contentView = inflater.inflate(R.layout.fragment_reading, container,
+				false);
 		initView();
 		getReading();
 
 		return contentView;
 	}
+
 	@Override
 	public void onAttach(Activity activity) {
 		// TODO Auto-generated method stub
 		super.onAttach(activity);
-		ac =  (StudyActivity1) activity;
+		ac = (StudyActivity1) activity;
 	}
 
 	public void initView() {
-	
+
 		mImageLoader = ImageLoader.getInstance();
 		options = new DisplayImageOptions.Builder()
 				.showStubImage(R.drawable.log)
@@ -94,9 +99,9 @@ public class ReadingFragment extends Fragment {
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
 				// TODO Auto-generated method stub
-				Intent in = new Intent ();
-			
-				in.putExtra("text",readList.get(position).getId());
+				Intent in = new Intent();
+
+				in.putExtra("text", readList.get(position).getId());
 				ac.changeReadingPage(in);
 			}
 		});
@@ -109,7 +114,6 @@ public class ReadingFragment extends Fragment {
 	public void getReading() {
 
 		RequestParams rp = new RequestParams();
-	  
 
 		reqhandle = ahc.post("http://app.01teacher.cn/App/GetReadings",
 
@@ -130,18 +134,18 @@ public class ReadingFragment extends Fragment {
 				// Toast.makeText(getActivity(), "添加成功", 0).show();
 				try {
 					obj = new JSONObject(content);
-				
-				
+
 					JSONArray array = obj.getJSONArray("data");
 					for (int i = 0; i < array.length(); i++) {
-                        
-						Readings read= new Readings();
+
+						Readings read = new Readings();
 						read.setId(array.getJSONObject(i).optString("id"));
 						read.setTitle(array.getJSONObject(i).optString("title"));
 						read.setDate(array.getJSONObject(i).optString("date"));
 						read.setImg(array.getJSONObject(i).optString("img"));
-						read.setSource(array.getJSONObject(i).optString("source"));
-						
+						read.setSource(array.getJSONObject(i).optString(
+								"source"));
+
 						readList.add(read);
 					}
 					adapter.notifyDataSetChanged();
@@ -176,10 +180,10 @@ public class ReadingFragment extends Fragment {
 
 		});
 	}
+
 	private class ReadingsAdapter extends BaseAdapter {
-		ArrayList< Readings > listReadings;
-	    
- 
+		ArrayList<Readings> listReadings;
+
 		public ReadingsAdapter(ArrayList<Readings> listReadings) {
 			super();
 			this.listReadings = listReadings;
@@ -206,23 +210,26 @@ public class ReadingFragment extends Fragment {
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			// TODO Auto-generated method stub
-			if(listReadings.size()<1){
+			if (listReadings.size() < 1) {
 				return null;
 			}
 			if (convertView == null) {
-				convertView = inflater.inflate(R.layout.item_reading, null);
-				
-				
+				convertView = inflater.inflate(R.layout.item_reads, null);
+
 			}
-			TextView tvText = (TextView) convertView.findViewById(R.id.tv_reading_title);
+			TextView tvText = (TextView) convertView
+					.findViewById(R.id.tv_reading_title);
 			tvText.setText(listReadings.get(position).getTitle());
-			TextView tvDate = (TextView) convertView.findViewById(R.id.tv_reading_data);
+			TextView tvDate = (TextView) convertView
+					.findViewById(R.id.tv_reading_data);
 			tvDate.setText(listReadings.get(position).getDate());
-			
-			TextView tvSource = (TextView) convertView.findViewById(R.id.tv_reading_source);
+
+			TextView tvSource = (TextView) convertView
+					.findViewById(R.id.tv_reading_source);
 			tvSource.setText(listReadings.get(position).getSource());
-			ImageView img = (ImageView) convertView.findViewById(R.id.iv_reading_img);
-			ImageLoader.getInstance().displayImage(listReadings.get(position).getImg(), img, options);
+			RelativeLayout reMain = (RelativeLayout) convertView.findViewById(R.id.re_reading_main);
+			reMain.setBackgroundColor(getResources().getColor(Color[new Random().nextInt(11) ]));
+
 			return convertView;
 		}
 

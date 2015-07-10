@@ -53,10 +53,10 @@
     </RelativeLayout>
 
     <LinearLayout
-        android:layout_below="@id/re_title"
         android:id="@+id/frag_main_tab"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@id/re_title"
         android:layout_marginBottom="70dp"
         android:orientation="vertical" >
     </LinearLayout>
@@ -78,7 +78,7 @@
             android:gravity="center"
             android:padding="8dp"
             android:text="文字"
-            android:textColor="@color/blue" />
+            android:textColor="@drawable/bg_classify_font_selector" />
 
         <RadioButton
             android:id="@+id/rb_miantab_reading"
@@ -90,7 +90,7 @@
             android:gravity="center"
             android:padding="8dp"
             android:text="阅读"
-            android:textColor="@color/blue" />
+            android:textColor="@drawable/bg_classify_font_selector" />
 
         <RadioButton
             android:id="@+id/rb_miantab_practise"
@@ -102,7 +102,7 @@
             android:gravity="center"
             android:padding="8dp"
             android:text="实践"
-            android:textColor="@color/blue" />
+            android:textColor="@drawable/bg_classify_font_selector" />
 
         <RadioButton
             android:id="@+id/rb_miantab_setting"
@@ -112,8 +112,9 @@
             android:button="@null"
             android:drawableTop="@drawable/icon_bottom4_selector"
             android:gravity="center"
+            android:padding="8dp"
             android:text="设置"
-            android:textColor="@color/blue" />
+            android:textColor="@drawable/bg_classify_font_selector" />
     </RadioGroup>
 
 </RelativeLayout>

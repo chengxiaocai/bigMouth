@@ -30,13 +30,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextClock;
 import android.widget.TextView;
 import android.widget.Toast;
 
 public class PractiseFragment extends Fragment {
-
+	private ImageView ivUnknow;
+	private int GussNmu = 0,totalNum=0;
+	private RelativeLayout reCoffee, reTea, reFeast;
+	private LinearLayout lineUi1, lineUi2, lineUi3, lineUi4;
 	private AsyncHttpClient ahc; // 异步处理
 	private RequestHandle reqhandle;
 	private Dialog thisdialog;
@@ -50,7 +55,7 @@ public class PractiseFragment extends Fragment {
 	private LinearLayout lineGuessWord;
 	private LinearLayout lineRight;
 	private TextView tvWord1, tvWord2, tvWord3, tvWord4, tvWord5, tvTime,
-			tvShow;
+			tvShow, tvResultEnglist, tvResultChinese, tvResultEnglist1, tvResultChinese1;
 	private Timer time;
 	private int i = 6;
 	final Handler handler = new Handler() {
@@ -97,11 +102,12 @@ public class PractiseFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		contentView = inflater.inflate(R.layout.fragment_practise, container,
-				false);
-		initVeiw();
+		contentView = inflater.inflate(R.layout.fragment_practise_pre,
+				container, false);
+		// initVeiw();
 
-		getData();
+		// getData();
+		initView();
 		return contentView;
 	}
 
@@ -116,9 +122,7 @@ public class PractiseFragment extends Fragment {
 		tvEnglishRight = (TextView) contentView.findViewById(R.id.tv_right_usa);
 
 		tvTime = (TextView) contentView.findViewById(R.id.tv_practise_time);
-		tvWord1 = (TextView) contentView
-				.findViewById(R.id.btn_pratise_wrong_word1);
-		tvList.add(tvWord1);
+
 		tvWord2 = (TextView) contentView
 				.findViewById(R.id.btn_pratise_wrong_word2);
 		tvWord3 = (TextView) contentView
@@ -171,7 +175,7 @@ public class PractiseFragment extends Fragment {
 					@Override
 					public void onClick(View v) {
 						// TODO Auto-generated method stub
-						
+
 						i = 6;
 						tvChoose.setText(usa);
 						tvTime.setText(i + "");
@@ -217,7 +221,7 @@ public class PractiseFragment extends Fragment {
 					tvEnglishRight.setText(usa);
 					if (chinese.equals(tv.getText().toString())) {
 						tvShow.setText("不错，答对啦");
-					}else{
+					} else {
 						tvShow.setText("不要担心，下次谨记");
 					}
 				}
@@ -262,7 +266,9 @@ public class PractiseFragment extends Fragment {
 					for (int i = 0; i < array.length(); i++) {
 						list.add(array.getString(i));
 					}
-
+					tvWord2.setText(list.get(1));
+					tvWord3.setText(list.get(2));
+					tvWord4.setText(list.get(3));
 				} catch (JSONException e) {
 					Toast.makeText(getActivity(), "获取单词失败", 0).show();
 					e.printStackTrace();
@@ -293,6 +299,126 @@ public class PractiseFragment extends Fragment {
 				}
 			}
 
+		});
+	}
+
+	private void initView() {
+		tvResultChinese = (TextView) contentView
+				.findViewById(R.id.tv_result_chinese);
+		tvResultEnglist = (TextView) contentView
+				.findViewById(R.id.tv_result_englisg);
+		tvResultChinese1 = (TextView) contentView
+				.findViewById(R.id.tv_result_chinese1);
+		tvResultEnglist1 = (TextView) contentView
+				.findViewById(R.id.tv_result_englisg1);
+		tvWord = (TextView) contentView.findViewById(R.id.tv_pratise_word);
+		ivUnknow = (ImageView) contentView
+				.findViewById(R.id.iv_practise_unkonw);
+		ivUnknow.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				getData();
+			}
+		});
+		ahc = new AsyncHttpClient();
+		thisdialog = DialogUtil.getLoadDialog(getActivity(), "");
+		tvWord2 = (TextView) contentView
+				.findViewById(R.id.btn_pratise_wrong_word2);
+		tvWord3 = (TextView) contentView
+				.findViewById(R.id.btn_pratise_wrong_word3);
+		tvWord4 = (TextView) contentView
+				.findViewById(R.id.btn_pratise_wrong_word4);
+		tvList.add(tvWord4);
+		tvList.add(tvWord3);
+		tvList.add(tvWord2);
+		for (int i = 0; i < tvList.size(); i++) {
+			final TextView tv = tvList.get(i);
+			tv.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+
+					if (chinese.equals(tv.getText().toString())) {
+						totalNum++;
+						if(GussNmu==totalNum){
+							
+						}
+						lineUi2.setVisibility(View.GONE);
+						lineUi3.setVisibility(View.VISIBLE);
+						tvResultChinese.setText(chinese);
+						tvResultEnglist.setText(usa);
+
+					} else {
+						lineUi2.setVisibility(View.GONE);
+						lineUi4.setVisibility(View.VISIBLE);
+						tvResultChinese1.setText(chinese);
+						tvResultEnglist1.setText(usa);
+					}
+				}
+			});
+		}
+		lineUi1 = (LinearLayout) contentView.findViewById(R.id.ll_ui1);
+		lineUi2 = (LinearLayout) contentView.findViewById(R.id.ll_ui2);
+		lineUi3 = (LinearLayout) contentView.findViewById(R.id.ll_ui3);
+		lineUi4 = (LinearLayout) contentView.findViewById(R.id.ll_ui4);
+		contentView.findViewById(R.id.re_practise_coffee).setOnClickListener(
+				new OnClickListener() {
+
+					@Override
+					public void onClick(View v) {
+						// TODO Auto-generated method stub
+						getData();
+						lineUi1.setVisibility(View.GONE);
+						lineUi2.setVisibility(View.VISIBLE);
+						GussNmu = 5;
+					}
+				});
+		contentView.findViewById(R.id.re_practise_tea).setOnClickListener(
+				new OnClickListener() {
+
+					@Override
+					public void onClick(View v) {
+						// TODO Auto-generated method stub
+						getData();
+						lineUi1.setVisibility(View.GONE);
+						lineUi2.setVisibility(View.VISIBLE);
+						GussNmu = 10;
+					}
+				});
+		contentView.findViewById(R.id.re_practise_feast).setOnClickListener(
+				new OnClickListener() {
+
+					@Override
+					public void onClick(View v) {
+						// TODO Auto-generated method stub
+						getData();
+						lineUi1.setVisibility(View.GONE);
+						lineUi2.setVisibility(View.VISIBLE);
+						GussNmu = 20;
+					}
+				});
+		contentView.findViewById(R.id.tv_pratise_next).setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				lineUi3.setVisibility(View.GONE);
+				lineUi2.setVisibility(View.VISIBLE);
+				getData();
+			}
+		});
+		contentView.findViewById(R.id.tv_pratise_next1).setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				lineUi3.setVisibility(View.GONE);
+				lineUi2.setVisibility(View.VISIBLE);
+				getData();
+			}
 		});
 	}
 }
