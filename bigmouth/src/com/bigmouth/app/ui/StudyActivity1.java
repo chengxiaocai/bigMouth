@@ -65,6 +65,16 @@ public class StudyActivity1 extends FragmentActivity implements OnClickListener 
 	}
 
 	private void initView() {
+		findViewById(R.id.iv_studty_back).setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				//startActivity(new Intent(StudyActivity1.this, MainAcitivity.class));
+				finish();
+				
+			}
+		});
 		findViewById(R.id.tv_title_addword).setOnClickListener(
 				new OnClickListener() {
 

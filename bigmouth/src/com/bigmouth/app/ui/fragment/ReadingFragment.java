@@ -12,6 +12,7 @@ import org.json.JSONObject;
 import com.bigmouth.app.R;
 import com.bigmouth.app.bean.Readings;
 import com.bigmouth.app.bean.Words;
+import com.bigmouth.app.ui.DialogBaiduFanyiActivity;
 import com.bigmouth.app.ui.MainAcitivity;
 import com.bigmouth.app.ui.StudyActivity;
 import com.bigmouth.app.ui.StudyActivity1;
@@ -25,6 +26,7 @@ import com.loopj.android.http.RequestParams;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
@@ -391,6 +393,7 @@ public class ReadingFragment extends Fragment {
 	}
 	private ClickableSpan getClickableSpan(final TextView tvText) {
 		return new ClickableSpan() {
+			@SuppressLint("NewApi")
 			@Override
 			public void onClick(View widget) {
 				try {
@@ -415,7 +418,11 @@ public class ReadingFragment extends Fragment {
 					getEachWord(tvText);
 
 					Log.d("tapped on:", strTransWords);
-					Toast.makeText(getActivity(), strTransWords, 1).show();
+					Intent intent = new Intent();
+					intent.putExtra("word", strTransWords);
+					intent.setClass(getActivity(), DialogBaiduFanyiActivity.class);
+					getActivity().startActivity(intent);
+					getActivity().overridePendingTransition(R.anim.push_up_in, 0);
 					
 
 				} catch (Exception e) {

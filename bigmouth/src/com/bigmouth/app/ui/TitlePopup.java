@@ -163,7 +163,7 @@ public class TitlePopup extends PopupWindow {
 					}
 					if("1".equals(Type)){
 						Intent intent3 = new Intent(mContext,
-								StudyActivity.class);
+								StudyActivity1.class);
 						
 						ac.startActivityForResult(intent3, 1);
 					}

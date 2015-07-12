@@ -107,7 +107,7 @@ public class WordsFragment extends Fragment implements OnClickListener,
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					final int position, long id) {
-				view.setLayoutParams(new AbsListView.LayoutParams(((DisplayUtil.getWidth(getActivity())-160)/3)*2+40, ((DisplayUtil.getWidth(getActivity())-160)/3)*2+40));// 动态设置item的高度  
+			//	view.setLayoutParams(new AbsListView.LayoutParams(((DisplayUtil.getWidth(getActivity())-160)/3)*2+40, ((DisplayUtil.getWidth(getActivity())-160)/3)*2+40));// 动态设置item的高度  
 
 				// TODO Auto-generated method stub
 //				final Dialog dialog = new Dialog(getActivity());
