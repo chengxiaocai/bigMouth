@@ -1,6 +1,7 @@
 package com.bigmouth.app.ui.fragment;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import org.apache.http.Header;
@@ -27,9 +28,17 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.TextPaint;
+import android.text.method.LinkMovementMethod;
+import android.text.style.BackgroundColorSpan;
+import android.text.style.ClickableSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -55,15 +64,18 @@ public class ReadingFragment extends Fragment {
 	private Dialog thisdialog;
 	private JSONObject obj;
 	private ArrayList<Readings> readList = new ArrayList<Readings>();
+	private ArrayList<TextView> tv = new ArrayList<TextView>();
 	LayoutInflater inflater = null;
 	private ListView lvReading;
 	private View contentView;
 	private ReadingsAdapter adapter;
 	private StudyActivity1 ac;// 父activitiy对象；
 	private String id;
+	private String strTransWords;
+
 	private ImageLoader mImageLoader;
 	private DisplayImageOptions options;
-	private int Color[] = new int[] { R.color.color1, R.color.color3,
+	private int Colors[] = new int[] { R.color.color1, R.color.color3,
 			R.color.color4, R.color.color5, R.color.color6, R.color.color7,
 			R.color.color8, R.color.color9, R.color.color10, R.color.color11,
 			R.color.color12 };
@@ -138,7 +150,7 @@ public class ReadingFragment extends Fragment {
 				// Toast.makeText(getActivity(), "添加成功", 0).show();
 				try {
 					obj = new JSONObject(content);
- 
+
 					JSONArray array = obj.getJSONArray("data");
 					for (int i = 0; i < array.length(); i++) {
 
@@ -234,10 +246,15 @@ public class ReadingFragment extends Fragment {
 					.findViewById(R.id.tv_reading_source);
 			final TextView tvReads = (TextView) convertView
 					.findViewById(R.id.tv_read_reads);
-			tvReads.setText(listReadings.get(position).getText());
-			if(listReadings.get(position).getIsShowReads()){
+			tvReads.setText(listReadings.get(position).getText(),
+					BufferType.SPANNABLE);
+			getEachWord(tvReads);
+			//tvReads.setTextColor(Color.WHITE);
+			tvReads.setMovementMethod(LinkMovementMethod.getInstance());
+		//	tvReads.setText(listReadings.get(position).getText());
+			if (listReadings.get(position).getIsShowReads()) {
 				tvReads.setVisibility(View.VISIBLE);
-			}else{
+			} else {
 				tvReads.setVisibility(View.GONE);
 
 			}
@@ -245,28 +262,28 @@ public class ReadingFragment extends Fragment {
 			RelativeLayout reMain = (RelativeLayout) convertView
 					.findViewById(R.id.re_reading_main);
 
-			reMain.setBackgroundColor(getResources().getColor(Color[listReadings.get(position).getRandomColor()]));
-			tvReads.setBackgroundColor(getResources().getColor(Color[listReadings.get(position).getRandomColor()]));
-			
+			reMain.setBackgroundColor(getResources().getColor(
+					Colors[listReadings.get(position).getRandomColor()]));
+			tvReads.setBackgroundColor(getResources().getColor(
+					Colors[listReadings.get(position).getRandomColor()]));
 
 			reMain.setOnClickListener(new OnClickListener() {
 
 				@Override
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
-					if(listReadings.get(position).getIsShowReads()){
+					if (listReadings.get(position).getIsShowReads()) {
 						tvReads.setVisibility(View.GONE);
 						listReadings.get(position).setIsShowReads(false);
-					}else{
+					} else {
 						tvReads.setVisibility(View.VISIBLE);
 						listReadings.get(position).setIsShowReads(true);
 
-
 					}
-					if(listReadings.get(position).getText()==""){
-						
+					if (listReadings.get(position).getText() == "") {
+
 						getReadingDeatail(listReadings.get(position).getId(),
-								tvReads,position);
+								tvReads, position);
 					}
 				}
 			});
@@ -275,7 +292,8 @@ public class ReadingFragment extends Fragment {
 
 	}
 
-	public void getReadingDeatail(String id, final TextView view,final int position) {
+	public void getReadingDeatail(String id, final TextView view,
+			final int position) {
 
 		RequestParams rp = new RequestParams();
 		rp.put("id", id);
@@ -299,7 +317,12 @@ public class ReadingFragment extends Fragment {
 				// Toast.makeText(getActivity(), "添加成功", 0).show();
 				try {
 					obj = new JSONObject(content);
+					
+					
 					view.setText(obj.optString("text"));
+					view.setText(obj.optString("text"),
+							BufferType.SPANNABLE);
+					getEachWord(view);
 					readList.get(position).setText(obj.optString("text"));
 					// tvText.setText(read.getText(),
 					// BufferType.SPANNABLE);getEachWord(tvText);
@@ -333,5 +356,81 @@ public class ReadingFragment extends Fragment {
 			}
 
 		});
+	}
+
+	public void getEachWord(TextView textView) {
+		Spannable spans = (Spannable) textView.getText();
+		Integer[] indices = getIndices(textView.getText().toString().trim(),
+				' ');
+		int start = 0;
+		int end = 0;
+		// to cater last/only word loop will run equal to the length of
+		// indices.length
+		for (int i = 0; i <= indices.length; i++) {
+			ClickableSpan clickSpan = getClickableSpan(textView);
+			// to cater last/only word
+			end = (i < indices.length ? indices[i] : spans.length());
+			spans.setSpan(clickSpan, start, end,
+					Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+			start = end + 1;
+		}
+		// 改变选中文本的高亮颜色
+	//	textView.setHighlightColor(Color.TRANSPARENT);
+		//textView.setTextColor(Color.WHITE);
+
+	}
+
+	public static Integer[] getIndices(String s, char c) {
+		int pos = s.indexOf(c, 0);
+		List<Integer> indices = new ArrayList<Integer>();
+		while (pos != -1) {
+			indices.add(pos);
+			pos = s.indexOf(c, pos + 1);
+		}
+		return (Integer[]) indices.toArray(new Integer[0]);
+	}
+	private ClickableSpan getClickableSpan(final TextView tvText) {
+		return new ClickableSpan() {
+			@Override
+			public void onClick(View widget) {
+				try {
+					TextView tv = (TextView) widget;
+				
+					strTransWords = tv
+							.getText()
+							.subSequence(tv.getSelectionStart(),
+									tv.getSelectionEnd()).toString();
+					Log.d(tv.getSelectionStart() + "", tv.getSelectionEnd()
+							+ "");
+					SpannableStringBuilder style = new SpannableStringBuilder(
+							tv.getText().toString());
+					style.setSpan(new BackgroundColorSpan(getResources()
+							.getColor(R.color.green)), tv.getSelectionStart(),
+							tv.getSelectionEnd(),
+							Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+					
+					tv.setText(style);
+					tv.setTextColor(Color.WHITE);
+
+					getEachWord(tvText);
+
+					Log.d("tapped on:", strTransWords);
+					Toast.makeText(getActivity(), strTransWords, 1).show();
+					
+
+				} catch (Exception e) {
+					// TODO: handle exception
+					Log.i("cc", "hahahfhahdfiaofhioehfieo");
+
+				}
+
+			}
+
+			@Override
+			public void updateDrawState(TextPaint ds) {
+				//ds.setColor(Color.BLACK);
+				ds.setUnderlineText(false);
+			}
+		};
 	}
 }
