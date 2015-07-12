@@ -2,7 +2,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
- 
     android:orientation="vertical" >
 
     <LinearLayout
@@ -18,22 +17,23 @@
 
         <TextView
             android:id="@+id/tv_reading_data"
-            android:layout_width="wrap_content"
+            android:layout_width="70dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="3dp"
             android:gravity="clip_vertical"
-            android:text="05-19"
+            android:text="2015/03/12"
             android:textColor="#ffffff" />
 
         <RelativeLayout
+            
             android:id="@+id/re_reading_main"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
-           
             android:padding="10dp" >
 
             <LinearLayout
+                android:id="@+id/line_reads_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical" >
@@ -44,7 +44,8 @@
                     android:layout_height="wrap_content"
                     android:gravity="clip_vertical"
                     android:text="This is a  good  english reads"
-                    android:textColor="#ffffff" />
+                    android:textColor="#ffffff"
+                    android:textSize="17sp" />
 
                 <TextView
                     android:id="@+id/tv_reading_source"
@@ -64,5 +65,17 @@
                 android:src="@drawable/icon_share1" />
         </RelativeLayout>
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_read_reads"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/line_reads_title"
+        android:layout_marginLeft="98dp"
+        android:visibility="gone"
+        android:padding="4dp"
+        android:textStyle="bold"
+        android:textColor="#ffffff"
+        android:textSize="19sp" />
 
 </LinearLayout>

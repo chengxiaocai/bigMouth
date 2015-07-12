@@ -190,8 +190,7 @@ public class WordsFragment extends Fragment implements OnClickListener,
 	           convertView.setLayoutParams(new AbsListView.LayoutParams((DisplayUtil.getWidth(getActivity())-160)/3, (DisplayUtil.getWidth(getActivity())-160)/3));// 动态设置item的高度  
 
 			}
-			TextView tvChinse = (TextView) convertView
-					.findViewById(R.id.tv_words_chinese);
+			TextView tvChinse = (TextView) convertView.findViewById(R.id.tv_words_chinese1);
 			tvChinse.setText(listWord.get(position).getChinese());
 
 			TextView tvUsa = (TextView) convertView

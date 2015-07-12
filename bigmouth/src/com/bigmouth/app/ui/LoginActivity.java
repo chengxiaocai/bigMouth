@@ -54,18 +54,18 @@ public class LoginActivity extends Activity {
 				null) != null) {
 			type = PersistentUtil.getInstance().readString(this, "type", "0");
 			reTtile.setVisibility(View.VISIBLE);
-//			if ("2".equals(type)) {
-//				findViewById(R.id.iv_login_read).setVisibility(
-//						View.GONE);
-//				findViewById(R.id.iv_login_scan).setVisibility(
-//						View.VISIBLE);
-//			} if("1".equals(type)){
-//				findViewById(R.id.iv_login_scan).setVisibility(
-//						View.GONE);
-//				findViewById(R.id.iv_login_read).setVisibility(
-//						View.VISIBLE);
-//
-//			}
+			if ("2".equals(type)) {
+				findViewById(R.id.iv_login_read).setVisibility(
+					View.GONE);
+				findViewById(R.id.iv_login_scan).setVisibility(
+						View.VISIBLE);
+			} if("1".equals(type)){
+				findViewById(R.id.iv_login_scan).setVisibility(
+						View.GONE);
+				findViewById(R.id.iv_login_read).setVisibility(
+						View.VISIBLE);
+
+			}
 		}
 		tvIndex = (TextView) findViewById(R.id.tv_lging_index);
 

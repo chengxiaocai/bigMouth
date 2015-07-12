@@ -33,12 +33,14 @@ import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.TextView.BufferType;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -61,8 +63,10 @@ public class ReadingFragment extends Fragment {
 	private String id;
 	private ImageLoader mImageLoader;
 	private DisplayImageOptions options;
-	private int Color [] = new int[]{R.color.color1,R.color.color3,R.color.color4,R.color.color5,R.color.color6,R.color.color7,R.color.color8,R.color.color9,R.color.color10,R.color.color11,R.color.color12};
-
+	private int Color[] = new int[] { R.color.color1, R.color.color3,
+			R.color.color4, R.color.color5, R.color.color6, R.color.color7,
+			R.color.color8, R.color.color9, R.color.color10, R.color.color11,
+			R.color.color12 };
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -90,7 +94,7 @@ public class ReadingFragment extends Fragment {
 				.showImageForEmptyUri(R.drawable.log).cacheInMemory(true)
 				.cacheOnDisc(true).bitmapConfig(Bitmap.Config.RGB_565).build();
 
-		lvReading = (ListView) contentView.findViewById(R.id.lv_reading_list);
+		lvReading = (ListView) contentView.findViewById(R.id.lv_reading_list1);
 		adapter = new ReadingsAdapter(readList);
 		lvReading.setAdapter(adapter);
 		lvReading.setOnItemClickListener(new OnItemClickListener() {
@@ -99,10 +103,10 @@ public class ReadingFragment extends Fragment {
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
 				// TODO Auto-generated method stub
-				Intent in = new Intent();
-
-				in.putExtra("text", readList.get(position).getId());
-				ac.changeReadingPage(in);
+				// Intent in = new Intent();
+				//
+				// in.putExtra("text", readList.get(position).getId());
+				// ac.changeReadingPage(in);
 			}
 		});
 		inflater = LayoutInflater.from(getActivity());
@@ -134,11 +138,12 @@ public class ReadingFragment extends Fragment {
 				// Toast.makeText(getActivity(), "添加成功", 0).show();
 				try {
 					obj = new JSONObject(content);
-
+ 
 					JSONArray array = obj.getJSONArray("data");
 					for (int i = 0; i < array.length(); i++) {
 
 						Readings read = new Readings();
+						read.setRandomColor(new Random().nextInt(11));
 						read.setId(array.getJSONObject(i).optString("id"));
 						read.setTitle(array.getJSONObject(i).optString("title"));
 						read.setDate(array.getJSONObject(i).optString("date"));
@@ -208,7 +213,8 @@ public class ReadingFragment extends Fragment {
 		}
 
 		@Override
-		public View getView(int position, View convertView, ViewGroup parent) {
+		public View getView(final int position, View convertView,
+				ViewGroup parent) {
 			// TODO Auto-generated method stub
 			if (listReadings.size() < 1) {
 				return null;
@@ -226,12 +232,106 @@ public class ReadingFragment extends Fragment {
 
 			TextView tvSource = (TextView) convertView
 					.findViewById(R.id.tv_reading_source);
-			tvSource.setText(listReadings.get(position).getSource());
-			RelativeLayout reMain = (RelativeLayout) convertView.findViewById(R.id.re_reading_main);
-			reMain.setBackgroundColor(getResources().getColor(Color[new Random().nextInt(11) ]));
+			final TextView tvReads = (TextView) convertView
+					.findViewById(R.id.tv_read_reads);
+			tvReads.setText(listReadings.get(position).getText());
+			if(listReadings.get(position).getIsShowReads()){
+				tvReads.setVisibility(View.VISIBLE);
+			}else{
+				tvReads.setVisibility(View.GONE);
 
+			}
+			tvSource.setText(listReadings.get(position).getSource());
+			RelativeLayout reMain = (RelativeLayout) convertView
+					.findViewById(R.id.re_reading_main);
+
+			reMain.setBackgroundColor(getResources().getColor(Color[listReadings.get(position).getRandomColor()]));
+			tvReads.setBackgroundColor(getResources().getColor(Color[listReadings.get(position).getRandomColor()]));
+			
+
+			reMain.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					if(listReadings.get(position).getIsShowReads()){
+						tvReads.setVisibility(View.GONE);
+						listReadings.get(position).setIsShowReads(false);
+					}else{
+						tvReads.setVisibility(View.VISIBLE);
+						listReadings.get(position).setIsShowReads(true);
+
+
+					}
+					if(listReadings.get(position).getText()==""){
+						
+						getReadingDeatail(listReadings.get(position).getId(),
+								tvReads,position);
+					}
+				}
+			});
 			return convertView;
 		}
 
+	}
+
+	public void getReadingDeatail(String id, final TextView view,final int position) {
+
+		RequestParams rp = new RequestParams();
+		rp.put("id", id);
+
+		reqhandle = ahc.post("http://app.01teacher.cn/App/GetReadingsByID",
+
+		rp, new AsyncHttpResponseHandler() {
+			@Override
+			public void onStart() {
+				// TODO Auto-generated method stub
+				super.onStart();
+				Log.i("cc...getreads", "start...");
+				// thisdialog.show();
+			}
+
+			@Override
+			public void onSuccess(String content) {
+				// TODO Auto-generated method stub
+				super.onSuccess(content);
+				Log.i("cc...cars", "success.......");
+				// Toast.makeText(getActivity(), "添加成功", 0).show();
+				try {
+					obj = new JSONObject(content);
+					view.setText(obj.optString("text"));
+					readList.get(position).setText(obj.optString("text"));
+					// tvText.setText(read.getText(),
+					// BufferType.SPANNABLE);getEachWord(tvText);
+
+				} catch (JSONException e) {
+					Toast.makeText(getActivity(), "获取文章失败", 0).show();
+					e.printStackTrace();
+				}
+
+			}
+
+			@Override
+			public void onFinish() {
+				// TODO Auto-generated method stub
+				super.onFinish();
+				Log.i("cc...", "finish");
+				// thisdialog.dismiss();
+			}
+
+			@Override
+			public void onFailure(int arg0, Header[] arg1, byte[] arg2,
+					Throwable arg3) {
+				// TODO Auto-generated method stub
+				super.onFailure(arg0, arg1, arg2, arg3);
+				Log.i("cc...cars", "failue.......");
+				HttpHandle hh = new HttpHandle();
+				hh.handleFaile(getActivity(), arg3);
+				if (thisdialog.isShowing()) {
+					// thisdialog.dismiss();
+				}
+			}
+
+		});
 	}
 }

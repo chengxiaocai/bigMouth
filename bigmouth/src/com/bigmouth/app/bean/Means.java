@@ -6,7 +6,7 @@ public class Means {
 	private String part;
 	private ArrayList<String> list = new ArrayList<String>();
 	public String getPart() {
-		return part;
+		return  part;
 	}
 	public void setPart(String part) {
 		this.part = part;
