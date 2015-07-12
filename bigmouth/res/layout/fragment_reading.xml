@@ -2,13 +2,12 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-  
     android:orientation="vertical" >
 
     <View
-        android:layout_marginLeft="20dp"
         android:layout_width="1dp"
         android:layout_height="match_parent"
+        android:layout_marginLeft="20dp"
         android:background="#ffffff" />
 
     <ListView
@@ -23,5 +22,7 @@
         android:listSelector="@android:color/transparent"
         android:scrollbars="none" >
     </ListView>
+
+  
 
 </FrameLayout>
