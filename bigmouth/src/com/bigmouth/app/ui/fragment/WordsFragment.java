@@ -13,6 +13,7 @@ import com.baidu.speechsynthesizer.SpeechSynthesizerListener;
 import com.baidu.speechsynthesizer.publicutility.SpeechError;
 import com.bigmouth.app.R;
 import com.bigmouth.app.bean.Words;
+import com.bigmouth.app.ui.ShowWordsActivity;
 import com.bigmouth.app.util.DialogUtil;
 import com.bigmouth.app.util.DisplayUtil;
 import com.bigmouth.app.util.HttpHandle;
@@ -107,45 +108,16 @@ public class WordsFragment extends Fragment implements OnClickListener,
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					final int position, long id) {
-			//	view.setLayoutParams(new AbsListView.LayoutParams(((DisplayUtil.getWidth(getActivity())-160)/3)*2+40, ((DisplayUtil.getWidth(getActivity())-160)/3)*2+40));// 动态设置item的高度  
 
 				// TODO Auto-generated method stub
-//				final Dialog dialog = new Dialog(getActivity());
-//				final TextView etWord;
-//				final TextView etChinese;
-//				dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
-//				dialog.setContentView(R.layout.item_words_dialog);
-//				dialog.setTitle(null);
-//				dialog.show();
-//				TextView tvChinse = (TextView) dialog
-//						.findViewById(R.id.tv_words_chinese);
-//				tvChinse.setText(listWord.get(position).getChinese());
-//
-//				TextView tvUsa = (TextView) dialog
-//						.findViewById(R.id.tv_words_usa);
-//				tvUsa.setText(listWord.get(position).getWord());
-//				dialog.findViewById(R.id.lound).setOnClickListener(
-//						new OnClickListener() {
-//
-//							@Override
-//							public void onClick(View v) {
-//								// TODO Auto-generated method stub
-//								new Thread(new Runnable() {
-//
-//									@Override
-//									public void run() {
-//										setParams();
-//										int ret = speechSynthesizer
-//												.speak(listWord.get(position)
-//														.getWord());
-//										if (ret != 0) {
-//											Log.i("cc......", "hecheng faile!!");
-//										}
-//									}
-//								}).start();
-//							}
-//						});
-//
+				Intent intent = new Intent();
+				intent.putExtra("chinese", listWord.get(position).getChinese());
+				intent.putExtra("word", listWord.get(position).getWord());
+				intent.putExtra("color", listWord.get(position).getColor());
+				intent.setClass(getActivity(), ShowWordsActivity.class);
+				getActivity().startActivity(intent);
+				
+				
 			}
 		});
 		adapter = new WordsAdapter(listWord);
@@ -196,7 +168,9 @@ public class WordsFragment extends Fragment implements OnClickListener,
 			TextView tvUsa = (TextView) convertView
 					.findViewById(R.id.tv_words_usa);
 			tvUsa.setText(listWord.get(position).getWord());
-			convertView.setBackgroundColor(getResources().getColor(Color[new Random().nextInt(11) ]));
+			int color = new Random().nextInt(11);
+			listWord.get(position).setColor(color);
+			convertView.setBackgroundColor(getResources().getColor(Color[color]));
 			return convertView;
 		}
 

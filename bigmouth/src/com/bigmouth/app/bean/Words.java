@@ -4,6 +4,13 @@ public class Words {
 	private String id;
 	private String word;
 	private String  chinese;
+	private int color;
+	public int getColor() {
+		return color;
+	}
+	public void setColor(int color) {
+		this.color = color;
+	}
 	public String getId() {
 		return id;
 	}

@@ -89,6 +89,10 @@
             android:theme="@style/dialog" >
         </activity>
         <activity
+            android:name="com.bigmouth.app.ui.ShowWordsActivity"
+            android:theme="@style/dialog" >
+        </activity>
+        <activity
             android:name="com.bigmouth.app.ui.DialogBaiduFanyiUpActivity"
             android:theme="@style/dialog" >
         </activity>
