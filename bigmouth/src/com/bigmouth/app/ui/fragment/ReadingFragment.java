@@ -13,10 +13,12 @@ import com.bigmouth.app.R;
 import com.bigmouth.app.bean.Readings;
 import com.bigmouth.app.bean.Words;
 import com.bigmouth.app.ui.DialogBaiduFanyiActivity;
+import com.bigmouth.app.ui.DialogBaiduFanyiUpActivity;
 import com.bigmouth.app.ui.MainAcitivity;
 import com.bigmouth.app.ui.StudyActivity;
 import com.bigmouth.app.ui.StudyActivity1;
 import com.bigmouth.app.util.DialogUtil;
+import com.bigmouth.app.util.DisplayUtil;
 import com.bigmouth.app.util.HttpHandle;
 import com.bigmouth.app.util.PersistentUtil;
 import com.loopj.android.http.AsyncHttpClient;
@@ -31,6 +33,8 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.res.ColorStateList;
+import android.gesture.GestureOverlayView;
+import android.gesture.GestureOverlayView.OnGestureListener;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -43,14 +47,18 @@ import android.text.style.BackgroundColorSpan;
 import android.text.style.ClickableSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView.BufferType;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
@@ -59,7 +67,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class ReadingFragment extends Fragment {
+public class ReadingFragment extends Fragment   {
 
 	private AsyncHttpClient ahc; // 异步处理
 	private RequestHandle reqhandle;
@@ -74,6 +82,10 @@ public class ReadingFragment extends Fragment {
 	private StudyActivity1 ac;// 父activitiy对象；
 	private String id;
 	private String strTransWords;
+	private TextView tvTile,tvData,tvSource,tvReads,tvReadss;
+	private LinearLayout llShowReads;
+	public float y=0;
+    private FrameLayout fra;
 
 	private ImageLoader mImageLoader;
 	private DisplayImageOptions options;
@@ -98,10 +110,17 @@ public class ReadingFragment extends Fragment {
 		// TODO Auto-generated method stub
 		super.onAttach(activity);
 		ac = (StudyActivity1) activity;
+		
 	}
 
 	public void initView() {
-
+		tvReads = (TextView) contentView.findViewById(R.id.tv_reads_reads);
+		//tvReadss = (TextView) contentView.findViewById(R.id.tv_reads_readss);
+	
+		llShowReads = (LinearLayout) contentView.findViewById(R.id.ll_show_reads_detail);
+        tvData = (TextView) contentView.findViewById(R.id.tv_readings_data);
+        tvTile = (TextView) contentView.findViewById(R.id.tv_readings_title);
+        tvSource = (TextView) contentView.findViewById(R.id.tv_readings_source);
 		mImageLoader = ImageLoader.getInstance();
 		options = new DisplayImageOptions.Builder()
 				.showStubImage(R.drawable.log)
@@ -116,11 +135,20 @@ public class ReadingFragment extends Fragment {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
+				lvReading.setVisibility(View.GONE);
+				llShowReads.setVisibility(View.VISIBLE);
+				
 				// TODO Auto-generated method stub
 				// Intent in = new Intent();
 				//
 				// in.putExtra("text", readList.get(position).getId());
 				// ac.changeReadingPage(in);
+				ac.isReading=true;
+				tvData.setText(readList.get(position).getDate());
+				tvSource.setText(readList.get(position).getSource());
+				tvTile.setText(readList.get(position).getTitle());
+				getReadingDeatail(readList.get(position).getId());
+				
 			}
 		});
 		inflater = LayoutInflater.from(getActivity());
@@ -162,8 +190,7 @@ public class ReadingFragment extends Fragment {
 						read.setTitle(array.getJSONObject(i).optString("title"));
 						read.setDate(array.getJSONObject(i).optString("date"));
 						read.setImg(array.getJSONObject(i).optString("img"));
-						read.setSource(array.getJSONObject(i).optString(
-								"source"));
+						read.setSource(array.getJSONObject(i).optString("source"));
 
 						readList.add(read);
 					}
@@ -237,6 +264,10 @@ public class ReadingFragment extends Fragment {
 				convertView = inflater.inflate(R.layout.item_reads, null);
 
 			}
+			ImageView img = (ImageView) convertView.findViewById(R.id.iv_reads_img);
+
+			ImageLoader.getInstance().displayImage(listReadings.get(position).getImg(), img,
+					options, null);
 			TextView tvText = (TextView) convertView
 					.findViewById(R.id.tv_reading_title);
 			tvText.setText(listReadings.get(position).getTitle());
@@ -246,56 +277,53 @@ public class ReadingFragment extends Fragment {
 
 			TextView tvSource = (TextView) convertView
 					.findViewById(R.id.tv_reading_source);
-			final TextView tvReads = (TextView) convertView
-					.findViewById(R.id.tv_read_reads);
-			tvReads.setText(listReadings.get(position).getText(),
-					BufferType.SPANNABLE);
-			getEachWord(tvReads);
+			
+			//tvReads.setText(listReadings.get(position).getText(),BufferType.SPANNABLE);
+			//getEachWord(tvReads);
 			//tvReads.setTextColor(Color.WHITE);
-			tvReads.setMovementMethod(LinkMovementMethod.getInstance());
+			//tvReads.setMovementMethod(LinkMovementMethod.getInstance());
 		//	tvReads.setText(listReadings.get(position).getText());
-			if (listReadings.get(position).getIsShowReads()) {
-				tvReads.setVisibility(View.VISIBLE);
-			} else {
-				tvReads.setVisibility(View.GONE);
-
-			}
+//			if (listReadings.get(position).getIsShowReads()) {
+//				tvReads.setVisibility(View.VISIBLE);
+//			} else {
+//				tvReads.setVisibility(View.GONE);
+//
+//			}
 			tvSource.setText(listReadings.get(position).getSource());
 			RelativeLayout reMain = (RelativeLayout) convertView
 					.findViewById(R.id.re_reading_main);
 
-			reMain.setBackgroundColor(getResources().getColor(
-					Colors[listReadings.get(position).getRandomColor()]));
-			tvReads.setBackgroundColor(getResources().getColor(
-					Colors[listReadings.get(position).getRandomColor()]));
+//			reMain.setBackgroundColor(getResources().getColor(
+//					Colors[listReadings.get(position).getRandomColor()]));
+//			tvReads.setBackgroundColor(getResources().getColor(
+//					Colors[listReadings.get(position).getRandomColor()]));
 
-			reMain.setOnClickListener(new OnClickListener() {
-
-				@Override
-				public void onClick(View v) {
-					// TODO Auto-generated method stub
-					if (listReadings.get(position).getIsShowReads()) {
-						tvReads.setVisibility(View.GONE);
-						listReadings.get(position).setIsShowReads(false);
-					} else {
-						tvReads.setVisibility(View.VISIBLE);
-						listReadings.get(position).setIsShowReads(true);
-
-					}
-					if (listReadings.get(position).getText() == "") {
-
-						getReadingDeatail(listReadings.get(position).getId(),
-								tvReads, position);
-					}
-				}
-			});
+//			reMain.setOnClickListener(new OnClickListener() {
+//
+//				@Override
+//				public void onClick(View v) {
+//					// TODO Auto-generated method stub
+//					if (listReadings.get(position).getIsShowReads()) {
+//						tvReads.setVisibility(View.GONE);
+//						listReadings.get(position).setIsShowReads(false);
+//					} else {
+//						tvReads.setVisibility(View.VISIBLE);
+//						listReadings.get(position).setIsShowReads(true);
+//
+//					}
+//					if (listReadings.get(position).getText() == "") {
+//
+//						getReadingDeatail(listReadings.get(position).getId(),
+//								tvReads, position);
+//					}
+//				}
+//			});
 			return convertView;
 		}
 
 	}
 
-	public void getReadingDeatail(String id, final TextView view,
-			final int position) {
+	public void getReadingDeatail(String id) {
 
 		RequestParams rp = new RequestParams();
 		rp.put("id", id);
@@ -321,11 +349,12 @@ public class ReadingFragment extends Fragment {
 					obj = new JSONObject(content);
 					
 					
-					view.setText(obj.optString("text"));
-					view.setText(obj.optString("text"),
-							BufferType.SPANNABLE);
-					getEachWord(view);
-					readList.get(position).setText(obj.optString("text"));
+					tvReads.setText(obj.optString("text"));
+					tvReads.setText(obj.optString("text"),BufferType.SPANNABLE);
+					getEachWord(tvReads);
+					
+					tvReads.setMovementMethod(LinkMovementMethod.getInstance());
+					
 					// tvText.setText(read.getText(),
 					// BufferType.SPANNABLE);getEachWord(tvText);
 
@@ -413,16 +442,29 @@ public class ReadingFragment extends Fragment {
 							Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 					
 					tv.setText(style);
-					tv.setTextColor(Color.WHITE);
+				
 
 					getEachWord(tvText);
 
 					Log.d("tapped on:", strTransWords);
-					Intent intent = new Intent();
-					intent.putExtra("word", strTransWords);
-					intent.setClass(getActivity(), DialogBaiduFanyiActivity.class);
-					getActivity().startActivity(intent);
-					getActivity().overridePendingTransition(R.anim.push_up_in, 0);
+					if(y>(DisplayUtil.getHeight(getActivity())/2)){
+						
+						Intent intent = new Intent();
+						intent.putExtra("word", strTransWords);
+						intent.setClass(getActivity(),
+								DialogBaiduFanyiActivity.class);
+						getActivity().startActivity(intent);
+						getActivity().overridePendingTransition(
+								R.anim.push_up_in, 0);
+					}else{
+						Intent intent = new Intent();
+						intent.putExtra("word", strTransWords);
+						intent.setClass(getActivity(),
+								DialogBaiduFanyiUpActivity.class);
+						getActivity().startActivity(intent);
+						getActivity().overridePendingTransition(
+								R.anim.push_down_out, 0);
+					}
 					
 
 				} catch (Exception e) {
@@ -440,4 +482,14 @@ public class ReadingFragment extends Fragment {
 			}
 		};
 	}
+	public void SetReadListVisible(){
+		lvReading.setVisibility(View.VISIBLE);
+		llShowReads.setVisibility(View.GONE);
+	}
+	
+
+	
+
+
+	
 }

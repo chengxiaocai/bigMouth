@@ -14,6 +14,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.View.OnClickListener;
@@ -52,6 +53,7 @@ public class StudyActivity1 extends FragmentActivity implements OnClickListener 
 	private LinearLayout line;
 	private TextView tvWord, tvReading, tvPractise, tvSetting, tvNum;
 	private String num;
+	public Boolean isReading=false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +73,11 @@ public class StudyActivity1 extends FragmentActivity implements OnClickListener 
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				//startActivity(new Intent(StudyActivity1.this, MainAcitivity.class));
+				if(isReading){
+					readingFramet.SetReadListVisible();
+					isReading=false;
+					
+				}else
 				finish();
 				
 			}
@@ -402,6 +409,16 @@ public class StudyActivity1 extends FragmentActivity implements OnClickListener 
 			}
 
 		});
+	}
+	@Override
+	public boolean dispatchTouchEvent(MotionEvent ev) {
+		// TODO Auto-generated method stub
+		Log.i("cc", ev.getY()+"");
+		if(readingFramet!=null){
+			
+			readingFramet.y = ev.getY();
+		}
+		return super.dispatchTouchEvent(ev);
 	}
 
 }

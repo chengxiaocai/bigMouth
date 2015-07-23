@@ -2,27 +2,99 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/fra_readings"
+    android:layout_margin="10dp"
     android:orientation="vertical" >
-
-    <View
-        android:layout_width="1dp"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="20dp"
-        android:background="#ffffff" />
 
     <ListView
         android:id="@+id/lv_reading_list1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
         android:layout_marginTop="10dp"
-        android:divider="#00000000"
-        android:dividerHeight="30dp"
+        android:divider="#a2a2a2"
+        android:dividerHeight="1dp"
         android:listSelector="@android:color/transparent"
         android:scrollbars="none" >
     </ListView>
 
-  
+    <LinearLayout
+        android:id="@+id/ll_show_reads_detail"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp"
+        android:background="#ffffff"
+        android:orientation="vertical"
+        android:visibility="gone" >
+
+        <RelativeLayout
+            android:id="@+id/re_reading_main"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:padding="10dp" >
+
+            <LinearLayout
+                android:id="@+id/line_reads_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:id="@+id/tv_readings_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="clip_vertical"
+                    android:text="This is a  good  english reads"
+                    android:textColor="#000000"
+                    android:textSize="17sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tv_readings_source"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="clip_vertical"
+                    android:text="http://www.baidu.com"
+                    android:textColor="#000000" />
+
+                <TextView
+                    android:id="@+id/tv_readings_data"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="clip_vertical"
+                    android:text="2015/03/12"
+                    android:textColor="#000000" />
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/iv_reads_img"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:padding="5dp"
+                android:src="@drawable/icon_share1" />
+        </RelativeLayout>
+
+        <ScrollView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/tv_reads_reads"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/line_reads_title"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:padding="4dp"
+                android:textColor="#8d8d8d"
+                android:textSize="19sp"
+                android:textStyle="bold" />
+        </ScrollView>
+
+      
+    </LinearLayout>
 
 </FrameLayout>

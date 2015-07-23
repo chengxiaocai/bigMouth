@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#ffffff"
     android:orientation="vertical" >
 
     <LinearLayout
@@ -10,22 +11,7 @@
         android:gravity="center_vertical"
         android:orientation="horizontal" >
 
-        <TextView
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:background="@drawable/bg_allcorner_gray" />
-
-        <TextView
-            android:id="@+id/tv_reading_data"
-            android:layout_width="70dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="3dp"
-            android:gravity="clip_vertical"
-            android:text="2015/03/12"
-            android:textColor="#ffffff" />
-
         <RelativeLayout
-            
             android:id="@+id/re_reading_main"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -44,7 +30,8 @@
                     android:layout_height="wrap_content"
                     android:gravity="clip_vertical"
                     android:text="This is a  good  english reads"
-                    android:textColor="#ffffff"
+                    android:textColor="#000000"
+                    android:textStyle="bold"
                     android:textSize="17sp" />
 
                 <TextView
@@ -54,28 +41,29 @@
                     android:layout_marginTop="10dp"
                     android:gravity="clip_vertical"
                     android:text="http://www.baidu.com"
-                    android:textColor="#ffffff" />
+                    android:textColor="#000000" />
+
+                <TextView
+                    android:id="@+id/tv_reading_data"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                   
+                    android:gravity="clip_vertical"
+                    android:text="2015/03/12"
+                    android:textColor="#000000" />
             </LinearLayout>
 
             <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:id="@+id/iv_reads_img"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:src="@drawable/icon_share1" />
+                android:src="@drawable/share" />
         </RelativeLayout>
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/tv_read_reads"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/line_reads_title"
-        android:layout_marginLeft="98dp"
    
-        android:padding="4dp"
-        android:textStyle="bold"
-        android:textColor="#ffffff"
-        android:textSize="19sp" />
 
 </LinearLayout>
