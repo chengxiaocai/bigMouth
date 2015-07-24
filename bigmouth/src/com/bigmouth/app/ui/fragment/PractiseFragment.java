@@ -243,7 +243,7 @@ public class PractiseFragment extends Fragment {
 							lineUi2.setVisibility(View.GONE);
 							lineUi5.setVisibility(View.VISIBLE);
 							totalNum = 0;
-							ac.isWord = true;
+							
 							return;
 						}
 						lineUi2.setVisibility(View.GONE);
@@ -251,7 +251,8 @@ public class PractiseFragment extends Fragment {
 						tvResultChinese.setText(chinese);
 						tvResultEnglist.setText(usa);
 
-					} else {
+					} 
+					else {
 						lineUi2.setVisibility(View.GONE);
 						lineUi4.setVisibility(View.VISIBLE);
 						tvResultChinese1.setText(chinese);
