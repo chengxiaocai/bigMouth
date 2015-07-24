@@ -54,6 +54,7 @@ public class StudyActivity1 extends FragmentActivity implements OnClickListener 
 	private TextView tvWord, tvReading, tvPractise, tvSetting, tvNum;
 	private String num;
 	public Boolean isReading=false;
+	public Boolean isWord=false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +78,9 @@ public class StudyActivity1 extends FragmentActivity implements OnClickListener 
 					readingFramet.SetReadListVisible();
 					isReading=false;
 					
+				}else if(isWord){
+					practiseFragment.Show();
+					isWord=false;
 				}else
 				finish();
 				

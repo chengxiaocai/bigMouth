@@ -10,8 +10,7 @@
         android:id="@+id/ll_ui1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-      >
+        android:orientation="vertical" >
 
         <TextView
             android:layout_width="match_parent"
@@ -165,7 +164,7 @@
             android:id="@+id/tv_pratise_word"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="20dp"
             android:gravity="center_horizontal"
             android:textColor="#000000"
             android:textSize="30sp"
@@ -174,7 +173,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:gravity="center_horizontal"
             android:text="你认识这个单词吗？"
             android:textColor="#8b8b8b"
@@ -216,22 +215,46 @@
             android:padding="10dp"
             android:textColor="#ffffff" />
 
+        <TextView
+            android:id="@+id/btn_pratise_wrong_word5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/bg_text__all_coner_tooblue"
+            android:gravity="center"
+            android:padding="10dp"
+            android:textColor="#ffffff" />
+
+        <TextView
+            android:id="@+id/btn_pratise_wrong_word6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/bg_text__all_coner_tooblue"
+            android:gravity="center"
+            android:padding="10dp"
+            android:textColor="#ffffff" />
+
         <ImageView
             android:id="@+id/iv_practise_unkonw"
             android:layout_width="70dp"
             android:layout_height="70dp"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="30dp"
             android:src="@drawable/icon_unkonwn" />
     </LinearLayout>
     <!-- ui 3 -->
 
     <LinearLayout
-        android:visibility="gone"
         android:id="@+id/ll_ui3"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical" >
+        android:orientation="vertical"
+        android:visibility="gone" >
 
         <ImageView
             android:layout_width="70dp"
@@ -257,7 +280,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="50dp"
             android:gravity="center_horizontal"
-          
             android:textColor="#000000"
             android:textSize="30sp"
             android:textStyle="bold" />
@@ -268,10 +290,10 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:gravity="center_horizontal"
-          
             android:textColor="#000000"
             android:textSize="20sp" />
-          <TextView
+
+        <TextView
             android:id="@+id/tv_pratise_next"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -280,18 +302,18 @@
             android:layout_marginTop="20dp"
             android:background="@drawable/bg_text__all_coner_tooblue"
             android:gravity="center"
-            android:text="看下一条"
             android:padding="10dp"
+            android:text="看下一条"
             android:textColor="#ffffff" />
     </LinearLayout>
     <!-- ui 3 -->
 
     <LinearLayout
-        android:visibility="gone"
         android:id="@+id/ll_ui4"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical" >
+        android:orientation="vertical"
+        android:visibility="gone" >
 
         <ImageView
             android:layout_width="70dp"
@@ -317,7 +339,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="50dp"
             android:gravity="center_horizontal"
-          
             android:textColor="#000000"
             android:textSize="30sp"
             android:textStyle="bold" />
@@ -328,10 +349,10 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:gravity="center_horizontal"
-          
             android:textColor="#000000"
             android:textSize="20sp" />
-          <TextView
+
+        <TextView
             android:id="@+id/tv_pratise_next1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -340,9 +361,23 @@
             android:layout_marginTop="20dp"
             android:background="@drawable/bg_text__all_coner_tooblue"
             android:gravity="center"
-            android:text="看下一条"
             android:padding="10dp"
+            android:text="看下一条"
             android:textColor="#ffffff" />
+    </LinearLayout>
+    <!-- ui 4 -->
+
+    <LinearLayout
+        android:id="@+id/ll_ui5"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="gone" >
+        <TextView 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="hahah"
+            />
     </LinearLayout>
 
 </LinearLayout>
