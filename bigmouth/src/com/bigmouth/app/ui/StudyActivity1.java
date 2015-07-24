@@ -78,9 +78,6 @@ public class StudyActivity1 extends FragmentActivity implements OnClickListener 
 					readingFramet.SetReadListVisible();
 					isReading=false;
 					
-				}else if(isWord){
-					practiseFragment.Show();
-					isWord=false;
 				}else
 				finish();
 				

@@ -323,6 +323,15 @@ public class PractiseFragment extends Fragment {
 						getData();
 					}
 				});
+		contentView.findViewById(R.id.tv_pratise_again).setOnClickListener(
+				new OnClickListener() {
+					
+					@Override
+					public void onClick(View v) {
+						// TODO Auto-generated method stub
+						Show();
+					}
+				});
 	}
 
 	public void Show() {

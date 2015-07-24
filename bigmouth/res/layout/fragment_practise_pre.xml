@@ -371,13 +371,27 @@
         android:id="@+id/ll_ui5"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@drawable/bg_success"
         android:orientation="vertical"
         android:visibility="gone" >
-        <TextView 
+
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="hahah"
-            />
+            android:text="hahah" />
+
+        <TextView
+            android:id="@+id/tv_pratise_again"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/bg_text__all_coner_tooblue"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="再玩一次"
+            android:textColor="#ffffff" />
     </LinearLayout>
 
 </LinearLayout>
