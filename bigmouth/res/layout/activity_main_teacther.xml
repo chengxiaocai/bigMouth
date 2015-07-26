@@ -21,7 +21,6 @@
             android:id="@+id/frag_main_tab"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="1dp"
             android:background="@color/white"
             android:orientation="vertical" />
     </LinearLayout>

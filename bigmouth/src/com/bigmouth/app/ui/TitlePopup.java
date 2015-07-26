@@ -96,7 +96,7 @@ public class TitlePopup extends PopupWindow {
 							index);
 				if (index == 0) {
 					String filePath = Environment.getExternalStorageDirectory() + "/DCIM/"
-							+ "aaaa.png";
+							+ "bigmouthApp.png";
 					ScreenShot.shoot(ac, new File(filePath));
 					Toast.makeText(mContext, "分享获取积分", 0).show();
 					ShareSDK.initSDK(mContext);

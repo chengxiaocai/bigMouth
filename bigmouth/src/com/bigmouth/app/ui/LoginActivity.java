@@ -101,7 +101,7 @@ public class LoginActivity extends Activity {
 								StudyActivity1.class);
 						
 						startActivity(intent3);
-						//finish();
+						finish();
 					}
 				});
 		mWebView = (WebView) findViewById(R.id.login);

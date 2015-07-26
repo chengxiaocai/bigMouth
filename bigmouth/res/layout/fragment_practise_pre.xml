@@ -100,7 +100,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="5 words"
+                        android:text="10 words"
                         android:textColor="#000000"
                         android:textSize="14sp"
                         android:textStyle="bold" />
@@ -143,7 +143,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="5 words"
+                        android:text="20 words"
                         android:textColor="#000000"
                         android:textSize="14sp"
                         android:textStyle="bold" />
@@ -305,6 +305,18 @@
             android:padding="10dp"
             android:text="看下一条"
             android:textColor="#ffffff" />
+
+        <TextView
+            android:id="@+id/tv_pratise_jindu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="30dp"
+            android:gravity="center"
+            android:text="不错，答对了"
+            android:textColor="#ff6600"
+            android:textSize="18sp" />
     </LinearLayout>
     <!-- ui 3 -->
 
@@ -375,10 +387,30 @@
         android:orientation="vertical"
         android:visibility="gone" >
 
+        <ImageView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="40dp"
+            android:src="@drawable/success" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="hahah" />
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20dp"
+            android:text="祝贺你！"
+            android:textColor="#ff6600"
+            android:textSize="19sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20dp"
+            android:text="完成了word Feast挑战练习"
+            android:textColor="#ff6600"
+            android:textSize="19sp" />
 
         <TextView
             android:id="@+id/tv_pratise_again"
@@ -386,7 +418,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="10dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="60dp"
             android:background="@drawable/bg_text__all_coner_tooblue"
             android:gravity="center"
             android:padding="10dp"

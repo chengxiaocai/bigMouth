@@ -78,9 +78,12 @@ public class StudyActivity1 extends FragmentActivity implements OnClickListener 
 					readingFramet.SetReadListVisible();
 					isReading=false;
 					
-				}else
-				finish();
+				}else{
+					startActivity(new Intent(StudyActivity1.this,LoginActivity.class));
+					finish();
+				}
 				
+					
 			}
 		});
 		findViewById(R.id.tv_title_addword).setOnClickListener(
