@@ -77,7 +77,13 @@ public class StudyActivity1 extends FragmentActivity implements OnClickListener 
 				// TODO Auto-generated method stub
 				//startActivity(new Intent(StudyActivity1.this, MainAcitivity.class));
 				if(	PersistentUtil.getInstance().readString(StudyActivity1.this,"type", "1").equals("3")){
-					System.exit(0);
+					if(isPractise){
+						isPractise=false;
+						showDialog();
+					}else{
+						
+						System.exit(0);
+					}
 				}else{
 					if(isReading){
 						readingFramet.SetReadListVisible();
@@ -185,6 +191,7 @@ public class StudyActivity1 extends FragmentActivity implements OnClickListener 
 			} else {
 				transaction.show(practiseFragment);
 			}
+			transaction.commit();
 		}
 
 		
