@@ -61,7 +61,9 @@ public class PractiseFragment extends Fragment {
 			tvTime, tvShow, tvResultEnglist, tvResultChinese, tvResultEnglist1,
 			tvResultChinese1;
 	private Timer time;
+	private TextView tvFinalShow;
 	private int i = 6;
+	private int type;
 	StudyActivity1 ac;
 	final Handler handler = new Handler() {
 		@SuppressLint("NewApi")
@@ -206,6 +208,7 @@ public class PractiseFragment extends Fragment {
 	}
 
 	private void initView() {
+		tvFinalShow = (TextView) contentView.findViewById(R.id.finalshow);
 		tvJingdu = (TextView) contentView.findViewById(R.id.tv_pratise_jindu);
 		tvResultChinese = (TextView) contentView
 				.findViewById(R.id.tv_result_chinese);
@@ -257,6 +260,15 @@ public class PractiseFragment extends Fragment {
 						if (GussNmu == totalNum) {
 							lineUi2.setVisibility(View.GONE);
 							lineUi5.setVisibility(View.VISIBLE);
+							if(type==1){
+								tvFinalShow.setText("完成了Coffee Break挑战练习");
+							}else if(type==2){
+								tvFinalShow.setText("完成了Afternoon Tea挑战练习");
+
+							}else{
+								tvFinalShow.setText("完成了Word Feast挑战练习");
+
+							}
 							totalNum = 0;
 
 							return;
@@ -291,6 +303,7 @@ public class PractiseFragment extends Fragment {
 						lineUi1.setVisibility(View.GONE);
 						lineUi2.setVisibility(View.VISIBLE);
 						GussNmu = 5;
+						type=1;
 						ac.setPractise(true);
 					}
 				});
@@ -304,6 +317,8 @@ public class PractiseFragment extends Fragment {
 						lineUi1.setVisibility(View.GONE);
 						lineUi2.setVisibility(View.VISIBLE);
 						GussNmu = 10;
+						type=2;
+
 						ac.setPractise(true);
 
 					}
@@ -318,6 +333,8 @@ public class PractiseFragment extends Fragment {
 						lineUi1.setVisibility(View.GONE);
 						lineUi2.setVisibility(View.VISIBLE);
 						GussNmu = 20;
+						type=3;
+
 						ac.setPractise(true);
 
 					}

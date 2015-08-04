@@ -1,9 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="250dp"
-    android:layout_height="100dp"
+    android:layout_height="150dp"
     android:background="#ffffff"
     android:orientation="vertical" >
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:gravity="center_horizontal"
+        android:text="请选择登录方式"
+        android:textColor="#000000" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="5dp"
+        android:background="#ff6600" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -11,8 +25,7 @@
         android:orientation="horizontal" >
 
         <LinearLayout
-            
-           android:id="@+id/ll_login_wx"
+            android:id="@+id/ll_login_wx"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
