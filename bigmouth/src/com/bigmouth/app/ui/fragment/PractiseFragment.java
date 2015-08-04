@@ -197,6 +197,13 @@ public class PractiseFragment extends Fragment {
 
 		});
 	}
+	@Override
+	public void onAttach(Activity activity) {
+		// TODO Auto-generated method stub
+		super.onAttach(activity);
+		ac = (StudyActivity1) activity;
+
+	}
 
 	private void initView() {
 		tvJingdu = (TextView) contentView.findViewById(R.id.tv_pratise_jindu);
@@ -284,6 +291,7 @@ public class PractiseFragment extends Fragment {
 						lineUi1.setVisibility(View.GONE);
 						lineUi2.setVisibility(View.VISIBLE);
 						GussNmu = 5;
+						ac.setPractise(true);
 					}
 				});
 		contentView.findViewById(R.id.re_practise_tea).setOnClickListener(
@@ -296,6 +304,8 @@ public class PractiseFragment extends Fragment {
 						lineUi1.setVisibility(View.GONE);
 						lineUi2.setVisibility(View.VISIBLE);
 						GussNmu = 10;
+						ac.setPractise(true);
+
 					}
 				});
 		contentView.findViewById(R.id.re_practise_feast).setOnClickListener(
@@ -308,6 +318,8 @@ public class PractiseFragment extends Fragment {
 						lineUi1.setVisibility(View.GONE);
 						lineUi2.setVisibility(View.VISIBLE);
 						GussNmu = 20;
+						ac.setPractise(true);
+
 					}
 				});
 		contentView.findViewById(R.id.tv_pratise_next).setOnClickListener(
@@ -349,19 +361,22 @@ public class PractiseFragment extends Fragment {
 		lineUi1.setVisibility(View.VISIBLE);
 	}
 
-	@Override
-	public void onAttach(Activity activity) {
-		// TODO Auto-generated method stub
-		super.onAttach(activity);
-		ac = (StudyActivity1) activity;
-
-	}
+	
 
 	public void ShowVoice() {
 		MediaPlayer mediaPlayer = new MediaPlayer();
 		if (mediaPlayer.isPlaying()) {
 			mediaPlayer.reset();// 重置为初始状态
 		}
+
+	}
+	public void UpdateUi(){
+		time.cancel();
+		lineUi1.setVisibility(View.VISIBLE);
+		lineUi2.setVisibility(View.GONE);
+		lineUi3.setVisibility(View.GONE);
+		lineUi4.setVisibility(View.GONE);
+		lineUi5.setVisibility(View.GONE);
 
 	}
 }

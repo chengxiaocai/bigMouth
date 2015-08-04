@@ -290,7 +290,7 @@ public class DialogBaiduFanyiActivity extends Activity implements
 				Intent mIntent = new Intent("com.cc.getword");
 
 				// 发送广播
-				// getActivity().sendBroadcast(mIntent);
+			   sendBroadcast(mIntent);
 
 			}
 

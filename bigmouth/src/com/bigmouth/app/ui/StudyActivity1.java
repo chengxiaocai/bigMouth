@@ -55,6 +55,7 @@ public class StudyActivity1 extends FragmentActivity implements OnClickListener 
 	private String num;
 	public Boolean isReading=false;
 	public Boolean isWord=false;
+	public Boolean isPractise=false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +68,7 @@ public class StudyActivity1 extends FragmentActivity implements OnClickListener 
 
 	}
 
+	@SuppressLint("CutPasteId")
 	private void initView() {
 		findViewById(R.id.iv_studty_back).setOnClickListener(new OnClickListener() {
 			
@@ -74,14 +76,24 @@ public class StudyActivity1 extends FragmentActivity implements OnClickListener 
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				//startActivity(new Intent(StudyActivity1.this, MainAcitivity.class));
-				if(isReading){
-					readingFramet.SetReadListVisible();
-					isReading=false;
-					
+				if(	PersistentUtil.getInstance().readString(StudyActivity1.this,"type", "1").equals("3")){
+					System.exit(0);
 				}else{
-					startActivity(new Intent(StudyActivity1.this,LoginActivity.class));
-					finish();
+					if(isReading){
+						readingFramet.SetReadListVisible();
+						isReading=false;
+						
+					}else if(isPractise){
+						isPractise=false;
+						showDialog();
+						
+					}
+					else{
+						startActivity(new Intent(StudyActivity1.this,LoginActivity.class));
+						finish();
+					}
 				}
+				
 				
 					
 			}
@@ -139,8 +151,7 @@ public class StudyActivity1 extends FragmentActivity implements OnClickListener 
 
 					}
 				});
-		rbWord = (RadioButton) findViewById(R.id.rb_miantab_words);
-		rbWord.setChecked(true);
+		
 		ahc = new AsyncHttpClient();
 		line = (LinearLayout) findViewById(R.id.rg_study_line);
 		tvNum = (TextView) findViewById(R.id.tv_title_point);
@@ -154,14 +165,29 @@ public class StudyActivity1 extends FragmentActivity implements OnClickListener 
 		findViewById(R.id.rb_miantab_reading).setOnClickListener(this);
 		findViewById(R.id.rb_miantab_setting).setOnClickListener(this);
 		findViewById(R.id.rb_miantab_practise).setOnClickListener(this);
+		if(!getIntent().getBooleanExtra("isthree", false)){
+			if (wordsFragment == null) {
+				rbWord = (RadioButton) findViewById(R.id.rb_miantab_words);
+				rbWord.setChecked(true);
+				wordsFragment = new WordsFragment();
+				transaction.add(R.id.frag_main_tab, wordsFragment);
+			} else {
+				transaction.show(wordsFragment);
+			}
+			transaction.commit();
+		}else{
+			if (practiseFragment == null) {
+				RadioButton rbPratise = (RadioButton) findViewById(R.id.rb_miantab_practise);
+				rbPratise.setChecked(true);
+				practiseFragment = new PractiseFragment();
 
-		if (wordsFragment == null) {
-			wordsFragment = new WordsFragment();
-			transaction.add(R.id.frag_main_tab, wordsFragment);
-		} else {
-			transaction.show(wordsFragment);
+				transaction.add(R.id.frag_main_tab, practiseFragment);
+			} else {
+				transaction.show(practiseFragment);
+			}
 		}
-		transaction.commit();
+
+		
 	}
 
 	@SuppressLint("NewApi")
@@ -387,7 +413,8 @@ public class StudyActivity1 extends FragmentActivity implements OnClickListener 
 				 * 
 				 * adapter.notifyDataSetChanged();
 				 */
-				// getWord();
+				RandomAddWords();
+				 
 
 			}
 
@@ -424,5 +451,49 @@ public class StudyActivity1 extends FragmentActivity implements OnClickListener 
 		}
 		return super.dispatchTouchEvent(ev);
 	}
+	public void RandomAddWords(){
+		if(wordsFragment!=null){
+			wordsFragment.getWord();
+		}
+	}
+	public void setPractise(Boolean bool){
+		isPractise=bool;
+	}
+	public void showDialog(){
+		final Dialog dialog = new Dialog(StudyActivity1.this);
+		
+		dialog.getWindow().requestFeature(
+				Window.FEATURE_NO_TITLE);
+		dialog.setContentView(R.layout.item_dialog_practise);
+		dialog.setTitle(null);
+		dialog.show();
+	
+		dialog.findViewById(R.id.btn_dialog_word_addword_ok)
+				.setOnClickListener(new OnClickListener() {
+
+					@Override
+					public void onClick(View v) {
+						// TODO Auto-generated method stub
+						
+						dialog.dismiss();
+						practiseFragment.UpdateUi();
+					}
+				});
+		dialog.findViewById(R.id.btn_dialog_word_addword_no)
+				.setOnClickListener(new OnClickListener() {
+
+					@Override
+					public void onClick(View v) {
+						// TODO Auto-generated method stub
+						dialog.dismiss();
+						isPractise=true;
+
+					}
+				});
+
+	}
+
+
+	
 
 }
