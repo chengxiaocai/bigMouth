@@ -13,6 +13,7 @@ import com.bigmouth.app.R;
 import com.bigmouth.app.bean.Means;
 import com.bigmouth.app.util.Constant;
 import com.bigmouth.app.util.DialogUtil;
+import com.bigmouth.app.util.DisplayUtil;
 import com.bigmouth.app.util.HttpHandle;
 import com.bigmouth.app.util.PersistentUtil;
 import com.loopj.android.http.AsyncHttpClient;
@@ -24,11 +25,16 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Rect;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup.MarginLayoutParams;
+import android.view.Window;
+import android.view.WindowManager.LayoutParams;
+import android.widget.AbsListView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -42,16 +48,19 @@ public class ShowWordsActivity extends Activity implements
 	private String word, chinese;
 	private int color;
 	private ImageView btnLound;
-    private RelativeLayout reShowWord;
+	private RelativeLayout reShowWord;
 	private TextView tvEnglish, tvChinese;
 	private AsyncHttpClient ahc; // 异步处理
 	private RequestHandle reqhandle;
 	private Dialog thisdialog;
+	private int x, y,bar;
+	private View view;
 	private SpeechSynthesizer speechSynthesizer;
 	private int Color[] = new int[] { R.color.color1, R.color.color3,
 			R.color.color4, R.color.color5, R.color.color6, R.color.color7,
 			R.color.color8, R.color.color9, R.color.color10, R.color.color11,
 			R.color.color12 };
+	private RelativeLayout reWordContainer;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -59,23 +68,46 @@ public class ShowWordsActivity extends Activity implements
 		setContentView(R.layout.item_words_dialog);
 
 		initView();
+
 	}
 
 	/**
 	 * 
 	 */
 	private void initView() {
-        reShowWord =(RelativeLayout) findViewById(R.id.re_show_word);
+		reWordContainer = (RelativeLayout) findViewById(R.id.re_show_word_container);
+		x = getIntent().getIntExtra("x", 0);
+		y = getIntent().getIntExtra("y", 0);
+		bar= getIntent().getIntExtra("bar", 0);
+		view = getLayoutInflater().from(this).inflate(
+				R.layout.item_baidu_voice, null);
+		RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(((DisplayUtil
+				.getWidth(this) - 160) / 3) * 2 + 40, ((DisplayUtil
+				.getWidth(this) - 160) / 3) * 2 + 40); 
+
+//		view.setLayoutParams(new AbsListView.LayoutParams(((DisplayUtil
+//				.getWidth(this) - 160) / 3) * 2 + 40, ((DisplayUtil
+//				.getWidth(this) - 160) / 3) * 2 + 40));// 动态设置item的高度
+		layoutParams.topMargin=y-bar;
+		if(x>((DisplayUtil.getWidth(this) - 160) / 3) * 2 + 80){
+			x=x-(((DisplayUtil.getWidth(this) - 160) / 3) + 40);
+		}
+		layoutParams.leftMargin=x;
+		reWordContainer.addView(view,layoutParams);
+		reShowWord = (RelativeLayout) findViewById(R.id.re_show_word);
 		chinese = getIntent().getStringExtra("chinese");
 		word = getIntent().getStringExtra("word");
 		color = getIntent().getIntExtra("color", 1);
-		reShowWord.setBackgroundResource(Color[color]);
-		TextView tvChinse = (TextView) findViewById(R.id.tv_words_chinese);
+		
+		//setLayoutY(view, y);
+		//setLayout(view, x, y);
+		view.setBackgroundResource(Color[color]);
+		TextView tvChinse = (TextView) view.findViewById(R.id.tv_words_chinese);
 		tvChinse.setText(chinese);
 
-		TextView tvUsa = (TextView) findViewById(R.id.tv_words_usa);
+		TextView tvUsa = (TextView) view.findViewById(R.id.tv_words_usa);
 		tvUsa.setText(word);
-		btnLound = (ImageView) findViewById(R.id.lound);
+		btnLound = (ImageView) view.findViewById(R.id.lound);
 		btnLound.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -94,8 +126,8 @@ public class ShowWordsActivity extends Activity implements
 				}).start();
 			}
 		});
-        findViewById(R.id.left_up).setOnClickListener(new OnClickListener() {
-			
+		findViewById(R.id.left_up).setOnClickListener(new OnClickListener() {
+
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
@@ -109,10 +141,6 @@ public class ShowWordsActivity extends Activity implements
 				"1UrKFZwaxAllo5uP9007QduXhkwyvvmG");
 		speechSynthesizer.setAudioStreamType(AudioManager.STREAM_MUSIC);
 		setVolumeControlStream(AudioManager.STREAM_MUSIC);
-	
-		
-
-		
 
 	}
 
@@ -195,5 +223,24 @@ public class ShowWordsActivity extends Activity implements
 		// speechSynthesizer.setParam(SpeechSynthesizer.PARAM_STYLE, "0");
 		// speechSynthesizer.setParam(SpeechSynthesizer.PARAM_TERRITORY, "0");
 	}
+	public static void setLayoutY(View view,int y) 
+	{ 
+	MarginLayoutParams margin=new MarginLayoutParams(view.getLayoutParams()); 
+	margin.setMargins(margin.leftMargin,y, margin.rightMargin, y+margin.height); 
+	RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(margin); 
+	view.setLayoutParams(layoutParams); 
+	} 
+	/* 
+	* 设置控件所在的位置YY，并且不改变宽高， 
+	* XY为绝对位置 
+	*/ 
+	public static void setLayout(View view,int x,int y) 
+	{ 
+	MarginLayoutParams margin=new MarginLayoutParams(view.getLayoutParams()); 
+	margin.setMargins(x,y, x+margin.width, y+margin.height); 
+	RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(margin); 
+	view.setLayoutParams(layoutParams); 
+	} 
+	
 
 }

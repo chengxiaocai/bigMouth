@@ -2,51 +2,12 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
- 
-    >
+   >
 
     <RelativeLayout
-        android:id="@+id/re_show_word"
-        android:layout_centerInParent="true"
-        android:layout_width="180dp"
-        android:layout_height="180dp"
-      
-      >
-
-        <TextView
-            android:id="@+id/tv_words_usa"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:layout_marginTop="5dp"
-            android:text="hahah(动)"
-            android:textColor="#ffffff"
-            android:textSize="19sp" />
-
-        <TextView
-            android:id="@+id/tv_words_chinese"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/tv_words_usa"
-            android:layout_marginLeft="5dp"
-            android:layout_marginTop="5dp"
-            android:text="hahah"
-            android:textColor="#ffffff" />
-
-        <ImageView
-            android:id="@+id/lound"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_centerInParent="true"
-            android:src="@drawable/icon_naba" />
-        <ImageView
-            android:id="@+id/left_up"
-            android:padding="5dp"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:src="@drawable/left_up" />
+        android:id="@+id/re_show_word_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
     </RelativeLayout>
 
 </RelativeLayout>

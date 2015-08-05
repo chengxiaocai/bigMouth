@@ -39,7 +39,7 @@
     <color name="background">#efeff4</color>
     <color name="agreetext">#59ab4c</color>
     <color name="bg_orange">#fa8f3a</color>
-    <color name="bg_half_tran">#50000000</color>
+    <color name="bg_half_tran">#00000000</color>
     <color name="bg_good_thumb_add">#F0EFF4</color>
     <color name="bg_green">#58aa4c</color>
     <color name="gray">#cecece</color>

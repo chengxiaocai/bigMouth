@@ -29,6 +29,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Rect;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -47,6 +48,7 @@ import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -115,7 +117,18 @@ public class WordsFragment extends Fragment implements OnClickListener,
 				intent.putExtra("word", listWord.get(position).getWord());
 				intent.putExtra("color", listWord.get(position).getColor());
 				intent.setClass(getActivity(), ShowWordsActivity.class);
-				getActivity().startActivity(intent);
+				int[] location = new int[2];  
+			    
+				view.getLocationInWindow(location);
+				//getLocationInWindow
+		        int x = location[0];  
+		        int y = location[1];  
+				intent.putExtra("x", x);
+				intent.putExtra("y", y);
+				intent.putExtra("bar", getBiaoHeight());
+
+		        Toast.makeText(getActivity(), x+""+y, 1).show();
+			    getActivity().startActivity(intent);
 				
 				
 			}
@@ -159,7 +172,9 @@ public class WordsFragment extends Fragment implements OnClickListener,
 			}
 			if (convertView == null) {
 				convertView = inflater.inflate(R.layout.item_words, null);
-	           convertView.setLayoutParams(new AbsListView.LayoutParams((DisplayUtil.getWidth(getActivity())-160)/3, (DisplayUtil.getWidth(getActivity())-160)/3));// 动态设置item的高度  
+				convertView.setLayoutParams(new AbsListView.LayoutParams(
+						(DisplayUtil.getWidth(getActivity()) - 160) / 3,
+						(DisplayUtil.getWidth(getActivity()) - 160) / 3));// 动态设置item的高度
 
 			}
 			TextView tvChinse = (TextView) convertView.findViewById(R.id.tv_words_chinese1);
@@ -420,6 +435,15 @@ public class WordsFragment extends Fragment implements OnClickListener,
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
 
+	}
+	public int  getBiaoHeight(){
+		Rect frame = new Rect();
+		getActivity().getWindow().getDecorView().getWindowVisibleDisplayFrame(frame);
+		int statusBarHeight = frame.top;
+		int contentTop = getActivity().getWindow().findViewById(Window.ID_ANDROID_CONTENT).getTop();  
+		//statusBarHeight是上面所求的状态栏的高度  
+		int titleBarHeight = contentTop - statusBarHeight ;
+		return contentTop;
 	}
 
 }
