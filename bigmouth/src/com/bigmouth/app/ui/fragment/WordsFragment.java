@@ -62,8 +62,11 @@ public class WordsFragment extends Fragment implements OnClickListener,
 	private WebView mWebView;
 	private ListView lvWords;
 	private GridView grWords;
-	private int Color [] = new int[]{R.color.color1,R.color.color3,R.color.color4,R.color.color5,R.color.color6,R.color.color7,R.color.color8,R.color.color9,R.color.color10,R.color.color11,R.color.color12};
-	
+	private int Color[] = new int[] { R.color.color1, R.color.color3,
+			R.color.color4, R.color.color5, R.color.color6, R.color.color7,
+			R.color.color8, R.color.color9, R.color.color10, R.color.color11,
+			R.color.color12 };
+
 	private View contentView = null;
 	LayoutInflater inflater = null;
 	private AsyncHttpClient ahc; // 异步处理
@@ -84,7 +87,7 @@ public class WordsFragment extends Fragment implements OnClickListener,
 				false);
 		initView();
 		getWord();
-		//contentView.setBackgroundColor(R.color.yellow);
+		// contentView.setBackgroundColor(R.color.yellow);
 		return contentView;
 	}
 
@@ -112,30 +115,54 @@ public class WordsFragment extends Fragment implements OnClickListener,
 					final int position, long id) {
 
 				// TODO Auto-generated method stub
+				// if(position<3&&grWords.getFirstVisiblePosition()>2){
+				// grWords.setSelection(2);
+				// return;
+				// }
 				Intent intent = new Intent();
 				intent.putExtra("chinese", listWord.get(position).getChinese());
 				intent.putExtra("word", listWord.get(position).getWord());
 				intent.putExtra("color", listWord.get(position).getColor());
 				intent.setClass(getActivity(), ShowWordsActivity.class);
-				int[] location = new int[2];  
-			    
+				int[] location = new int[4];
+
 				view.getLocationInWindow(location);
-				//getLocationInWindow
-		        int x = location[0];  
-		        int y = location[1];  
+				// getLocationInWindow
+				int x = location[0];
+				int y = location[1];
+				int z = location[3];
+				if (y < DisplayUtil.dip2px(getActivity(), 60) + getBiaoHeight()) {
+				
+                      
+					return;
+				}
+				if ( y > DisplayUtil.getHeight(getActivity())- (DisplayUtil.dip2px(getActivity(), 60)+ 
+						2* ((DisplayUtil.getWidth(getActivity()) - 160) / 3) + 40)&&y<DisplayUtil.getHeight(getActivity())- (DisplayUtil.dip2px(getActivity(), 60)+ 
+								 ((DisplayUtil.getWidth(getActivity()) - 160) / 3))) {
+					   
+                    y=y-((DisplayUtil.getWidth(getActivity()) - 160) / 3+40);
+					
+				}
+				if ( y>DisplayUtil.getHeight(getActivity())- (DisplayUtil.dip2px(getActivity(), 60)+ 
+								((DisplayUtil.getWidth(getActivity()) - 160) / 3))) {
+					
+				return;
+					
+				}
+				
 				intent.putExtra("x", x);
+
 				intent.putExtra("y", y);
+
 				intent.putExtra("bar", getBiaoHeight());
 
-		        Toast.makeText(getActivity(), x+""+y, 1).show();
-			    getActivity().startActivity(intent);
-				
-				
+				getActivity().startActivity(intent);
+
 			}
 		});
 		adapter = new WordsAdapter(listWord);
 		grWords.setAdapter(adapter);
-		
+
 	}
 
 	private class WordsAdapter extends BaseAdapter {
@@ -177,7 +204,8 @@ public class WordsFragment extends Fragment implements OnClickListener,
 						(DisplayUtil.getWidth(getActivity()) - 160) / 3));// 动态设置item的高度
 
 			}
-			TextView tvChinse = (TextView) convertView.findViewById(R.id.tv_words_chinese1);
+			TextView tvChinse = (TextView) convertView
+					.findViewById(R.id.tv_words_chinese1);
 			tvChinse.setText(listWord.get(position).getChinese());
 
 			TextView tvUsa = (TextView) convertView
@@ -185,7 +213,8 @@ public class WordsFragment extends Fragment implements OnClickListener,
 			tvUsa.setText(listWord.get(position).getWord());
 			int color = new Random().nextInt(11);
 			listWord.get(position).setColor(color);
-			convertView.setBackgroundColor(getResources().getColor(Color[color]));
+			convertView.setBackgroundColor(getResources()
+					.getColor(Color[color]));
 			return convertView;
 		}
 
@@ -218,7 +247,8 @@ public class WordsFragment extends Fragment implements OnClickListener,
 				Log.i("cc...cars", "start...");
 				// thisdialog.show();
 			}
-             @Override
+
+			@Override
 			public void onSuccess(String content) {
 				// TODO Auto-generated method stub
 				super.onSuccess(content);
@@ -290,7 +320,7 @@ public class WordsFragment extends Fragment implements OnClickListener,
 				try {
 					obj = new JSONObject(content);
 					strWordNum = obj.optString("count");
-				
+
 					JSONArray array = obj.getJSONArray("data");
 					for (int i = 0; i < array.length(); i++) {
 
@@ -299,12 +329,12 @@ public class WordsFragment extends Fragment implements OnClickListener,
 								"translation"));
 						word.setId(array.getJSONObject(i).optString("id"));
 						word.setWord(array.getJSONObject(i).optString("word"));
-                        if(word.getChinese().length()>10){
-                        	
-                        }else{
-                        	
-                        	listWord.add(word);
-                        }
+						if (word.getChinese().length() > 10) {
+
+						} else {
+
+							listWord.add(word);
+						}
 					}
 
 					adapter.notifyDataSetChanged();
@@ -436,13 +466,16 @@ public class WordsFragment extends Fragment implements OnClickListener,
 		// TODO Auto-generated method stub
 
 	}
-	public int  getBiaoHeight(){
+
+	public int getBiaoHeight() {
 		Rect frame = new Rect();
-		getActivity().getWindow().getDecorView().getWindowVisibleDisplayFrame(frame);
+		getActivity().getWindow().getDecorView()
+				.getWindowVisibleDisplayFrame(frame);
 		int statusBarHeight = frame.top;
-		int contentTop = getActivity().getWindow().findViewById(Window.ID_ANDROID_CONTENT).getTop();  
-		//statusBarHeight是上面所求的状态栏的高度  
-		int titleBarHeight = contentTop - statusBarHeight ;
+		int contentTop = getActivity().getWindow()
+				.findViewById(Window.ID_ANDROID_CONTENT).getTop();
+		// statusBarHeight是上面所求的状态栏的高度
+		int titleBarHeight = contentTop - statusBarHeight;
 		return contentTop;
 	}
 
