@@ -434,6 +434,7 @@ public class LoginActivity extends Activity implements Callback,
 			// 成功
 			Platform platform = (Platform) msg.obj;
 			ThreadLogin(platform.getDb().get("unionid"), platform.getName());
+			Log.i("cc..id", platform.getDb().get("unionid"));
 		}
 			break;
 		case 2: {

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:background="#000000"
     android:layout_height="wrap_content" >
 
     <LinearLayout
@@ -10,22 +11,23 @@
         android:orientation="vertical" >
 
         <TextView
-            android:id="@+id/tv_words_chinese1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:text="程才"
-            android:textColor="#ffffff"
-            android:textSize="16sp" />
-
-        <TextView
             android:id="@+id/tv_words_usa"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:gravity="center_horizontal"
             android:text="cc"
+             android:textSize="18sp"
             android:textColor="#ffffff" />
+        <TextView
+            android:id="@+id/tv_words_chinese1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="程才"
+            android:textColor="#ffffff"
+            />
+
     </LinearLayout>
 
 </RelativeLayout>

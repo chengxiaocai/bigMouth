@@ -8,8 +8,8 @@
         android:id="@+id/tv_words_usa"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="15dp"
         android:text="hahah(动)"
         android:textColor="#ffffff"
         android:textSize="19sp" />
@@ -19,15 +19,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/tv_words_usa"
-        android:layout_marginLeft="5dp"
+        android:layout_marginLeft="20dp"
         android:layout_marginTop="5dp"
         android:text="hahah"
         android:textColor="#ffffff" />
 
     <ImageView
         android:id="@+id/lound"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:layout_centerInParent="true"
         android:src="@drawable/icon_naba" />
 

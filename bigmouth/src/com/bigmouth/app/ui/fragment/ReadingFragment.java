@@ -3,6 +3,8 @@ package com.bigmouth.app.ui.fragment;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.http.Header;
 import org.json.JSONArray;
@@ -46,6 +48,7 @@ import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.TextPaint;
 import android.text.method.LinkMovementMethod;
+import android.text.method.ScrollingMovementMethod;
 import android.text.style.BackgroundColorSpan;
 import android.text.style.ClickableSpan;
 import android.util.Log;
@@ -85,11 +88,14 @@ public class ReadingFragment extends Fragment {
 	private StudyActivity1 ac;// 父activitiy对象；
 	private String id;
 	private String strTransWords;
-	private TextView tvTile, tvData, tvSource, tvReads, tvReadss;
+	private TextView tvTile, tvData, tvSource, tvReads, tvReads1, tvReads2,
+			tvReads3;
 	private LinearLayout llShowReads;
 	public float y = 0;
 	private FrameLayout fra;
-
+	String st = "";
+	String str1, str2, str3, str4;
+	int sq1, sq2, sq3;
 	private ImageLoader mImageLoader;
 	private DisplayImageOptions options;
 	private int Colors[] = new int[] { R.color.color1, R.color.color3,
@@ -118,6 +124,10 @@ public class ReadingFragment extends Fragment {
 
 	public void initView() {
 		tvReads = (TextView) contentView.findViewById(R.id.tv_reads_reads);
+		tvReads1 = (TextView) contentView.findViewById(R.id.tv_reads_reads1);
+		tvReads2 = (TextView) contentView.findViewById(R.id.tv_reads_reads2);
+		tvReads3 = (TextView) contentView.findViewById(R.id.tv_reads_reads3);
+		// tvReads.setMovementMethod(ScrollingMovementMethod.getInstance());
 		contentView.findViewById(R.id.iv_reads_share).setOnClickListener(
 				new OnClickListener() {
 
@@ -382,11 +392,33 @@ public class ReadingFragment extends Fragment {
 				try {
 					obj = new JSONObject(content);
 
-					tvReads.setText(obj.optString("text"));
-					tvReads.setText(obj.optString("text"), BufferType.SPANNABLE);
+					// tvReads.setText(obj.optString("text"));
+					String str = obj.optString("text");
+					getCharacterPosition(str);
+					// PersistentUtil.getInstance().write(getActivity(),
+					// "reads", str);
+					if (str != null) {
+						str1 = str.substring(0, sq1);
+						str2 = str.substring(sq1 + 1, sq2);
+						str2= f(str2);
+						str3 = str.substring(sq2 + 1, sq3);
+						str4 = str.substring(sq3 + 1, str.length() - 1);
+					}
+					tvReads.setText(str2, BufferType.SPANNABLE);
 					getEachWord(tvReads);
-
 					tvReads.setMovementMethod(LinkMovementMethod.getInstance());
+
+				//	tvReads1.setText(str2, BufferType.SPANNABLE);
+				//	getEachWord(tvReads1);
+				//	tvReads1.setMovementMethod(LinkMovementMethod.getInstance());
+					//
+					// tvReads2.setText(str3, BufferType.SPANNABLE);
+					// getEachWord(tvReads2);
+					// tvReads2.setMovementMethod(LinkMovementMethod.getInstance());
+					//
+					// tvReads3.setText(str4, BufferType.SPANNABLE);
+					// getEachWord(tvReads3);
+					// tvReads3.setMovementMethod(LinkMovementMethod.getInstance());
 
 					// tvText.setText(read.getText(),
 					// BufferType.SPANNABLE);getEachWord(tvText);
@@ -422,6 +454,16 @@ public class ReadingFragment extends Fragment {
 		});
 	}
 
+	public static Integer[] getIndices(String s, char c) {
+		int pos = s.indexOf(c, 0);
+		List<Integer> indices = new ArrayList<Integer>();
+		while (pos != -1) {
+			indices.add(pos);
+			pos = s.indexOf(c, pos + 1);
+		}
+		return (Integer[]) indices.toArray(new Integer[0]);
+	}
+
 	public void getEachWord(TextView textView) {
 		Spannable spans = (Spannable) textView.getText();
 		Integer[] indices = getIndices(textView.getText().toString().trim(),
@@ -438,20 +480,26 @@ public class ReadingFragment extends Fragment {
 					Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 			start = end + 1;
 		}
-		// 改变选中文本的高亮颜色
-		// textView.setHighlightColor(Color.TRANSPARENT);
-		// textView.setTextColor(Color.WHITE);
 
 	}
 
-	public static Integer[] getIndices(String s, char c) {
-		int pos = s.indexOf(c, 0);
-		List<Integer> indices = new ArrayList<Integer>();
-		while (pos != -1) {
-			indices.add(pos);
-			pos = s.indexOf(c, pos + 1);
+	public void getEachWord1(TextView textView) {
+		Spannable spans = (Spannable) textView.getText();
+		Integer[] indices = getIndices(textView.getText().toString().trim(),
+				' ');
+		int start = 0;
+		int end = 0;
+		// to cater last/only word loop will run equal to the length of
+		// indices.length
+		for (int i = 0; i <= indices.length; i++) {
+			ClickableSpan clickSpan = getClickableSpan1(textView);
+			// to cater last/only word
+			end = (i < indices.length ? indices[i] : spans.length());
+			spans.setSpan(clickSpan, start, end,
+					Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+			start = end + 1;
 		}
-		return (Integer[]) indices.toArray(new Integer[0]);
+
 	}
 
 	private ClickableSpan getClickableSpan(final TextView tvText) {
@@ -514,10 +562,115 @@ public class ReadingFragment extends Fragment {
 			}
 		};
 	}
+	private ClickableSpan getClickableSpan1(final TextView tvText) {
+		return new ClickableSpan() {
+			@SuppressLint("NewApi")
+			@Override
+			public void onClick(View widget) {
+				try {
+					TextView tv = (TextView) widget;
+					
+					strTransWords = tv
+							.getText()
+							.subSequence(tv.getSelectionStart(),
+									tv.getSelectionEnd()).toString();
+					Log.d(tv.getSelectionStart() + "", tv.getSelectionEnd()
+							+ "");
+					SpannableStringBuilder style = new SpannableStringBuilder(
+							tv.getText().toString());
+					style.setSpan(new BackgroundColorSpan(getResources()
+							.getColor(R.color.green)), tv.getSelectionStart(),
+							tv.getSelectionEnd(),
+							Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+					
+					tv.setText(style);
+					
+					getEachWord1(tvText);
+					
+					Log.d("tapped on:", strTransWords);
+					if (y > (DisplayUtil.getHeight(getActivity()) / 2)) {
+						
+						Intent intent = new Intent();
+						intent.putExtra("word", strTransWords);
+						intent.setClass(getActivity(),
+								DialogBaiduFanyiActivity.class);
+						getActivity().startActivity(intent);
+						getActivity().overridePendingTransition(
+								R.anim.push_up_in, 0);
+					} else {
+						Intent intent = new Intent();
+						intent.putExtra("word", strTransWords);
+						intent.setClass(getActivity(),
+								DialogBaiduFanyiUpActivity.class);
+						getActivity().startActivity(intent);
+						getActivity().overridePendingTransition(
+								R.anim.push_down_out, 0);
+					}
+					
+				} catch (Exception e) {
+					// TODO: handle exception
+					Log.i("cc", "hahahfhahdfiaofhioehfieo");
+					
+				}
+				
+			}
+			
+			@Override
+			public void updateDrawState(TextPaint ds) {
+				// ds.setColor(Color.BLACK);
+				ds.setUnderlineText(false);
+			}
+		};
+	}
 
 	public void SetReadListVisible() {
 		lvReading.setVisibility(View.VISIBLE);
 		llShowReads.setVisibility(View.GONE);
+	}
+
+	public void getCharacterPosition(String string) {
+		// 这里是获取"/"符号的位置
+		int total = 0;
+		int count = 0;
+		Matcher slashMatcher = Pattern.compile(",").matcher(string);
+
+		while (slashMatcher.find()) {
+			total++;
+			// 当"/"符号第三次出现的位置
+
+		}
+		int perTotal = total / 4;
+		Matcher slashMatcher1 = Pattern.compile(",").matcher(string);
+		while (slashMatcher1.find()) {
+			count++;
+			if (count == perTotal) {
+				sq1 = slashMatcher1.start();
+			}
+			if (count == 2 * perTotal) {
+				sq2 = slashMatcher1.start();
+			}
+			if (count == 3 * perTotal) {
+				sq3 = slashMatcher1.start();
+			}
+			// 当"/"符号第三次出现的位置
+
+		}
+
+	}
+	public  String f(String s){
+	    for(int i=0;i<s.length();i++){
+	            if(s.charAt(i)!=' '){
+
+	                    s=s.substring(i,s.length());
+
+	                    break;
+
+	             }
+
+	    }
+
+	    return s;
+
 	}
 
 }
