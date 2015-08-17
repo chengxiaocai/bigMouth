@@ -388,11 +388,12 @@
         android:visibility="gone" >
 
         <ImageView
+            android:id="@+id/iv_pratise_success"
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="40dp"
-            android:src="@drawable/success" />
+           />
 
         <TextView
             android:layout_width="wrap_content"
@@ -412,6 +413,23 @@
             android:text="完成了word Feast挑战练习"
             android:textColor="#ff6600"
             android:textSize="19sp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20dp"
+            android:text="Your new total is"
+            android:textColor="#000000"
+            android:textSize="19sp" />
+        <TextView
+            android:id="@+id/tv_pratise_total"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="5dp"
+         
+            android:textColor="#000000"
+            android:textSize="25sp" />
 
         <TextView
             android:id="@+id/tv_pratise_again"

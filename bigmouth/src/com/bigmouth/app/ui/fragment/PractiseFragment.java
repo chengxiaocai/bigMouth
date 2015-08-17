@@ -11,6 +11,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.bigmouth.app.R;
+import com.bigmouth.app.bean.Readings;
 import com.bigmouth.app.ui.StudyActivity1;
 import com.bigmouth.app.util.DialogUtil;
 import com.bigmouth.app.util.HttpHandle;
@@ -62,6 +63,8 @@ public class PractiseFragment extends Fragment {
 			tvResultChinese1;
 	private Timer time;
 	private TextView tvFinalShow;
+	private ImageView  ivSuccess;
+	private TextView tvTotal;
 	private int i = 6;
 	private int type;
 	StudyActivity1 ac;
@@ -208,6 +211,9 @@ public class PractiseFragment extends Fragment {
 	}
 
 	private void initView() {
+		tvTotal =(TextView) contentView.findViewById(R.id.tv_pratise_total);
+		
+		ivSuccess = (ImageView) contentView.findViewById(R.id.iv_pratise_success);
 		tvFinalShow = (TextView) contentView.findViewById(R.id.finalshow);
 		tvJingdu = (TextView) contentView.findViewById(R.id.tv_pratise_jindu);
 		tvResultChinese = (TextView) contentView
@@ -230,7 +236,7 @@ public class PractiseFragment extends Fragment {
 			}
 		});
 		ahc = new AsyncHttpClient();
-		thisdialog = DialogUtil.getLoadDialog(getActivity(), "");
+		thisdialog = DialogUtil.getLoadDialog(getActivity(), "请稍后！");
 		tvWord2 = (TextView) contentView
 				.findViewById(R.id.btn_pratise_wrong_word2);
 		tvWord3 = (TextView) contentView
@@ -250,6 +256,7 @@ public class PractiseFragment extends Fragment {
 			final TextView tv = tvList.get(i);
 			tv.setOnClickListener(new OnClickListener() {
 
+				@SuppressLint("NewApi")
 				@Override
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
@@ -261,12 +268,22 @@ public class PractiseFragment extends Fragment {
 							lineUi2.setVisibility(View.GONE);
 							lineUi5.setVisibility(View.VISIBLE);
 							if(type==1){
+								UpLoadPoint();
 								tvFinalShow.setText("完成了Coffee Break挑战练习");
+								ivSuccess.setBackground(getActivity().getResources().getDrawable(R.drawable.success3));
 							}else if(type==2){
+								UpLoadPoint();
+
 								tvFinalShow.setText("完成了Afternoon Tea挑战练习");
+								ivSuccess.setBackground(getActivity().getResources().getDrawable(R.drawable.success2));
+
 
 							}else{
+								UpLoadPoint();
+
 								tvFinalShow.setText("完成了Word Feast挑战练习");
+								ivSuccess.setBackground(getActivity().getResources().getDrawable(R.drawable.success1));
+
 
 							}
 							totalNum = 0;
@@ -395,5 +412,115 @@ public class PractiseFragment extends Fragment {
 		lineUi4.setVisibility(View.GONE);
 		lineUi5.setVisibility(View.GONE);
 
+	}
+	public void  UpLoadPoint(){
+		RequestParams rp = new RequestParams();
+		rp.put("UserID",
+				PersistentUtil.getInstance()
+						.readString(getActivity(), "id", ""));
+		rp.put("Type", "4");
+		reqhandle = ahc.post("http://app.01teacher.cn/App/PostUserPoints",
+
+		rp, new AsyncHttpResponseHandler() {
+			@Override
+			public void onStart() {
+				// TODO Auto-generated method stub
+				super.onStart();
+				Log.i("cc...cars", "start...");
+				 thisdialog.show();
+			}
+
+			@Override
+			public void onSuccess(String content) {
+				// TODO Auto-generated method stub
+				super.onSuccess(content);
+			Log.i("cc", content);
+				
+
+			}
+
+			@Override
+			public void onFinish() {
+				// TODO Auto-generated method stub
+				super.onFinish();
+				Log.i("cc...", "finish");
+				UpDownPoint();
+				
+			}
+
+			@Override
+			public void onFailure(int arg0, Header[] arg1, byte[] arg2,
+					Throwable arg3) {
+				// TODO Auto-generated method stub
+				super.onFailure(arg0, arg1, arg2, arg3);
+				Log.i("cc...cars", "failue.......");
+				HttpHandle hh = new HttpHandle();
+				hh.handleFaile(getActivity(), arg3);
+				if (thisdialog.isShowing()) {
+					// thisdialog.dismiss();
+				}
+			}
+
+		});
+	
+	}
+	public void  UpDownPoint(){
+		RequestParams rp = new RequestParams();
+		rp.put("UserID",
+				PersistentUtil.getInstance()
+				.readString(getActivity(), "id", ""));
+		
+		reqhandle = ahc.get("http://app.01teacher.cn/App/GetUserPoints",
+				
+				rp, new AsyncHttpResponseHandler() {
+			@Override
+			public void onStart() {
+				// TODO Auto-generated method stub
+				super.onStart();
+			
+			}
+			
+			@Override
+			public void onSuccess(String content) {
+				// TODO Auto-generated method stub
+				super.onSuccess(content);
+				try {
+					obj = new JSONObject(content);
+					obj=obj.optJSONObject("data");
+					tvTotal.setText(obj.optString("point")+"  points");
+					
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+			}
+			
+			@Override
+			public void onFinish() {
+				// TODO Auto-generated method stub
+				super.onFinish();
+				Log.i("cc...", "finish");
+				thisdialog.dismiss();
+				
+			}
+			
+			@Override
+			public void onFailure(int arg0, Header[] arg1, byte[] arg2,
+					Throwable arg3) {
+				// TODO Auto-generated method stub
+				super.onFailure(arg0, arg1, arg2, arg3);
+				Log.i("cc...cars", "failue.......");
+				HttpHandle hh = new HttpHandle();
+				hh.handleFaile(getActivity(), arg3);
+				tvTotal.setText("获取积分失败！");
+
+				if (thisdialog.isShowing()) {
+					// thisdialog.dismiss();
+				}
+			}
+			
+		});
+		
 	}
 }
