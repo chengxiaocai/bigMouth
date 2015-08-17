@@ -61,7 +61,7 @@
                 android:scaleType="fitXY"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:src="@drawable/share" />
+                android:src="@drawable/log" />
         </RelativeLayout>
     </LinearLayout>
 
