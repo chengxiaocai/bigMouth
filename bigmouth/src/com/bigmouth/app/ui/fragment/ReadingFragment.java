@@ -32,6 +32,9 @@ import com.loopj.android.http.RequestHandle;
 import com.loopj.android.http.RequestParams;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.assist.ImageLoadingListener;
+import com.nostra13.universalimageloader.core.assist.ImageSize;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -102,6 +105,8 @@ public class ReadingFragment extends Fragment {
 			R.color.color4, R.color.color5, R.color.color6, R.color.color7,
 			R.color.color8, R.color.color9, R.color.color10, R.color.color11,
 			R.color.color12 };
+	private Boolean isCanClick = true;
+	private ImageSize size;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -123,6 +128,9 @@ public class ReadingFragment extends Fragment {
 	}
 
 	public void initView() {
+		size = new ImageSize(DisplayUtil.dip2px(getActivity(), 60),
+				DisplayUtil.dip2px(getActivity(), 60));
+
 		tvReads = (TextView) contentView.findViewById(R.id.tv_reads_reads);
 		tvReads1 = (TextView) contentView.findViewById(R.id.tv_reads_reads1);
 		tvReads2 = (TextView) contentView.findViewById(R.id.tv_reads_reads2);
@@ -177,6 +185,8 @@ public class ReadingFragment extends Fragment {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
+				thisdialog.show();
+
 				lvReading.setVisibility(View.GONE);
 				llShowReads.setVisibility(View.VISIBLE);
 
@@ -196,7 +206,7 @@ public class ReadingFragment extends Fragment {
 		inflater = LayoutInflater.from(getActivity());
 
 		ahc = new AsyncHttpClient();
-		thisdialog = DialogUtil.getLoadDialog(getActivity(), "请稍后！");
+		thisdialog = DialogUtil.getLoadDialog(getActivity(), "");
 	}
 
 	public void getReading() {
@@ -229,7 +239,15 @@ public class ReadingFragment extends Fragment {
 						Readings read = new Readings();
 						read.setRandomColor(new Random().nextInt(11));
 						read.setId(array.getJSONObject(i).optString("id"));
-						read.setTitle(array.getJSONObject(i).optString("title"));
+						String str = array.getJSONObject(i).optString("title");
+						if (str != null && str.contains("&apos")) {
+
+							read.setTitle(str.replace("&apos;", "'"));
+
+						} else {
+
+							read.setTitle(str);
+						}
 						read.setDate(array.getJSONObject(i).optString("date"));
 						read.setImg(array.getJSONObject(i).optString("img"));
 						read.setSource(array.getJSONObject(i).optString(
@@ -307,11 +325,41 @@ public class ReadingFragment extends Fragment {
 				convertView = inflater.inflate(R.layout.item_reads, null);
 
 			}
-			ImageView img = (ImageView) convertView
+			final ImageView img = (ImageView) convertView
 					.findViewById(R.id.iv_reads_img);
 
-			ImageLoader.getInstance().displayImage(
-					listReadings.get(position).getImg(), img, options, null);
+			// ImageLoader.getInstance().displayImage(listReadings.get(position).getImg(),
+			// img, options, null);
+
+			ImageLoader.getInstance().loadImage(
+					listReadings.get(position).getImg(), size, options,
+					new ImageLoadingListener() {
+
+						@Override
+						public void onLoadingStarted(String imageUri, View view) {
+
+						}
+
+						@Override
+						public void onLoadingFailed(String imageUri, View view,
+								FailReason failReason) {
+
+						}
+
+						@Override
+						public void onLoadingComplete(String imageUri,
+								View view, Bitmap loadedImage) {
+
+							img.setImageBitmap(loadedImage);
+
+						}
+
+						@Override
+						public void onLoadingCancelled(String imageUri,
+								View view) {
+
+						}
+					});
 			TextView tvText = (TextView) convertView
 					.findViewById(R.id.tv_reading_title);
 			tvText.setText(listReadings.get(position).getTitle());
@@ -380,7 +428,11 @@ public class ReadingFragment extends Fragment {
 				// TODO Auto-generated method stub
 				super.onStart();
 				Log.i("cc...getreads", "start...");
-				// thisdialog.show();
+				tvReads.setText("");
+				tvReads1.setText("");
+				tvReads2.setText("");
+				tvReads3.setText("");
+
 			}
 
 			@Override
@@ -392,36 +444,96 @@ public class ReadingFragment extends Fragment {
 				try {
 					obj = new JSONObject(content);
 
-					// tvReads.setText(obj.optString("text"));
 					String str = obj.optString("text");
-					getCharacterPosition(str);
-					// PersistentUtil.getInstance().write(getActivity(),
-					// "reads", str);
 					if (str != null) {
-						str1 = str.substring(0, sq1);
-						str2 = str.substring(sq1 + 1, sq2);
-						str2= f(str2);
-						str3 = str.substring(sq2 + 1, sq3);
-						str4 = str.substring(sq3 + 1, str.length() - 1);
+						if (str.length() > 2500 && str.length() <= 5000) {
+							getCharacterPosition2(str);
+
+							str1 = str.substring(0, sq1);
+							str2 = str.substring(sq1 + 1, str.length() - 1);
+							str2 = f(str2);
+
+							tvReads.setText(str1, BufferType.SPANNABLE);
+
+							getEachWord(tvReads);
+							tvReads.setMovementMethod(LinkMovementMethod
+									.getInstance());
+
+							tvReads1.setText(str2, BufferType.SPANNABLE);
+							getEachWord(tvReads1);
+							tvReads1.setMovementMethod(LinkMovementMethod
+									.getInstance());
+
+						} else if (str.length() > 5000 && st.length() <= 7000) {
+							getCharacterPosition3(str);
+
+							str1 = str.substring(0, sq1);
+
+							str2 = str.substring(sq1 + 1, sq2);
+							str2 = f(str2);
+
+							str3 = str.substring(sq2, str.length() - 1);
+							str3 = f(str3);
+
+							tvReads.setText(str1, BufferType.SPANNABLE);
+
+							getEachWord(tvReads);
+							tvReads.setMovementMethod(LinkMovementMethod
+									.getInstance());
+
+							tvReads1.setText(str2, BufferType.SPANNABLE);
+							getEachWord(tvReads1);
+							tvReads1.setMovementMethod(LinkMovementMethod
+									.getInstance());
+
+							tvReads2.setText(str3, BufferType.SPANNABLE);
+							getEachWord(tvReads2);
+							tvReads2.setMovementMethod(LinkMovementMethod
+									.getInstance());
+
+						} else if (st.length() > 7000) {
+							getCharacterPosition4(str);
+
+							str1 = str.substring(0, sq1);
+
+							str2 = str.substring(sq1 + 1, sq2);
+							str2 = f(str2);
+
+							str3 = str.substring(sq2 + 1, sq3);
+							str3 = f(str3);
+
+							str4 = str.substring(sq3 + 1, str.length());
+							str4 = f(str4);
+
+							tvReads.setText(str1, BufferType.SPANNABLE);
+
+							getEachWord(tvReads);
+							tvReads.setMovementMethod(LinkMovementMethod
+									.getInstance());
+
+							tvReads1.setText(str2, BufferType.SPANNABLE);
+							getEachWord(tvReads1);
+							tvReads1.setMovementMethod(LinkMovementMethod
+									.getInstance());
+
+							tvReads2.setText(str3, BufferType.SPANNABLE);
+							getEachWord(tvReads2);
+							tvReads2.setMovementMethod(LinkMovementMethod
+									.getInstance());
+
+							tvReads3.setText(str4, BufferType.SPANNABLE);
+							getEachWord(tvReads3);
+							tvReads3.setMovementMethod(LinkMovementMethod
+									.getInstance());
+
+						} else {
+							tvReads.setText(str, BufferType.SPANNABLE);
+
+							getEachWord(tvReads);
+							tvReads.setMovementMethod(LinkMovementMethod
+									.getInstance());
+						}
 					}
-					tvReads.setText(str2, BufferType.SPANNABLE);
-					getEachWord(tvReads);
-					tvReads.setMovementMethod(LinkMovementMethod.getInstance());
-
-				//	tvReads1.setText(str2, BufferType.SPANNABLE);
-				//	getEachWord(tvReads1);
-				//	tvReads1.setMovementMethod(LinkMovementMethod.getInstance());
-					//
-					// tvReads2.setText(str3, BufferType.SPANNABLE);
-					// getEachWord(tvReads2);
-					// tvReads2.setMovementMethod(LinkMovementMethod.getInstance());
-					//
-					// tvReads3.setText(str4, BufferType.SPANNABLE);
-					// getEachWord(tvReads3);
-					// tvReads3.setMovementMethod(LinkMovementMethod.getInstance());
-
-					// tvText.setText(read.getText(),
-					// BufferType.SPANNABLE);getEachWord(tvText);
 
 				} catch (JSONException e) {
 					Toast.makeText(getActivity(), "获取文章失败", 0).show();
@@ -435,7 +547,7 @@ public class ReadingFragment extends Fragment {
 				// TODO Auto-generated method stub
 				super.onFinish();
 				Log.i("cc...", "finish");
-				// thisdialog.dismiss();
+				thisdialog.dismiss();
 			}
 
 			@Override
@@ -508,6 +620,12 @@ public class ReadingFragment extends Fragment {
 			@Override
 			public void onClick(View widget) {
 				try {
+					if (isCanClick) {
+						isCanClick = false;
+					} else {
+						return;
+					}
+
 					TextView tv = (TextView) widget;
 
 					strTransWords = tv
@@ -534,17 +652,21 @@ public class ReadingFragment extends Fragment {
 						intent.putExtra("word", strTransWords);
 						intent.setClass(getActivity(),
 								DialogBaiduFanyiActivity.class);
-						getActivity().startActivity(intent);
+						startActivityForResult(intent, 1);
 						getActivity().overridePendingTransition(
 								R.anim.push_up_in, 0);
+
 					} else {
+
 						Intent intent = new Intent();
 						intent.putExtra("word", strTransWords);
 						intent.setClass(getActivity(),
 								DialogBaiduFanyiUpActivity.class);
-						getActivity().startActivity(intent);
+						startActivityForResult(intent, 1);
+
 						getActivity().overridePendingTransition(
 								R.anim.push_down_out, 0);
+
 					}
 
 				} catch (Exception e) {
@@ -562,6 +684,7 @@ public class ReadingFragment extends Fragment {
 			}
 		};
 	}
+
 	private ClickableSpan getClickableSpan1(final TextView tvText) {
 		return new ClickableSpan() {
 			@SuppressLint("NewApi")
@@ -569,7 +692,7 @@ public class ReadingFragment extends Fragment {
 			public void onClick(View widget) {
 				try {
 					TextView tv = (TextView) widget;
-					
+
 					strTransWords = tv
 							.getText()
 							.subSequence(tv.getSelectionStart(),
@@ -582,19 +705,20 @@ public class ReadingFragment extends Fragment {
 							.getColor(R.color.green)), tv.getSelectionStart(),
 							tv.getSelectionEnd(),
 							Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-					
+
 					tv.setText(style);
-					
+
 					getEachWord1(tvText);
-					
+
 					Log.d("tapped on:", strTransWords);
 					if (y > (DisplayUtil.getHeight(getActivity()) / 2)) {
-						
+
 						Intent intent = new Intent();
 						intent.putExtra("word", strTransWords);
 						intent.setClass(getActivity(),
 								DialogBaiduFanyiActivity.class);
-						getActivity().startActivity(intent);
+						startActivityForResult(intent, 1);
+
 						getActivity().overridePendingTransition(
 								R.anim.push_up_in, 0);
 					} else {
@@ -602,19 +726,19 @@ public class ReadingFragment extends Fragment {
 						intent.putExtra("word", strTransWords);
 						intent.setClass(getActivity(),
 								DialogBaiduFanyiUpActivity.class);
-						getActivity().startActivity(intent);
+						startActivityForResult(intent, 1);
 						getActivity().overridePendingTransition(
 								R.anim.push_down_out, 0);
 					}
-					
+
 				} catch (Exception e) {
 					// TODO: handle exception
 					Log.i("cc", "hahahfhahdfiaofhioehfieo");
-					
+
 				}
-				
+
 			}
-			
+
 			@Override
 			public void updateDrawState(TextPaint ds) {
 				// ds.setColor(Color.BLACK);
@@ -624,11 +748,64 @@ public class ReadingFragment extends Fragment {
 	}
 
 	public void SetReadListVisible() {
+		tvReads.setText("");
+		tvReads1.setText("");
+		tvReads2.setText("");
+		tvReads3.setText("");
 		lvReading.setVisibility(View.VISIBLE);
 		llShowReads.setVisibility(View.GONE);
 	}
 
-	public void getCharacterPosition(String string) {
+	public void getCharacterPosition2(String string) {
+		// 这里是获取"/"符号的位置
+		int total = 0;
+		int count = 0;
+		Matcher slashMatcher = Pattern.compile(",").matcher(string);
+
+		while (slashMatcher.find()) {
+			total++;
+			// 当"/"符号第三次出现的位置
+
+		}
+		int perTotal = total / 2;
+		Matcher slashMatcher1 = Pattern.compile(",").matcher(string);
+		while (slashMatcher1.find()) {
+			count++;
+			if (count == perTotal) {
+				sq1 = slashMatcher1.start();
+			}
+
+		}
+
+	}
+
+	public void getCharacterPosition3(String string) {
+		// 这里是获取"/"符号的位置
+		int total = 0;
+		int count = 0;
+		Matcher slashMatcher = Pattern.compile(",").matcher(string);
+
+		while (slashMatcher.find()) {
+			total++;
+			// 当"/"符号第三次出现的位置
+
+		}
+		int perTotal = total / 3;
+		Matcher slashMatcher1 = Pattern.compile(",").matcher(string);
+		while (slashMatcher1.find()) {
+			count++;
+			if (count == perTotal) {
+				sq1 = slashMatcher1.start();
+			}
+			if (count == 2 * perTotal) {
+				sq2 = slashMatcher1.start();
+			}
+
+		}
+
+	}
+
+	public void getCharacterPosition4(String string) {
 		// 这里是获取"/"符号的位置
 		int total = 0;
 		int count = 0;
@@ -646,31 +823,40 @@ public class ReadingFragment extends Fragment {
 			if (count == perTotal) {
 				sq1 = slashMatcher1.start();
 			}
+
 			if (count == 2 * perTotal) {
 				sq2 = slashMatcher1.start();
 			}
+
 			if (count == 3 * perTotal) {
 				sq3 = slashMatcher1.start();
 			}
-			// 当"/"符号第三次出现的位置
 
 		}
 
 	}
-	public  String f(String s){
-	    for(int i=0;i<s.length();i++){
-	            if(s.charAt(i)!=' '){
 
-	                    s=s.substring(i,s.length());
+	public String f(String s) {
+		for (int i = 0; i < s.length(); i++) {
+			if (s.charAt(i) != ' ') {
 
-	                    break;
+				s = s.substring(i, s.length());
 
-	             }
+				break;
 
-	    }
+			}
 
-	    return s;
+		}
 
+		return s;
+
+	}
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		// TODO Auto-generated method stub
+		super.onActivityResult(requestCode, resultCode, data);
+		isCanClick = true;
 	}
 
 }
