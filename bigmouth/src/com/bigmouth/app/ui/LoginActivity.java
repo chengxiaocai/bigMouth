@@ -433,13 +433,27 @@ public class LoginActivity extends Activity implements Callback,
 		case 1: {
 			// 成功
 			Platform platform = (Platform) msg.obj;
-			ThreadLogin(platform.getDb().get("unionid"), platform.getName());
-			Log.i("cc..id", platform.getDb().get("unionid"));
+			// String id = platform.getDb().get("openid");
+			String id1 = platform.getDb().getUserId();
+			if (platform.getName() == Wechat.NAME) {
+
+				ThreadLogin(platform.getDb().getUserId(), "WX");
+			}
+			if (platform.getName() == QQ.NAME) {
+				
+				ThreadLogin(platform.getDb().getUserId(), "QQ");
+			}
+			if (platform.getName() == SinaWeibo.NAME) {
+				
+				ThreadLogin(platform.getDb().getUserId(), "SWB");
+			}
+		
 		}
 			break;
 		case 2: {
 			// 失败
-			Toast.makeText(LoginActivity.this, "授权登录失败", Toast.LENGTH_SHORT).show();
+			Toast.makeText(LoginActivity.this, "授权登录失败", Toast.LENGTH_SHORT)
+					.show();
 
 		}
 			break;
@@ -476,11 +490,13 @@ public class LoginActivity extends Activity implements Callback,
 		RequestParams rp = new RequestParams();
 		rp.put("UserID", id);
 		rp.put("LoginType", type);
+		String url = "http://app.01teacher.cn/App/CheckUser?UserID=" + id
+				+ "?LoginType=" + type;
 
 		// rp.put("ReadingID","");
-		reqhandle = ahc.post("http://app.01teacher.cn/App/CheckUser",
+		reqhandle = ahc.get(url,
 
-		rp, new AsyncHttpResponseHandler() {
+		new AsyncHttpResponseHandler() {
 			@Override
 			public void onStart() {
 				// TODO Auto-generated method stub
@@ -506,12 +522,12 @@ public class LoginActivity extends Activity implements Callback,
 					intent3.putExtra("isthree", true);
 					startActivity(intent3);
 					finish();
-					
+
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				
+
 				Log.i("cc", content);
 
 			}

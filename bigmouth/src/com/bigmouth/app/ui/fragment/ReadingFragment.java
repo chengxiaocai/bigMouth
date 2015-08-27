@@ -13,6 +13,8 @@ import org.json.JSONObject;
 
 import cn.sharesdk.framework.ShareSDK;
 import cn.sharesdk.onekeyshare.OnekeyShare;
+import cn.sharesdk.sina.weibo.SinaWeibo;
+import cn.sharesdk.tencent.qq.QQ;
 
 import com.bigmouth.app.R;
 import com.bigmouth.app.bean.Readings;
@@ -108,6 +110,7 @@ public class ReadingFragment extends Fragment {
 	private Boolean isCanClick = true;
 	private ImageSize size;
 
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -144,9 +147,12 @@ public class ReadingFragment extends Fragment {
 						// TODO Auto-generated method stub
 						ShareSDK.initSDK(getActivity());
 						OnekeyShare oks = new OnekeyShare();
+
+						oks.addHiddenPlatform(SinaWeibo.NAME);
+						oks.addHiddenPlatform(QQ.NAME);
 						// 关闭sso授权
 						oks.disableSSOWhenAuthorize();
-
+        
 						// 分享时Notification的图标和文字 2.5.9以后的版本不调用此方法
 						// oks.setNotification(R.drawable.ic_launcher,
 						// getString(R.string.app_name));
@@ -221,7 +227,7 @@ public class ReadingFragment extends Fragment {
 				// TODO Auto-generated method stub
 				super.onStart();
 				Log.i("cc...cars", "start...");
-				// thisdialog.show();
+				 thisdialog.show();
 			}
 
 			@Override
@@ -269,7 +275,7 @@ public class ReadingFragment extends Fragment {
 				// TODO Auto-generated method stub
 				super.onFinish();
 				Log.i("cc...", "finish");
-				// thisdialog.dismiss();
+				 thisdialog.dismiss();
 			}
 
 			@Override

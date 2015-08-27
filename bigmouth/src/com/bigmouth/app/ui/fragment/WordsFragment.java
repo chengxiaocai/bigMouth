@@ -132,24 +132,29 @@ public class WordsFragment extends Fragment implements OnClickListener,
 				int y = location[1];
 				int z = location[3];
 				if (y < DisplayUtil.dip2px(getActivity(), 60) + getBiaoHeight()) {
-				
-                      
+
 					return;
 				}
-				if ( y > DisplayUtil.getHeight(getActivity())- (DisplayUtil.dip2px(getActivity(), 60)+ 
-						2* ((DisplayUtil.getWidth(getActivity()) - 160) / 3) + 40)&&y<DisplayUtil.getHeight(getActivity())- (DisplayUtil.dip2px(getActivity(), 60)+ 
-								 ((DisplayUtil.getWidth(getActivity()) - 160) / 3))) {
-					   
-                    y=y-((DisplayUtil.getWidth(getActivity()) - 160) / 3+40);
-					
+				if (y > DisplayUtil.getHeight(getActivity())
+						- (DisplayUtil.dip2px(getActivity(), 60)
+								+ 2
+								* ((DisplayUtil.getWidth(getActivity()) - 160) / 3) + 40)
+						&& y < DisplayUtil.getHeight(getActivity())
+								- (DisplayUtil.dip2px(getActivity(), 60) + ((DisplayUtil
+										.getWidth(getActivity()) - 160) / 3))) {
+
+					y = y
+							- ((DisplayUtil.getWidth(getActivity()) - 160) / 3 + 40);
+
 				}
-				if ( y>DisplayUtil.getHeight(getActivity())- (DisplayUtil.dip2px(getActivity(), 60)+ 
-								((DisplayUtil.getWidth(getActivity()) - 160) / 3))) {
-					
-				return;
-					
+				if (y > DisplayUtil.getHeight(getActivity())
+						- (DisplayUtil.dip2px(getActivity(), 60) + ((DisplayUtil
+								.getWidth(getActivity()) - 160) / 3))) {
+
+					return;
+
 				}
-				
+
 				intent.putExtra("x", x);
 
 				intent.putExtra("y", y);
@@ -245,7 +250,7 @@ public class WordsFragment extends Fragment implements OnClickListener,
 				// TODO Auto-generated method stub
 				super.onStart();
 				Log.i("cc...cars", "start...");
-				// thisdialog.show();
+				 thisdialog.show();
 			}
 
 			@Override
@@ -269,7 +274,7 @@ public class WordsFragment extends Fragment implements OnClickListener,
 				// TODO Auto-generated method stub
 				super.onFinish();
 				Log.i("cc...", "finish");
-				// thisdialog.dismiss();
+				 thisdialog.dismiss();
 			}
 
 			@Override

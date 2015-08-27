@@ -9,14 +9,15 @@
     <LinearLayout
         android:id="@+id/ll_ui1"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:visibility="visible"
         android:orientation="vertical" >
 
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:gravity="center"
-            android:layout_marginTop="30dp"
             android:text="It&apos;s Parctice time"
             android:textColor="#000000"
             android:textSize="24sp"
@@ -25,8 +26,8 @@
         <RelativeLayout
             android:id="@+id/re_practise_coffee"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="50dp" >
+            android:layout_height="0dp"
+            android:layout_weight="1" >
 
             <LinearLayout
                 android:layout_width="200dp"
@@ -68,8 +69,8 @@
         <RelativeLayout
             android:id="@+id/re_practise_tea"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp" >
+            android:layout_height="0dp"
+            android:layout_weight="1" >
 
             <LinearLayout
                 android:layout_width="200dp"
@@ -111,8 +112,8 @@
         <RelativeLayout
             android:id="@+id/re_practise_feast"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp" >
+            android:layout_height="0dp"
+            android:layout_weight="1" >
 
             <LinearLayout
                 android:layout_width="200dp"
@@ -163,8 +164,9 @@
         <TextView
             android:id="@+id/tv_pratise_word"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_marginTop="20dp"
+            android:layout_weight="1"
             android:gravity="center_horizontal"
             android:textColor="#000000"
             android:textSize="30sp"
@@ -172,8 +174,9 @@
 
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_marginTop="10dp"
+            android:layout_weight="1"
             android:gravity="center_horizontal"
             android:text="你认识这个单词吗？"
             android:textColor="#8b8b8b"
@@ -182,61 +185,60 @@
         <TextView
             android:id="@+id/btn_pratise_wrong_word2"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="10dp"
-            android:layout_marginTop="20dp"
+            android:layout_weight="1"
             android:background="@drawable/bg_text__all_coner_tooblue"
             android:gravity="center"
-            android:padding="10dp"
             android:textColor="#ffffff" />
 
         <TextView
             android:id="@+id/btn_pratise_wrong_word3"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="10dp"
             android:layout_marginTop="10dp"
+            android:layout_weight="1"
             android:background="@drawable/bg_text__all_coner_tooblue"
             android:gravity="center"
-            android:padding="10dp"
             android:textColor="#ffffff" />
 
         <TextView
             android:id="@+id/btn_pratise_wrong_word4"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="10dp"
             android:layout_marginTop="10dp"
+            android:layout_weight="1"
             android:background="@drawable/bg_text__all_coner_tooblue"
             android:gravity="center"
-            android:padding="10dp"
             android:textColor="#ffffff" />
 
         <TextView
             android:id="@+id/btn_pratise_wrong_word5"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="10dp"
             android:layout_marginTop="10dp"
+            android:layout_weight="1"
             android:background="@drawable/bg_text__all_coner_tooblue"
             android:gravity="center"
-            android:padding="10dp"
             android:textColor="#ffffff" />
 
         <TextView
             android:id="@+id/btn_pratise_wrong_word6"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="10dp"
             android:layout_marginTop="10dp"
+            android:layout_weight="1"
             android:background="@drawable/bg_text__all_coner_tooblue"
             android:gravity="center"
-            android:padding="10dp"
             android:textColor="#ffffff" />
 
         <ImageView
@@ -244,7 +246,9 @@
             android:layout_width="70dp"
             android:layout_height="70dp"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="30dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_weight="1"
             android:src="@drawable/icon_unkonwn" />
     </LinearLayout>
     <!-- ui 3 -->
@@ -392,8 +396,7 @@
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="40dp"
-           />
+            android:layout_marginTop="40dp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -413,6 +416,7 @@
             android:text="完成了word Feast挑战练习"
             android:textColor="#ff6600"
             android:textSize="19sp" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -421,13 +425,13 @@
             android:text="Your new total is"
             android:textColor="#000000"
             android:textSize="19sp" />
+
         <TextView
             android:id="@+id/tv_pratise_total"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="5dp"
-         
             android:textColor="#000000"
             android:textSize="25sp" />
 
@@ -440,7 +444,6 @@
             android:layout_marginTop="120dp"
             android:background="@drawable/bg_text__all_coner_tooblue"
             android:gravity="center"
-           
             android:text="再玩一次"
             android:textColor="#ffffff" />
     </LinearLayout>

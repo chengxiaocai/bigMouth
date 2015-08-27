@@ -20,10 +20,9 @@
             android:layout_marginLeft="10dp"
             android:text="返回"
             android:textColor="#ffffff"
-            android:textSize="20sp"
-            />
+            android:textSize="20sp" />
     </RelativeLayout>
-  
+
     <WebView
         android:id="@+id/login"
         android:layout_width="match_parent"

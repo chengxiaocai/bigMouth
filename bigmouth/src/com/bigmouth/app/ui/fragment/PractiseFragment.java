@@ -233,6 +233,9 @@ public class PractiseFragment extends Fragment {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				getData();
+				if(time!=null){
+					time.cancel();
+				}
 			}
 		});
 		ahc = new AsyncHttpClient();
@@ -405,7 +408,10 @@ public class PractiseFragment extends Fragment {
 
 	}
 	public void UpdateUi(){
-		time.cancel();
+		if(time!=null){
+			
+			time.cancel();
+		}
 		lineUi1.setVisibility(View.VISIBLE);
 		lineUi2.setVisibility(View.GONE);
 		lineUi3.setVisibility(View.GONE);
