@@ -49,6 +49,7 @@ import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestHandle;
 import com.loopj.android.http.RequestParams;
+import com.umeng.update.UmengUpdateAgent;
 
 public class LoginActivity extends Activity implements Callback,
 		OnClickListener, PlatformActionListener {
@@ -77,6 +78,8 @@ public class LoginActivity extends Activity implements Callback,
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.acitity_login);
 		ShareSDK.initSDK(this);
+	    UmengUpdateAgent.update(this);
+	    UmengUpdateAgent.setUpdateOnlyWifi(false);
 		ahc = new AsyncHttpClient();
 		thisdialog = DialogUtil.getLoadDialog(this, "");
 		reTtile = (RelativeLayout) findViewById(R.id.re_login_title);

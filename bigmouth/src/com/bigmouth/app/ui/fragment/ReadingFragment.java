@@ -164,7 +164,7 @@ public class ReadingFragment extends Fragment {
 							@Override
 							public void onComplete(Platform arg0, int arg1, HashMap<String, Object> arg2) {
 								// TODO Auto-generated method stub
-								
+								   UpLoadPoint();
 							}
 							
 							@Override
@@ -741,7 +741,7 @@ public class ReadingFragment extends Fragment {
 
 					Log.d("tapped on:", strTransWords);
 					if (y > (DisplayUtil.getHeight(getActivity()) / 2)) {
-
+                        
 						Intent intent = new Intent();
 						intent.putExtra("word", strTransWords);
 						intent.setClass(getActivity(),
@@ -886,6 +886,54 @@ public class ReadingFragment extends Fragment {
 		// TODO Auto-generated method stub
 		super.onActivityResult(requestCode, resultCode, data);
 		isCanClick = true;
+	}
+	public void UpLoadPoint() {
+		RequestParams rp = new RequestParams();
+		rp.put("UserID",
+				PersistentUtil.getInstance().readString(getActivity(), "id", ""));
+		rp.put("Type", "1");
+		reqhandle = ahc.post("http://app.01teacher.cn/App/PostUserPoints",
+
+		rp, new AsyncHttpResponseHandler() {
+			@Override
+			public void onStart() {
+				// TODO Auto-generated method stub
+				super.onStart();
+				Log.i("cc", "start to upload point!");
+
+			}
+
+			@Override
+			public void onSuccess(String content) {
+				// TODO Auto-generated method stub
+				super.onSuccess(content);
+				Log.i("cc", "succuess to  upload point");
+				try {
+					JSONObject obj = new JSONObject(content);
+					if (obj.optBoolean("success")) {
+						Toast.makeText(getActivity(), "获取积分成功！", 0).show();
+						Intent mIntent = new Intent("com.cc.getnum");
+
+						// 发送广播
+						getActivity().sendBroadcast(mIntent);
+
+					}
+
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+			}
+
+			@Override
+			public void onFinish() {
+				// TODO Auto-generated method stub
+				super.onFinish();
+				Log.i("cc...", "finish");
+
+			}
+		});
 	}
 
 }

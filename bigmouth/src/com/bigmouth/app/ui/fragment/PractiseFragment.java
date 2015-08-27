@@ -30,6 +30,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -62,7 +63,7 @@ public class PractiseFragment extends Fragment {
 	private LinearLayout lineRight;
 	private TextView tvWord1, tvWord2, tvWord3, tvWord4, tvWord5, tvWord6,
 			tvTime, tvShow, tvResultEnglist, tvResultChinese, tvResultEnglist1,
-			tvResultChinese1;
+			tvResultChinese1, tvShwoUnkown;
 	private Timer time;
 	private TextView tvFinalShow;
 	private ImageView ivSuccess;
@@ -70,37 +71,37 @@ public class PractiseFragment extends Fragment {
 	private int i = 6;
 	private int type;
 	StudyActivity1 ac;
-	final Handler handler = new Handler() {
-		@SuppressLint("NewApi")
-		public void handleMessage(Message msg) {
-			i--;
-
-			if (i == 2) {
-				time.cancel();
-				int m, n;
-				while (true) {
-					m = new Random().nextInt(5);
-					if (!list.get(m).equals(chinese)) {
-						break;
-					}
-				}
-				while (true) {
-					n = new Random().nextInt(5);
-					if (!list.get(n).equals(chinese) && n != m) {
-						break;
-					}
-				}
-
-				tvList.get(m).setBackground(
-						getResources().getDrawable(
-								R.drawable.bg_text__all_coner_gray));
-				tvList.get(n).setBackground(
-						getResources().getDrawable(
-								R.drawable.bg_text__all_coner_gray));
-			}
-
-		}
-	};
+//	final Handler handler = new Handler() {
+//		@SuppressLint("NewApi")
+//		public void handleMessage(Message msg) {
+//			i--;
+//
+//			if (i == 2) {
+//				time.cancel();
+//				int m, n;
+//				while (true) {
+//					m = new Random().nextInt(5);
+//					if (!list.get(m).equals(chinese)) {
+//						break;
+//					}
+//				}
+//				while (true) {
+//					n = new Random().nextInt(5);
+//					if (!list.get(n).equals(chinese) && n != m) {
+//						break;
+//					}
+//				}
+//
+//				tvList.get(m).setBackground(
+//						getResources().getDrawable(
+//								R.drawable.bg_text__all_coner_gray));
+//				tvList.get(n).setBackground(
+//						getResources().getDrawable(
+//								R.drawable.bg_text__all_coner_gray));
+//			}
+//
+//		}
+//	};
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -110,8 +111,8 @@ public class PractiseFragment extends Fragment {
 		// initVeiw();
 
 		// getData();
-		initView();
-	
+	//	initView();
+
 		return contentView;
 	}
 
@@ -153,6 +154,7 @@ public class PractiseFragment extends Fragment {
 					for (int i = 0; i < array.length(); i++) {
 						list.add(array.getString(i));
 					}
+
 					tvWord2.setText(list.get(0));
 					tvWord3.setText(list.get(1));
 					tvWord4.setText(list.get(2));
@@ -173,13 +175,15 @@ public class PractiseFragment extends Fragment {
 						public void run() {
 							Message message = new Message();
 							message.what = 5;
-							handler.sendMessage(message);
+						//	handler.sendMessage(message);
 						}
 					};
 					time.schedule(task, 1000, 1000);
 					i = 6;
 				} catch (Exception e) {
 					e.printStackTrace();
+					tvShwoUnkown.setText("积累单词不够哦，赶紧去添加单词吧！");
+
 				}
 
 			}
@@ -231,6 +235,8 @@ public class PractiseFragment extends Fragment {
 				.findViewById(R.id.tv_result_englisg);
 		tvResultChinese1 = (TextView) contentView
 				.findViewById(R.id.tv_result_chinese1);
+		tvShwoUnkown = (TextView) contentView
+				.findViewById(R.id.tv_practisefragment_unknown);
 		tvResultEnglist1 = (TextView) contentView
 				.findViewById(R.id.tv_result_englisg1);
 		tvWord = (TextView) contentView.findViewById(R.id.tv_pratise_word);
@@ -242,7 +248,7 @@ public class PractiseFragment extends Fragment {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				getData();
-				if(time!=null){
+				if (time != null) {
 					time.cancel();
 				}
 			}
@@ -272,6 +278,9 @@ public class PractiseFragment extends Fragment {
 				@Override
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
+					if(TextUtils.isEmpty(tv.getText())){
+						return;
+					}
 					time.cancel();
 					if (chinese.equals(tv.getText().toString())) {
 						totalNum++;
@@ -418,9 +427,10 @@ public class PractiseFragment extends Fragment {
 		}
 
 	}
-	public void UpdateUi(){
-		if(time!=null){
-			
+
+	public void UpdateUi() {
+		if (time != null) {
+
 			time.cancel();
 		}
 
@@ -434,7 +444,9 @@ public class PractiseFragment extends Fragment {
 
 	public void UpLoadPoint() {
 		RequestParams rp = new RequestParams();
-		rp.put("UserID",PersistentUtil.getInstance().readString(getActivity(), "id", ""));
+		rp.put("UserID",
+				PersistentUtil.getInstance()
+						.readString(getActivity(), "id", ""));
 		rp.put("Type", "4");
 		reqhandle = ahc.post("http://app.01teacher.cn/App/PostUserPoints",
 
@@ -454,16 +466,15 @@ public class PractiseFragment extends Fragment {
 				Log.i("cc", content);
 				try {
 					obj = new JSONObject(content);
-					if(obj.optBoolean("success")){
-						
-					
+					if (obj.optBoolean("success")) {
+
 						tvTotal.setText(obj.optString("point") + "  points");
 						Intent mIntent = new Intent("com.cc.getnum");
 
 						// 发送广播
 						getActivity().sendBroadcast(mIntent);
 
-					}else{
+					} else {
 						Toast.makeText(getActivity(), "获取积分失败！", 0).show();
 
 					}
@@ -481,9 +492,8 @@ public class PractiseFragment extends Fragment {
 				super.onFinish();
 				Log.i("cc...", "finish");
 				if (thisdialog.isShowing()) {
-					 thisdialog.dismiss();
+					thisdialog.dismiss();
 				}
-			
 
 			}
 
@@ -496,12 +506,11 @@ public class PractiseFragment extends Fragment {
 				HttpHandle hh = new HttpHandle();
 				hh.handleFaile(getActivity(), arg3);
 				Toast.makeText(getActivity(), "上传积分失败！", 0).show();
-			
+
 			}
 
 		});
 
 	}
 
-	
 }

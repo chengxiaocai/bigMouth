@@ -4,6 +4,9 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import cn.sharesdk.framework.Platform;
 import cn.sharesdk.framework.PlatformActionListener;
 import cn.sharesdk.framework.ShareSDK;
@@ -16,6 +19,10 @@ import com.bigmouth.app.scan.MipcaCaptureActivity;
 import com.bigmouth.app.util.PersistentUtil;
 import com.bigmouth.app.util.ScreenShot;
 import com.bigmouth.app.util.Util;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestHandle;
+import com.loopj.android.http.RequestParams;
 
 import android.app.Activity;
 import android.content.Context;
@@ -23,6 +30,7 @@ import android.content.Intent;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Environment;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -48,6 +56,8 @@ public class TitlePopup extends PopupWindow {
 	private int mScreenWidth;
 	private int mScreenHeight;
 	private boolean mIsDirty;
+	private AsyncHttpClient ahc; // 异步处理
+	private RequestHandle reqhandle;
 
 	private int popupGravity = Gravity.NO_GRAVITY;
 
@@ -70,6 +80,7 @@ public class TitlePopup extends PopupWindow {
 		this.ac = ac;
 		this.mContext = context;
 		Type = PersistentUtil.getInstance().readString(context, "type", "0");
+		ahc = new AsyncHttpClient();
 
 		setFocusable(true);
 		setTouchable(true);
@@ -103,6 +114,30 @@ public class TitlePopup extends PopupWindow {
 					Toast.makeText(mContext, "分享获取积分", 0).show();
 					ShareSDK.initSDK(mContext);
 					OnekeyShare oks = new OnekeyShare();
+					oks.setCallback(new PlatformActionListener() {
+
+						@Override
+						public void onError(Platform arg0, int arg1,
+								Throwable arg2) {
+							// TODO Auto-generated method stub
+
+						}
+
+						@Override
+						public void onComplete(Platform arg0, int arg1,
+								HashMap<String, Object> arg2) {
+							// TODO Auto-generated method stub
+							Log.i("cc", "share is succeful!");
+							UpLoadPoint();
+
+						}
+
+						@Override
+						public void onCancel(Platform arg0, int arg1) {
+							// TODO Auto-generated method stub
+
+						}
+					});
 					// 关闭sso授权
 					oks.disableSSOWhenAuthorize();
 					oks.addHiddenPlatform(SinaWeibo.NAME);
@@ -131,34 +166,6 @@ public class TitlePopup extends PopupWindow {
 					// 启动分享GUI
 					oks.show(mContext);
 					// 获取已经注册到SDK的平台实例列表
-					Platform[] platformList = ShareSDK.getPlatformList();
-					for (int i = 0; i < platformList.length; i++) {
-						platformList[i]
-								.setPlatformActionListener(new PlatformActionListener() {
-
-									@Override
-									public void onError(Platform arg0,
-											int arg1, Throwable arg2) {
-										// TODO Auto-generated method stub
-
-									}
-
-									@Override
-									public void onComplete(Platform arg0,
-											int arg1,
-											HashMap<String, Object> arg2) {
-										// TODO Auto-generated method stub
-										Toast.makeText(mContext, "获取积分成功！", 0)
-												.show();
-									}
-
-									@Override
-									public void onCancel(Platform arg0, int arg1) {
-										// TODO Auto-generated method stub
-
-									}
-								});
-					}
 
 				} else if (index == 1) {
 					if ("2".equals(Type)) {
@@ -263,6 +270,55 @@ public class TitlePopup extends PopupWindow {
 
 		showAtLocation(view, popupGravity, mScreenWidth - LIST_PADDING
 				- (getWidth() / 2), mRect.bottom);
+	}
+
+	public void UpLoadPoint() {
+		RequestParams rp = new RequestParams();
+		rp.put("UserID",
+				PersistentUtil.getInstance().readString(mContext, "id", ""));
+		rp.put("Type", "1");
+		reqhandle = ahc.post("http://app.01teacher.cn/App/PostUserPoints",
+
+		rp, new AsyncHttpResponseHandler() {
+			@Override
+			public void onStart() {
+				// TODO Auto-generated method stub
+				super.onStart();
+				Log.i("cc", "start to upload point!");
+
+			}
+
+			@Override
+			public void onSuccess(String content) {
+				// TODO Auto-generated method stub
+				super.onSuccess(content);
+				Log.i("cc", "succuess to  upload point");
+				try {
+					JSONObject obj = new JSONObject(content);
+					if (obj.optBoolean("success")) {
+						Toast.makeText(mContext, "获取积分成功！", 0).show();
+						Intent mIntent = new Intent("com.cc.getnum");
+
+						// 发送广播
+						mContext.sendBroadcast(mIntent);
+
+					}
+
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+			}
+
+			@Override
+			public void onFinish() {
+				// TODO Auto-generated method stub
+				super.onFinish();
+				Log.i("cc...", "finish");
+
+			}
+		});
 	}
 
 }

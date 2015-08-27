@@ -67,6 +67,7 @@ public class StudyActivity1 extends FragmentActivity implements OnClickListener 
 		setContentView(R.layout.activity_study1);
 
 		initView();
+		//ahc = new AsyncHttpClient();
 		getNum();
 
 	}
@@ -81,13 +82,13 @@ public class StudyActivity1 extends FragmentActivity implements OnClickListener 
 						// TODO Auto-generated method stub
 						// startActivity(new Intent(StudyActivity1.this,
 						// MainAcitivity.class));
-						if (PersistentUtil.getInstance()
-								.readString(StudyActivity1.this, "type", "1")
-								.equals("3")) {
+						if (PersistentUtil.getInstance().readString(StudyActivity1.this, "type", "1").equals("3")) {
 
 							if (isPractise) {
-								isPractise = false;
 								showDialog();
+							} else if (isReading) {
+								readingFramet.SetReadListVisible();
+								isReading = false;
 							} else {
 
 								showDialog_exit();
@@ -200,6 +201,7 @@ public class StudyActivity1 extends FragmentActivity implements OnClickListener 
 			}
 			transaction.commit();
 		}
+		
 
 	}
 
@@ -213,10 +215,8 @@ public class StudyActivity1 extends FragmentActivity implements OnClickListener 
 		int id = v.getId();
 		switch (id) {
 		case R.id.rb_miantab_practise:
-			if (PersistentUtil.getInstance()
-					.readString(StudyActivity1.this, "type", "1").equals("3")) {
-				isPractise = true;
-			}
+
+			isPractise = true;
 
 			if (practiseFragment == null) {
 				practiseFragment = new PractiseFragment();
@@ -228,10 +228,7 @@ public class StudyActivity1 extends FragmentActivity implements OnClickListener 
 			break;
 
 		case R.id.rb_miantab_reading:
-			if (PersistentUtil.getInstance()
-					.readString(StudyActivity1.this, "type", "1").equals("3")) {
-				isPractise = false;
-			}
+			isPractise = false;
 			if (readingFramet == null) {
 				readingFramet = new ReadingFragment();
 
@@ -242,10 +239,7 @@ public class StudyActivity1 extends FragmentActivity implements OnClickListener 
 			break;
 
 		case R.id.rb_miantab_words:
-			if (PersistentUtil.getInstance()
-					.readString(StudyActivity1.this, "type", "1").equals("3")) {
-				isPractise = false;
-			}
+			isPractise = false;
 			if (wordsFragment == null) {
 				wordsFragment = new WordsFragment();
 
@@ -256,10 +250,7 @@ public class StudyActivity1 extends FragmentActivity implements OnClickListener 
 			break;
 
 		case R.id.rb_miantab_setting:
-			if (PersistentUtil.getInstance()
-					.readString(StudyActivity1.this, "type", "1").equals("3")) {
-				isPractise = false;
-			}
+			isPractise = false;
 			if (settingFragment == null) {
 				settingFragment = new SettingFragment();
 				transaction.add(R.id.frag_main_tab, settingFragment);
@@ -331,8 +322,7 @@ public class StudyActivity1 extends FragmentActivity implements OnClickListener 
 	public void getNum() {
 
 		RequestParams rp = new RequestParams();
-		rp.put("UserID", PersistentUtil.getInstance()
-				.readString(this, "id", ""));
+		rp.put("UserID", PersistentUtil.getInstance().readString(this, "id", ""));
 
 		ahc.post("http://app.01teacher.cn/App/GetUserPoints",
 
@@ -341,7 +331,7 @@ public class StudyActivity1 extends FragmentActivity implements OnClickListener 
 			public void onStart() {
 				// TODO Auto-generated method stub
 				super.onStart();
-				Log.i("cc...cars", "start...");
+				Log.i("cc", "start to  getnum......");
 				// thisdialog.show();
 			}
 
@@ -349,7 +339,7 @@ public class StudyActivity1 extends FragmentActivity implements OnClickListener 
 			public void onSuccess(String content) {
 				// TODO Auto-generated method stub
 				super.onSuccess(content);
-				Log.i("cc...cars", "success.......");
+				Log.i("cc.", "success to  getnum");
 				try {
 					obj = new JSONObject(content);
 					JSONObject data = obj.optJSONObject("data");
@@ -366,7 +356,7 @@ public class StudyActivity1 extends FragmentActivity implements OnClickListener 
 			public void onFinish() {
 				// TODO Auto-generated method stub
 				super.onFinish();
-				Log.i("cc...", "finish");
+				Log.i("cc...", "finish to getnum");
 				// thisdialog.dismiss();
 			}
 
@@ -375,7 +365,7 @@ public class StudyActivity1 extends FragmentActivity implements OnClickListener 
 					Throwable arg3) {
 				// TODO Auto-generated method stub
 				super.onFailure(arg0, arg1, arg2, arg3);
-				Log.i("cc...cars", "failue.......");
+				Log.i("cc", "failue to  getnum");
 				HttpHandle hh = new HttpHandle();
 				hh.handleFaile(StudyActivity1.this, arg3);
 
@@ -508,7 +498,7 @@ public class StudyActivity1 extends FragmentActivity implements OnClickListener 
 					@Override
 					public void onClick(View v) {
 						// TODO Auto-generated method stub
-
+						isPractise = false;
 						dialog.dismiss();
 						practiseFragment.UpdateUi();
 					}
@@ -553,7 +543,7 @@ public class StudyActivity1 extends FragmentActivity implements OnClickListener 
 					public void onClick(View v) {
 						// TODO Auto-generated method stub
 						dialog.dismiss();
-						isPractise = true;
+						
 
 					}
 				});
@@ -596,7 +586,7 @@ public class StudyActivity1 extends FragmentActivity implements OnClickListener 
 					obj = new JSONObject(content);
 					if (obj.optBoolean("success")) {
 
-						tvNum.setText(obj.optString("point") + "  points");
+						tvNum.setText(obj.optString("point"));
 
 					} else {
 						Toast.makeText(StudyActivity1.this, "获取积分失败！", 0)
