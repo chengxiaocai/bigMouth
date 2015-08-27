@@ -286,11 +286,12 @@ public class DialogBaiduFanyiActivity extends Activity implements
 				// TODO Auto-generated method stub
 				super.onSuccess(content);
 				Log.i("cc...cars", "success.......");
-				Toast.makeText(DialogBaiduFanyiActivity.this, "陌生单词，已添加到单词库", 0).show();
+				Toast.makeText(DialogBaiduFanyiActivity.this, "陌生单词，已添加到单词库", 0)
+						.show();
 				Intent mIntent = new Intent("com.cc.getword");
 
 				// 发送广播
-			   sendBroadcast(mIntent);
+				sendBroadcast(mIntent);
 
 			}
 

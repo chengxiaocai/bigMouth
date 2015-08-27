@@ -43,7 +43,7 @@ import com.google.zxing.ResultPoint;
 @SuppressLint("DrawAllocation")
 public final class ViewfinderView extends View {
 	private static final long ANIMATION_DELAY = 10L;
-	private static final int OPAQUE = 0xFF;   //不透明
+	private static final int OPAQUE = 0xFF; // 不透明
 	private int ScreenRate;
 	private static final int CORNER_WIDTH = 10;
 	private static final int MIDDLE_LINE_WIDTH = 6;
@@ -62,11 +62,11 @@ public final class ViewfinderView extends View {
 	private Collection<ResultPoint> lastPossibleResultPoints;
 
 	boolean isFirst;
-	
+
 	public ViewfinderView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		density = context.getResources().getDisplayMetrics().density;
-		ScreenRate = (int)(20 * density);
+		ScreenRate = (int) (20 * density);
 		paint = new Paint();
 		Resources resources = getResources();
 		maskColor = resources.getColor(R.color.viewfinder_mask);
@@ -82,65 +82,73 @@ public final class ViewfinderView extends View {
 		if (frame == null) {
 			return;
 		}
-		if(!isFirst){
+		if (!isFirst) {
 			isFirst = true;
 			slideTop = frame.top;
 		}
 		int width = canvas.getWidth();
 		int height = canvas.getHeight();
 
-		//画边框四条白线
+		// 画边框四条白线
 		paint.setColor(resultBitmap != null ? resultColor : maskColor);
 		canvas.drawRect(0, 0, width, frame.top, paint);
 		canvas.drawRect(0, frame.top, frame.left, frame.bottom + 1, paint);
-		canvas.drawRect(frame.right + 1, frame.top, width, frame.bottom + 1,paint);
+		canvas.drawRect(frame.right + 1, frame.top, width, frame.bottom + 1,
+				paint);
 		canvas.drawRect(0, frame.bottom + 1, width, height, paint);
-		
+
 		if (resultBitmap != null) {
 			// Draw the opaque result bitmap over the scanning rectangle
 			paint.setAlpha(OPAQUE);
 			canvas.drawBitmap(resultBitmap, frame.left, frame.top, paint);
 		} else {
-			
-			//上下左右四个绿色的小角
-			//<modify by Yongfeng.zhang 2014.10.27
-			//paint.setColor(Color.GREEN);
+
+			// 上下左右四个绿色的小角
+			// <modify by Yongfeng.zhang 2014.10.27
+			// paint.setColor(Color.GREEN);
 			paint.setColor(Color.parseColor("#D96417"));
-			//>end by Yongfeng.zhang
+			// >end by Yongfeng.zhang
 			canvas.drawRect(frame.left, frame.top, frame.left + ScreenRate,
 					frame.top + CORNER_WIDTH, paint);
-			canvas.drawRect(frame.left, frame.top, frame.left + CORNER_WIDTH, frame.top
-					+ ScreenRate, paint);
+			canvas.drawRect(frame.left, frame.top, frame.left + CORNER_WIDTH,
+					frame.top + ScreenRate, paint);
 			canvas.drawRect(frame.right - ScreenRate, frame.top, frame.right,
 					frame.top + CORNER_WIDTH, paint);
-			canvas.drawRect(frame.right - CORNER_WIDTH, frame.top, frame.right, frame.top
-					+ ScreenRate, paint);
+			canvas.drawRect(frame.right - CORNER_WIDTH, frame.top, frame.right,
+					frame.top + ScreenRate, paint);
 			canvas.drawRect(frame.left, frame.bottom - CORNER_WIDTH, frame.left
 					+ ScreenRate, frame.bottom, paint);
-			canvas.drawRect(frame.left, frame.bottom - ScreenRate,
-					frame.left + CORNER_WIDTH, frame.bottom, paint);
-			canvas.drawRect(frame.right - ScreenRate, frame.bottom - CORNER_WIDTH,
-					frame.right, frame.bottom, paint);
-			canvas.drawRect(frame.right - CORNER_WIDTH, frame.bottom - ScreenRate,
-					frame.right, frame.bottom, paint);
+			canvas.drawRect(frame.left, frame.bottom - ScreenRate, frame.left
+					+ CORNER_WIDTH, frame.bottom, paint);
+			canvas.drawRect(frame.right - ScreenRate, frame.bottom
+					- CORNER_WIDTH, frame.right, frame.bottom, paint);
+			canvas.drawRect(frame.right - CORNER_WIDTH, frame.bottom
+					- ScreenRate, frame.right, frame.bottom, paint);
 
-			
 			slideTop += SPEEN_DISTANCE;
-			if(slideTop >= frame.bottom){
+			if (slideTop >= frame.bottom) {
 				slideTop = frame.top;
 			}
-			
-			//画不停扫描的那条绿线
+
+			// 画不停扫描的那条绿线
 			paint.setColor(Color.parseColor("#9C1F24"));
-			canvas.drawRect(frame.left + MIDDLE_LINE_PADDING, slideTop - MIDDLE_LINE_WIDTH/2, frame.right - MIDDLE_LINE_PADDING,slideTop + MIDDLE_LINE_WIDTH/2, paint);
-			//canvas.drawRect(frame.left + MIDDLE_LINE_PADDING, slideTop - MIDDLE_LINE_WIDTH, frame.right - MIDDLE_LINE_PADDING,slideTop + MIDDLE_LINE_WIDTH, paint);
-			
+			canvas.drawRect(frame.left + MIDDLE_LINE_PADDING, slideTop
+					- MIDDLE_LINE_WIDTH / 2, frame.right - MIDDLE_LINE_PADDING,
+					slideTop + MIDDLE_LINE_WIDTH / 2, paint);
+			// canvas.drawRect(frame.left + MIDDLE_LINE_PADDING, slideTop -
+			// MIDDLE_LINE_WIDTH, frame.right - MIDDLE_LINE_PADDING,slideTop +
+			// MIDDLE_LINE_WIDTH, paint);
+
 			paint.setColor(Color.WHITE);
 			paint.setTextSize(TEXT_SIZE * density);
 			paint.setAlpha(0x40);
 			paint.setTypeface(Typeface.create("System", Typeface.BOLD));
-			//canvas.drawText(getResources().getString(R.string.scan_text), frame.left, (float) (frame.bottom + (float)TEXT_PADDING_TOP *density), paint);
-			//canvas.drawText(getResources().getString(R.string.scan_text), frame.left, (float) (frame.bottom + (float)TEXT_PADDING_TOP *density), paint);
+			// canvas.drawText(getResources().getString(R.string.scan_text),
+			// frame.left, (float) (frame.bottom + (float)TEXT_PADDING_TOP
+			// *density), paint);
+			// canvas.drawText(getResources().getString(R.string.scan_text),
+			// frame.left, (float) (frame.bottom + (float)TEXT_PADDING_TOP
+			// *density), paint);
 			Collection<ResultPoint> currentPossible = possibleResultPoints;
 			Collection<ResultPoint> currentLast = lastPossibleResultPoints;
 			if (currentPossible.isEmpty()) {

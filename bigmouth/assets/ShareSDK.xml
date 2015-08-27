@@ -53,14 +53,14 @@
     -->
     
     <ShareSDK 
-        AppKey = "662ab969f59e"/> <!-- 修改成你在sharesdk后台注册的应用的appkey"-->
+        AppKey = "766e854f8518"/> <!-- 修改成你在sharesdk后台注册的应用的appkey"-->
     
     <!-- ShareByAppClient标识是否使用微博客户端分享，默认是false -->
     <SinaWeibo
         Id="1"
         SortId="1"
-        AppKey="1349069743"
-        AppSecret="44f13abedb8a94c1bb43de1318a136a"
+        AppKey="568898243"
+        AppSecret="38a4f8204cc784f81f9f0daaf31e02e3"
         RedirectUrl="http://www.sharesdk.cn"
         ShareByAppClient="false"
         Enable="true" />
@@ -77,9 +77,9 @@
     <QZone
         Id="3"
         SortId="3"
-        AppId="1104797340"
-        AppKey="oZpXqcH67g4jSAM1"
-        ShareByAppClient="true"
+        AppId="100371282"
+        AppKey="aed9b0303e3ed1e27bae87c33761161d"
+        ShareByAppClient="false"
         Enable="true" />
     
     <!-- 
@@ -97,32 +97,32 @@
     <Wechat
         Id="4"
         SortId="4"
-        AppId="wxcb44f49139ee3453"
-        AppSecret="9f0d959e307c780bb13b782355fef906"
+        AppId="wx4868b35061f87885"
+        AppSecret="64020361b8ec4c99936c0e3999a9f249"
         BypassApproval="false"
         Enable="true" />
     
     <WechatMoments
         Id="5"
         SortId="5"
-        AppId="wxcb44f49139ee3453"
-        AppSecret="9f0d959e307c780bb13b782355fef906"
+        AppId="wx4868b35061f87885"
+        AppSecret="64020361b8ec4c99936c0e3999a9f249"
         BypassApproval="false"
         Enable="true" />
         
 	<WechatFavorite
         Id="6"
         SortId="6"
-        AppId="wxcb44f49139ee3453"
-        AppSecret="9f0d959e307c780bb13b782355fef906"
-        Enable="false" />
+        AppId="wx4868b35061f87885"
+        AppSecret="64020361b8ec4c99936c0e3999a9f249"
+        Enable="true" />
     
 	<!-- ShareByAppClient标识是否使用微博客户端分享，默认是false -->
 	<QQ
         Id="7"
         SortId="7"
-        AppId="1104797340"
-        AppKey="oZpXqcH67g4jSAM1"
+        AppId="100371282"
+        AppKey="aed9b0303e3ed1e27bae87c33761161d"
         ShareByAppClient="true"
         Enable="true" />
     
@@ -137,11 +137,11 @@
     <Twitter
         Id="9"
         SortId="9"
-        ConsumerKey="TKantJ5z9s7P82pAjzSWLe5cy"
-        ConsumerSecret="Eq6g48dFwURskGlAFCq5Y4WqTwl7kfW3aFYKQ6KwG82trbSBwD"
-        CallbackUrl="http://www.mob.com"
+        ConsumerKey="LRBM0H75rWrU9gNHvlEAA2aOy"
+        ConsumerSecret="gbeWsZvA9ELJSdoBzJ5oLKX0TU09UOwrzdGfo9Tg7DjyGuMe8G"
+        CallbackUrl="http://mob.com"
         Enable="true" />
-
+    
     <Renren
         Id="10"
         SortId="10"
@@ -171,9 +171,9 @@
     <Douban
         Id="16"
         SortId="16"
-        ApiKey="02e2cbe5ca06de5908a863b15e149b0b"
-        Secret="9f1e7b4f71304f2f"
-        RedirectUri="http://www.sharesdk.cn"
+        ApiKey="031a96a3aa8b28af094fc3eaffa17a0d"
+        Secret="2e675e730571b75d"
+        RedirectUri="http://mob.com"
         Enable="true" />
     
     <YouDao
@@ -336,7 +336,7 @@
     <Bluetooth
         Id="36"
         SortId="36"
-        Enable="true" />
+        Enable="false" />
 
     <Pocket
         Id="37"
@@ -358,4 +358,10 @@
         ConsumerSecret="38053202e1a5fe26c80c753071f0b573"
         RedirectUrl="http://mob.com"
         Enable="true" />
+    
+     <Alipay
+        Id="52"
+        SortId="52"  
+        AppId="2015072400185895"
+        Enable="true"/>
 </DevInfor>

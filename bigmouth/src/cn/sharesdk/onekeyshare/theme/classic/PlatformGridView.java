@@ -41,8 +41,8 @@ import cn.sharesdk.framework.utils.UIHandler;
 import cn.sharesdk.onekeyshare.CustomerLogo;
 
 /** platform logo list gridview */
-public class PlatformGridView extends LinearLayout implements
-		OnClickListener, Callback {
+public class PlatformGridView extends LinearLayout implements OnClickListener,
+		Callback {
 	private static final int MIN_CLICK_INTERVAL = 1000;
 	private static final int MSG_PLATFORM_LIST_GOT = 1;
 	// grids in each line
@@ -85,24 +85,28 @@ public class PlatformGridView extends LinearLayout implements
 
 		pager = new ViewPagerClassic(context);
 		disableOverScrollMode(pager);
-		pager.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+		pager.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
+				LayoutParams.WRAP_CONTENT));
 		addView(pager);
 
-		// in order to have a better UI effect, opening a thread request the list of platforms
+		// in order to have a better UI effect, opening a thread request the
+		// list of platforms
 		new Thread() {
 			public void run() {
 				platformList = ShareSDK.getPlatformList();
 				if (platformList == null) {
 					platformList = new Platform[0];
 				}
-				UIHandler.sendEmptyMessage(MSG_PLATFORM_LIST_GOT, PlatformGridView.this);
+				UIHandler.sendEmptyMessage(MSG_PLATFORM_LIST_GOT,
+						PlatformGridView.this);
 			}
 		}.start();
 	}
 
 	private void calPageSize() {
 		float scrW = cn.sharesdk.framework.utils.R.getScreenWidth(getContext());
-		float scrH = cn.sharesdk.framework.utils.R.getScreenHeight(getContext());
+		float scrH = cn.sharesdk.framework.utils.R
+				.getScreenHeight(getContext());
 		float whR = scrW / scrH;
 		if (whR < 0.63) {
 			COLUMN_PER_LINE = 3;
@@ -127,9 +131,9 @@ public class PlatformGridView extends LinearLayout implements
 
 	public boolean handleMessage(Message msg) {
 		switch (msg.what) {
-			case MSG_PLATFORM_LIST_GOT: {
-				afterPlatformListGot();
-			}
+		case MSG_PLATFORM_LIST_GOT: {
+			afterPlatformListGot();
+		}
 			break;
 		}
 		return false;
@@ -144,7 +148,7 @@ public class PlatformGridView extends LinearLayout implements
 			int cusSize = customers == null ? 0 : customers.size();
 			int platSize = platformList == null ? 0 : platformList.length;
 			int hideSize = hiddenPlatforms == null ? 0 : hiddenPlatforms.size();
-			platSize = platSize-hideSize;
+			platSize = platSize - hideSize;
 			int size = platSize + cusSize;
 			pageCount = size / PAGE_SIZE;
 			if (size % PAGE_SIZE > 0) {
@@ -159,9 +163,9 @@ public class PlatformGridView extends LinearLayout implements
 		Context context = getContext();
 		LinearLayout llPoints = new LinearLayout(context);
 		// if the total number of pages exceeds 1, we set the page indicators
-		llPoints.setVisibility(pageCount > 1 ? View.VISIBLE: View.GONE);
-		LayoutParams lpLl = new LayoutParams(
-				LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+		llPoints.setVisibility(pageCount > 1 ? View.VISIBLE : View.GONE);
+		LayoutParams lpLl = new LayoutParams(LayoutParams.WRAP_CONTENT,
+				LayoutParams.WRAP_CONTENT);
 		lpLl.gravity = Gravity.CENTER_HORIZONTAL;
 		llPoints.setLayoutParams(lpLl);
 		addView(llPoints);
@@ -188,7 +192,10 @@ public class PlatformGridView extends LinearLayout implements
 		points[curPage].setImageBitmap(bluePoint);
 	}
 
-	/** after the screen rotates, this method will be called to refresh the list of gridviews */
+	/**
+	 * after the screen rotates, this method will be called to refresh the list
+	 * of gridviews
+	 */
 	public void onConfigurationChanged() {
 		int curFirst = pager.getCurrentScreen() * PAGE_SIZE;
 		calPageSize();
@@ -372,8 +379,8 @@ public class PlatformGridView extends LinearLayout implements
 			if (size % COLUMN_PER_LINE > 0) {
 				lineSize++;
 			}
-			LayoutParams lp = new LayoutParams(
-					LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+			LayoutParams lp = new LayoutParams(LayoutParams.MATCH_PARENT,
+					LayoutParams.MATCH_PARENT);
 			lp.weight = 1;
 			for (int i = 0; i < lines; i++) {
 				LinearLayout llLine = new LinearLayout(getContext());
@@ -394,7 +401,8 @@ public class PlatformGridView extends LinearLayout implements
 						continue;
 					}
 
-					final LinearLayout llItem = getView(index, callback, getContext());
+					final LinearLayout llItem = getView(index, callback,
+							getContext());
 					llItem.setTag(beans[index]);
 					llItem.setLayoutParams(lp);
 					llLine.addView(llItem);
@@ -402,7 +410,8 @@ public class PlatformGridView extends LinearLayout implements
 			}
 		}
 
-		private LinearLayout getView(int position, OnClickListener ocL, Context context) {
+		private LinearLayout getView(int position, OnClickListener ocL,
+				Context context) {
 			Bitmap logo;
 			String label;
 			OnClickListener listener;
@@ -423,8 +432,8 @@ public class PlatformGridView extends LinearLayout implements
 			int dp_5 = cn.sharesdk.framework.utils.R.dipToPx(context, 5);
 			iv.setPadding(dp_5, dp_5, dp_5, dp_5);
 			iv.setScaleType(ScaleType.CENTER_INSIDE);
-			LayoutParams lpIv = new LayoutParams(
-					LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+			LayoutParams lpIv = new LayoutParams(LayoutParams.WRAP_CONTENT,
+					LayoutParams.WRAP_CONTENT);
 			lpIv.setMargins(dp_5, dp_5, dp_5, dp_5);
 			lpIv.gravity = Gravity.CENTER_HORIZONTAL;
 			iv.setLayoutParams(lpIv);
@@ -436,8 +445,8 @@ public class PlatformGridView extends LinearLayout implements
 			tv.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14);
 			tv.setSingleLine();
 			tv.setIncludeFontPadding(false);
-			LayoutParams lpTv = new LayoutParams(
-					LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+			LayoutParams lpTv = new LayoutParams(LayoutParams.WRAP_CONTENT,
+					LayoutParams.WRAP_CONTENT);
 			lpTv.gravity = Gravity.CENTER_HORIZONTAL;
 			lpTv.weight = 1;
 			lpTv.setMargins(dp_5, 0, dp_5, dp_5);
@@ -474,7 +483,8 @@ public class PlatformGridView extends LinearLayout implements
 				return "";
 			}
 
-			int resId = cn.sharesdk.framework.utils.R.getStringRes(getContext(), plat.getName().toLowerCase());
+			int resId = cn.sharesdk.framework.utils.R.getStringRes(
+					getContext(), plat.getName().toLowerCase());
 			if (resId > 0) {
 				return getContext().getString(resId);
 			}

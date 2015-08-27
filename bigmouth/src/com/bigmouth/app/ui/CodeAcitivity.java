@@ -27,14 +27,14 @@ public class CodeAcitivity extends Activity {
 		super.onCreate(arg0);
 		setContentView(R.layout.acitity_code);
 		findViewById(R.id.tv_back).setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				finish();
 			}
 		});
-		url =getIntent().getStringExtra("url");
+		url = getIntent().getStringExtra("url");
 		mWebView = (WebView) findViewById(R.id.login);
 		WebSettings webSettings = mWebView.getSettings();
 		webSettings.setJavaScriptEnabled(true);

@@ -696,9 +696,7 @@ public class ReadingDetailFragment extends Fragment implements OnClickListener,
 					read.setSource(obj.optString("source"));
 					read.setText(obj.optString("text"));
 					tvText.setText(read.getText(), BufferType.SPANNABLE);
-					 getEachWord(tvText);
-					 
-					
+					getEachWord(tvText);
 
 				} catch (JSONException e) {
 					Toast.makeText(getActivity(), "获取文章失败", 0).show();

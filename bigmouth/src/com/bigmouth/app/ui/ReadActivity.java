@@ -47,7 +47,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.TextView.BufferType;
 
-public class ReadActivity extends Activity implements OnClickListener, SpeechSynthesizerListener {
+public class ReadActivity extends Activity implements OnClickListener,
+		SpeechSynthesizerListener {
 	private TextView testText = null;
 	private TextView tvSrcWord, tvResultWrod;
 	private LinearLayout line;
@@ -59,7 +60,8 @@ public class ReadActivity extends Activity implements OnClickListener, SpeechSyn
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_read);
-		speechSynthesizer = new SpeechSynthesizer(getApplicationContext(),"holder", this);
+		speechSynthesizer = new SpeechSynthesizer(getApplicationContext(),
+				"holder", this);
 		// 此处需要将setApiKey方法的两个参数替换为你在百度开发者中心注册应用所得到的apiKey和secretKey
 		speechSynthesizer.setApiKey("OsxkbrvCtRuxA6ptGMbAIQTF",
 				"1UrKFZwaxAllo5uP9007QduXhkwyvvmG");
@@ -250,96 +252,98 @@ public class ReadActivity extends Activity implements OnClickListener, SpeechSyn
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
-		 new Thread(new Runnable() {
+		new Thread(new Runnable() {
 
-             @Override
-             public void run() {
-                 setParams();
-                 int ret = speechSynthesizer.speak(tvSrcWord.getText().toString());
-                 if (ret != 0) {
-                    Log.i("cc......","hecheng faile!!");
-                 }
-             }
-         }).start();
+			@Override
+			public void run() {
+				setParams();
+				int ret = speechSynthesizer.speak(tvSrcWord.getText()
+						.toString());
+				if (ret != 0) {
+					Log.i("cc......", "hecheng faile!!");
+				}
+			}
+		}).start();
 	}
 
 	@Override
 	public void onBufferProgressChanged(SpeechSynthesizer arg0, int arg1) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void onCancel(SpeechSynthesizer arg0) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void onError(SpeechSynthesizer arg0, SpeechError arg1) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void onNewDataArrive(SpeechSynthesizer arg0, byte[] arg1,
 			boolean arg2) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void onSpeechFinish(SpeechSynthesizer arg0) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void onSpeechPause(SpeechSynthesizer arg0) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void onSpeechProgressChanged(SpeechSynthesizer arg0, int arg1) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void onSpeechResume(SpeechSynthesizer arg0) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void onSpeechStart(SpeechSynthesizer arg0) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void onStartWorking(SpeechSynthesizer arg0) {
 		// TODO Auto-generated method stub
-		
-	}
-	 private void setParams() {
-	        speechSynthesizer.setParam(SpeechSynthesizer.PARAM_SPEAKER, "0");
-	        speechSynthesizer.setParam(SpeechSynthesizer.PARAM_VOLUME, "5");
-	        speechSynthesizer.setParam(SpeechSynthesizer.PARAM_SPEED, "5");
-	        speechSynthesizer.setParam(SpeechSynthesizer.PARAM_PITCH, "5");
-	        speechSynthesizer.setParam(SpeechSynthesizer.PARAM_AUDIO_ENCODE, SpeechSynthesizer.AUDIO_ENCODE_AMR);
-	        speechSynthesizer.setParam(SpeechSynthesizer.PARAM_AUDIO_RATE, SpeechSynthesizer.AUDIO_BITRATE_AMR_15K85);
-//	        speechSynthesizer.setParam(SpeechSynthesizer.PARAM_LANGUAGE, SpeechSynthesizer.LANGUAGE_ZH);
-//	        speechSynthesizer.setParam(SpeechSynthesizer.PARAM_NUM_PRON, "0");
-//	        speechSynthesizer.setParam(SpeechSynthesizer.PARAM_ENG_PRON, "0");
-//	        speechSynthesizer.setParam(SpeechSynthesizer.PARAM_PUNC, "0");
-//	        speechSynthesizer.setParam(SpeechSynthesizer.PARAM_BACKGROUND, "0");
-//	        speechSynthesizer.setParam(SpeechSynthesizer.PARAM_STYLE, "0");
-//	        speechSynthesizer.setParam(SpeechSynthesizer.PARAM_TERRITORY, "0");
-	    }
-	 
-	 
 
+	}
+
+	private void setParams() {
+		speechSynthesizer.setParam(SpeechSynthesizer.PARAM_SPEAKER, "0");
+		speechSynthesizer.setParam(SpeechSynthesizer.PARAM_VOLUME, "5");
+		speechSynthesizer.setParam(SpeechSynthesizer.PARAM_SPEED, "5");
+		speechSynthesizer.setParam(SpeechSynthesizer.PARAM_PITCH, "5");
+		speechSynthesizer.setParam(SpeechSynthesizer.PARAM_AUDIO_ENCODE,
+				SpeechSynthesizer.AUDIO_ENCODE_AMR);
+		speechSynthesizer.setParam(SpeechSynthesizer.PARAM_AUDIO_RATE,
+				SpeechSynthesizer.AUDIO_BITRATE_AMR_15K85);
+		// speechSynthesizer.setParam(SpeechSynthesizer.PARAM_LANGUAGE,
+		// SpeechSynthesizer.LANGUAGE_ZH);
+		// speechSynthesizer.setParam(SpeechSynthesizer.PARAM_NUM_PRON, "0");
+		// speechSynthesizer.setParam(SpeechSynthesizer.PARAM_ENG_PRON, "0");
+		// speechSynthesizer.setParam(SpeechSynthesizer.PARAM_PUNC, "0");
+		// speechSynthesizer.setParam(SpeechSynthesizer.PARAM_BACKGROUND, "0");
+		// speechSynthesizer.setParam(SpeechSynthesizer.PARAM_STYLE, "0");
+		// speechSynthesizer.setParam(SpeechSynthesizer.PARAM_TERRITORY, "0");
+	}
 
 }

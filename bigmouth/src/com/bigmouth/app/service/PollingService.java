@@ -147,15 +147,16 @@ public class PollingService extends Service {
 						JSONObject objData = obj.optJSONObject("data");
 						String title = objData.optString("title");
 						String con = objData.getString("content");
-					    Log.i("cc....con",con);
-						if (con.equals(PersistentUtil.getInstance().readString(PollingService.this, "content","  "))) {
+						Log.i("cc....con", con);
+						if (con.equals(PersistentUtil.getInstance().readString(
+								PollingService.this, "content", "  "))) {
 							return;
 						}
 						PersistentUtil.getInstance().write(PollingService.this,
 								"content", con);
 						if (!TextUtils.isEmpty(title)
 								&& !TextUtils.isEmpty(con)) {
-							
+
 						}
 						showNotification(title, con);
 					}

@@ -46,114 +46,115 @@ public class MipcaCaptureActivity extends Activity implements Callback {
 	private boolean playBeep;
 	private static final float BEEP_VOLUME = 0.10f;
 	private boolean vibrate;
-	
-	//<add by Yongfeng.zhang 2014.8.29
+
+	// <add by Yongfeng.zhang 2014.8.29
 	private Button mOpenLightBtn;
 	private boolean isFlashlightOpen;
 	private TextView mFlashlightStatusTv;
-	//>end by Yongfeng.zhang
+
+	// >end by Yongfeng.zhang
 
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login_scan);
-		
-		//MyApplication.getInstance().addActivity(this);
-		
-		//ViewUtil.addTopView(getApplicationContext(), this, R.string.scan_card);
+
+		// MyApplication.getInstance().addActivity(this);
+
+		// ViewUtil.addTopView(getApplicationContext(), this,
+		// R.string.scan_card);
 		CameraManager.init(getApplication());
 		viewfinderView = (ViewfinderView) findViewById(R.id.viewfinder_view);
 
-		/*this.back = (Button) findViewById(R.id.back);
-		this.back.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				finish();
-			}
-		});*/
+		/*
+		 * this.back = (Button) findViewById(R.id.back);
+		 * this.back.setOnClickListener(new OnClickListener() {
+		 * 
+		 * @Override public void onClick(View v) { finish(); } });
+		 */
 		hasSurface = false;
 		inactivityTimer = new InactivityTimer(this);
-		
-		//<add by Yongfeng.zhang 2014.8.29
-		mFlashlightStatusTv=(TextView)findViewById(R.id.mFlashlightStatusTv);
-		mOpenLightBtn=(Button)findViewById(R.id.mOpenLightBtn);
+
+		// <add by Yongfeng.zhang 2014.8.29
+		mFlashlightStatusTv = (TextView) findViewById(R.id.mFlashlightStatusTv);
+		mOpenLightBtn = (Button) findViewById(R.id.mOpenLightBtn);
 		mOpenLightBtn.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View arg0) {
-		
-				if(isFlashlightOpen){
+
+				if (isFlashlightOpen) {
 					setFlashLightEnabled(false);
-					
-					isFlashlightOpen=false;
-					
-					mFlashlightStatusTv.setText(getString(R.string.flight_open));
-				}else{
+
+					isFlashlightOpen = false;
+
+					mFlashlightStatusTv
+							.setText(getString(R.string.flight_open));
+				} else {
 					setFlashLightEnabled(true);
-					
-					isFlashlightOpen=true;
-					
-					mFlashlightStatusTv.setText(getString(R.string.flight_close));
+
+					isFlashlightOpen = true;
+
+					mFlashlightStatusTv
+							.setText(getString(R.string.flight_close));
 				}
 			}
 		});
-		
-		//TextView mTitleView=(TextView)findViewById(R.id.mTitleView);
-		//mTitleView.setText("查询");
-		
-		/*Button leftBtn=(Button)findViewById(R.id.leftBtn);
-		leftBtn.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View arg0) {
-				
-				finish();
-			}
-		});*/
-		//>end by Yongfeng.zhang
-		
-	    //<add by Yongfeng.zhang 2014.9.16
+
+		// TextView mTitleView=(TextView)findViewById(R.id.mTitleView);
+		// mTitleView.setText("查询");
+
+		/*
+		 * Button leftBtn=(Button)findViewById(R.id.leftBtn);
+		 * leftBtn.setOnClickListener(new OnClickListener() {
+		 * 
+		 * @Override public void onClick(View arg0) {
+		 * 
+		 * finish(); } });
+		 */
+		// >end by Yongfeng.zhang
+
+		// <add by Yongfeng.zhang 2014.9.16
 		viewfinderView.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View arg0) {
-				Log.e("zyf","viewfinderView touch touch touch.....");
-				
-				//finish();
+				Log.e("zyf", "viewfinderView touch touch touch.....");
+
+				// finish();
 			}
 		});
-		//>end by Yongfeng.zhang
+		// >end by Yongfeng.zhang
 	}
-	
-	//<add by Yongfeng.zhang 2014.8.29
+
+	// <add by Yongfeng.zhang 2014.8.29
 	@TargetApi(Build.VERSION_CODES.ECLAIR)
 	@SuppressLint("NewApi")
-	private void setFlashLightEnabled(boolean enable){
-		
-		Camera camera=CameraManager.get().getCurCamera();
-		
+	private void setFlashLightEnabled(boolean enable) {
+
+		Camera camera = CameraManager.get().getCurCamera();
+
 		Parameters parameter = camera.getParameters();
-		
-		if(enable){
+
+		if (enable) {
 			parameter.setFlashMode(Parameters.FLASH_MODE_TORCH);
-		}else{
+		} else {
 			parameter.setFlashMode(Parameters.FLASH_MODE_OFF);
 		}
-		
+
 		camera.setParameters(parameter);
 	}
-	
-	
-	//>end by Yongfeng.zhang
 
-	/*@Override
-	public boolean onTouchEvent(MotionEvent event) {
-		
-		Log.e("zyf","touch touch touch......");
-		
-		return super.onTouchEvent(event);
-	}*/
+	// >end by Yongfeng.zhang
+
+	/*
+	 * @Override public boolean onTouchEvent(MotionEvent event) {
+	 * 
+	 * Log.e("zyf","touch touch touch......");
+	 * 
+	 * return super.onTouchEvent(event); }
+	 */
 
 	@SuppressWarnings("deprecation")
 	@Override
@@ -194,12 +195,13 @@ public class MipcaCaptureActivity extends Activity implements Callback {
 	protected void onDestroy() {
 		inactivityTimer.shutdown();
 		super.onDestroy();
-		
-//		/MyApplication.getInstance().removeActivity(this);
+
+		// /MyApplication.getInstance().removeActivity(this);
 	}
 
 	/**
 	 * 处理扫描结果
+	 * 
 	 * @param result
 	 * @param barcode
 	 */
@@ -208,12 +210,13 @@ public class MipcaCaptureActivity extends Activity implements Callback {
 		playBeepSoundAndVibrate();
 		String resultString = result.getText();
 		if (resultString.equals("")) {
-			Toast.makeText(MipcaCaptureActivity.this, "Scan failed!", Toast.LENGTH_SHORT).show();
-		}else {
+			Toast.makeText(MipcaCaptureActivity.this, "Scan failed!",
+					Toast.LENGTH_SHORT).show();
+		} else {
 			Intent resultIntent = new Intent();
 			Bundle bundle = new Bundle();
 			bundle.putString("result", resultString);
-			//bundle.putParcelable("bitmap", barcode);
+			// bundle.putParcelable("bitmap", barcode);
 			resultIntent.putExtras(bundle);
 			this.setResult(RESULT_OK, resultIntent);
 		}

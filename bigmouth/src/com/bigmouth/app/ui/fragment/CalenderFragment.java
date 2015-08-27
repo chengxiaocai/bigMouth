@@ -1,7 +1,5 @@
 package com.bigmouth.app.ui.fragment;
 
-
-
 import com.bigmouth.app.R;
 import com.bigmouth.app.util.PersistentUtil;
 
@@ -22,8 +20,10 @@ public class CalenderFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		View contentView=inflater.inflate(R.layout.fragment_player,container, false);
-		type = PersistentUtil.getInstance().readString(getActivity(), "type","0");
+		View contentView = inflater.inflate(R.layout.fragment_player,
+				container, false);
+		type = PersistentUtil.getInstance().readString(getActivity(), "type",
+				"0");
 
 		mWebView = (WebView) contentView.findViewById(R.id.playing_web);
 		WebSettings webSettings = mWebView.getSettings();
@@ -34,12 +34,12 @@ public class CalenderFragment extends Fragment {
 				return true;
 			}
 		});
-		if("2".equals(type)){
+		if ("2".equals(type)) {
 			mWebView.loadUrl("http://app.01teacher.cn/Schedule/TMyCourseDate");
 
-		}else{
+		} else {
 			mWebView.loadUrl("http://app.01teacher.cn/Schedule/MyCourseDate");
-			
+
 		}
 
 		return contentView;

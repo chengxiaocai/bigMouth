@@ -1,7 +1,5 @@
 package com.bigmouth.app.ui.fragment;
 
-
-
 import com.bigmouth.app.R;
 
 import android.os.Bundle;
@@ -20,8 +18,8 @@ public class SettingFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		View contentView=inflater.inflate(R.layout.fragment_setting,container, false);
-		
+		View contentView = inflater.inflate(R.layout.fragment_setting,
+				container, false);
 
 		return contentView;
 	}
