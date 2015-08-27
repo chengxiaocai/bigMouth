@@ -53,7 +53,7 @@ public class ShowWordsActivity extends Activity implements
 	private AsyncHttpClient ahc; // 异步处理
 	private RequestHandle reqhandle;
 	private Dialog thisdialog;
-	private int x, y,bar;
+	private int x, y, bar;
 	private View view;
 	private SpeechSynthesizer speechSynthesizer;
 	private int Color[] = new int[] { R.color.color1, R.color.color3,
@@ -78,29 +78,29 @@ public class ShowWordsActivity extends Activity implements
 		reWordContainer = (RelativeLayout) findViewById(R.id.re_show_word_container);
 		x = getIntent().getIntExtra("x", 0);
 		y = getIntent().getIntExtra("y", 0);
-		bar= getIntent().getIntExtra("bar", 0);
+		bar = getIntent().getIntExtra("bar", 0);
 		view = getLayoutInflater().from(this).inflate(
 				R.layout.item_baidu_voice, null);
-		RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(((DisplayUtil
-				.getWidth(this) - 160) / 3) * 2 + 40, ((DisplayUtil
-				.getWidth(this) - 160) / 3) * 2 + 40); 
+		RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
+				((DisplayUtil.getWidth(this) - 160) / 3) * 2 + 40,
+				((DisplayUtil.getWidth(this) - 160) / 3) * 2 + 40);
 
-//		view.setLayoutParams(new AbsListView.LayoutParams(((DisplayUtil
-//				.getWidth(this) - 160) / 3) * 2 + 40, ((DisplayUtil
-//				.getWidth(this) - 160) / 3) * 2 + 40));// 动态设置item的高度
-		layoutParams.topMargin=y-bar;
-		if(x>((DisplayUtil.getWidth(this) - 160) / 3) * 2 + 80){
-			x=x-(((DisplayUtil.getWidth(this) - 160) / 3) + 40);
+		// view.setLayoutParams(new AbsListView.LayoutParams(((DisplayUtil
+		// .getWidth(this) - 160) / 3) * 2 + 40, ((DisplayUtil
+		// .getWidth(this) - 160) / 3) * 2 + 40));// 动态设置item的高度
+		layoutParams.topMargin = y - bar;
+		if (x > ((DisplayUtil.getWidth(this) - 160) / 3) * 2 + 80) {
+			x = x - (((DisplayUtil.getWidth(this) - 160) / 3) + 40);
 		}
-		layoutParams.leftMargin=x;
-		reWordContainer.addView(view,layoutParams);
+		layoutParams.leftMargin = x;
+		reWordContainer.addView(view, layoutParams);
 		reShowWord = (RelativeLayout) findViewById(R.id.re_show_word);
 		chinese = getIntent().getStringExtra("chinese");
 		word = getIntent().getStringExtra("word");
 		color = getIntent().getIntExtra("color", 1);
-		
-		//setLayoutY(view, y);
-		//setLayout(view, x, y);
+
+		// setLayoutY(view, y);
+		// setLayout(view, x, y);
 		view.setBackgroundResource(Color[color]);
 		TextView tvChinse = (TextView) view.findViewById(R.id.tv_words_chinese);
 		tvChinse.setText(chinese);
@@ -223,24 +223,27 @@ public class ShowWordsActivity extends Activity implements
 		// speechSynthesizer.setParam(SpeechSynthesizer.PARAM_STYLE, "0");
 		// speechSynthesizer.setParam(SpeechSynthesizer.PARAM_TERRITORY, "0");
 	}
-	public static void setLayoutY(View view,int y) 
-	{ 
-	MarginLayoutParams margin=new MarginLayoutParams(view.getLayoutParams()); 
-	margin.setMargins(margin.leftMargin,y, margin.rightMargin, y+margin.height); 
-	RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(margin); 
-	view.setLayoutParams(layoutParams); 
-	} 
-	/* 
-	* 设置控件所在的位置YY，并且不改变宽高， 
-	* XY为绝对位置 
-	*/ 
-	public static void setLayout(View view,int x,int y) 
-	{ 
-	MarginLayoutParams margin=new MarginLayoutParams(view.getLayoutParams()); 
-	margin.setMargins(x,y, x+margin.width, y+margin.height); 
-	RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(margin); 
-	view.setLayoutParams(layoutParams); 
-	} 
-	
+
+	public static void setLayoutY(View view, int y) {
+		MarginLayoutParams margin = new MarginLayoutParams(
+				view.getLayoutParams());
+		margin.setMargins(margin.leftMargin, y, margin.rightMargin, y
+				+ margin.height);
+		RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
+				margin);
+		view.setLayoutParams(layoutParams);
+	}
+
+	/*
+	 * 设置控件所在的位置YY，并且不改变宽高， XY为绝对位置
+	 */
+	public static void setLayout(View view, int x, int y) {
+		MarginLayoutParams margin = new MarginLayoutParams(
+				view.getLayoutParams());
+		margin.setMargins(x, y, x + margin.width, y + margin.height);
+		RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
+				margin);
+		view.setLayoutParams(layoutParams);
+	}
 
 }

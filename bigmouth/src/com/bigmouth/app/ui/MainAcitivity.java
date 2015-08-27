@@ -216,12 +216,12 @@ public class MainAcitivity extends FragmentActivity implements OnClickListener {
 			url = returnUrl;
 			transaction = getSupportFragmentManager().beginTransaction();
 			hideFragments(transaction);
-			//if (temFragment == null) {
-				temFragment = new TempFragment();
-				transaction.add(R.id.frag_main_tab, temFragment);
-		//	} else {
-				transaction.show(temFragment);
-		//	}
+			// if (temFragment == null) {
+			temFragment = new TempFragment();
+			transaction.add(R.id.frag_main_tab, temFragment);
+			// } else {
+			transaction.show(temFragment);
+			// }
 			transaction.commit();
 		}
 	}

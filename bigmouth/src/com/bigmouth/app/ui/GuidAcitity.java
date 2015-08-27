@@ -46,11 +46,11 @@ public class GuidAcitity extends Activity {
 		setContentView(R.layout.activity_guid);
 		tvEnter = (TextView) findViewById(R.id.tv_guid_enter);
 		tvEnter.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				
+
 				startActivity(new Intent(GuidAcitity.this, LoginActivity.class));
 				finish();
 			}
@@ -63,8 +63,9 @@ public class GuidAcitity extends Activity {
 		llIndexImg = (LinearLayout) findViewById(R.id.ll_guid_indeximg);
 		ivIndexList = new ArrayList<ImageView>();
 		imgUrl = getIntent().getStringArrayListExtra("img");
-		//PersistentUtil.getInstance().write(this, "isFirst", false);
-		//PersistentUtil.getInstance().write(this, "version", getVersionName());
+		// PersistentUtil.getInstance().write(this, "isFirst", false);
+		// PersistentUtil.getInstance().write(this, "version",
+		// getVersionName());
 		initWidgets();
 		// 把要显示的View装入数组
 		LayoutInflater li = LayoutInflater.from(this);
@@ -107,7 +108,7 @@ public class GuidAcitity extends Activity {
 			@Override
 			public void onPageSelected(int arg0) {
 				// TODO Auto-generated method stub
-				if(arg0 == ivIndexList.size()-1){
+				if (arg0 == ivIndexList.size() - 1) {
 					llIndexImg.removeAllViews();
 					tvEnter.setVisibility(View.VISIBLE);
 					return;
@@ -116,11 +117,12 @@ public class GuidAcitity extends Activity {
 
 					ivIndexList.get(arg0).setBackgroundResource(
 							R.drawable.page_icon_sel);
-					for (int j = 0; j < ivIndexList.size(); j++){
-						if(j==arg0)
+					for (int j = 0; j < ivIndexList.size(); j++) {
+						if (j == arg0)
 							continue;
 						else
-						ivIndexList.get(j).setBackgroundResource(R.drawable.page_icon);
+							ivIndexList.get(j).setBackgroundResource(
+									R.drawable.page_icon);
 					}
 
 				}

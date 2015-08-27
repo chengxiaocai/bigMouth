@@ -33,7 +33,8 @@ import static cn.sharesdk.framework.utils.R.getLayoutRes;
 import static cn.sharesdk.framework.utils.R.getStringRes;
 
 /** 执行图文分享的页面，此页面不支持微信平台的分享 */
-public class EditPage extends EditPageFakeActivity implements OnClickListener, TextWatcher {
+public class EditPage extends EditPageFakeActivity implements OnClickListener,
+		TextWatcher {
 	private static final int MAX_TEXT_COUNT = 140;
 
 	// 字数计算器
@@ -52,10 +53,11 @@ public class EditPage extends EditPageFakeActivity implements OnClickListener, T
 	}
 
 	private void initView() {
-		if(!dialogMode) {
-			RelativeLayout mainRelLayout = (RelativeLayout)findViewByResName("mainRelLayout");
-			RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) mainRelLayout.getLayoutParams();
-			lp.setMargins(0,0,0,0);
+		if (!dialogMode) {
+			RelativeLayout mainRelLayout = (RelativeLayout) findViewByResName("mainRelLayout");
+			RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) mainRelLayout
+					.getLayoutParams();
+			lp.setMargins(0, 0, 0, 0);
 			lp.height = RelativeLayout.LayoutParams.MATCH_PARENT;
 			mainRelLayout.setLayoutParams(lp);
 		}
@@ -79,7 +81,7 @@ public class EditPage extends EditPageFakeActivity implements OnClickListener, T
 		closeImageView.setTag("close");
 		closeImageView.setOnClickListener(this);
 
-		if(shareParamMap.containsKey("title")) {
+		if (shareParamMap.containsKey("title")) {
 			titleEditText = (EditText) findViewByResName("titleEditText");
 			titleEditText.setText(String.valueOf(shareParamMap.get("title")));
 		}
@@ -96,12 +98,16 @@ public class EditPage extends EditPageFakeActivity implements OnClickListener, T
 
 	private void initAtUserView() {
 		LinearLayout atLayout = (LinearLayout) findViewByResName("atLayout");
-		for(Platform platform : platforms) {
+		for (Platform platform : platforms) {
 			String platformName = platform.getName();
 			if (isShowAtUserLayout(platformName)) {
-				View view = LayoutInflater.from(activity).inflate(getLayoutRes(activity, "skyblue_editpage_at_layout"), null);
-				TextView atDescTextView = (TextView) view.findViewById(getIdRes(activity, "atDescTextView"));
-				TextView atTextView = (TextView) view.findViewById(getIdRes(activity, "atTextView"));
+				View view = LayoutInflater.from(activity).inflate(
+						getLayoutRes(activity, "skyblue_editpage_at_layout"),
+						null);
+				TextView atDescTextView = (TextView) view
+						.findViewById(getIdRes(activity, "atDescTextView"));
+				TextView atTextView = (TextView) view.findViewById(getIdRes(
+						activity, "atTextView"));
 
 				OnClickListener atBtnClickListener = new OnClickListener() {
 					public void onClick(View v) {
@@ -116,7 +122,9 @@ public class EditPage extends EditPageFakeActivity implements OnClickListener, T
 				atDescTextView.setOnClickListener(atBtnClickListener);
 
 				atTextView.setText(getAtUserButtonText(platformName));
-				atDescTextView.setText(getContext().getString(getStringRes(activity, "list_friends"), getLogoName(platformName)));
+				atDescTextView.setText(getContext().getString(
+						getStringRes(activity, "list_friends"),
+						getLogoName(platformName)));
 
 				atLayout.addView(view);
 			}
@@ -130,26 +138,29 @@ public class EditPage extends EditPageFakeActivity implements OnClickListener, T
 
 			@Override
 			public void onFinish(ArrayList<ImageInfo> results) {
-				if(results == null)
+				if (results == null)
 					return;
 				LinearLayout layout = (LinearLayout) findViewByResName("imagesLinearLayout");
-				for(ImageInfo imageInfo : results) {
-					if(imageInfo.bitmap == null)
+				for (ImageInfo imageInfo : results) {
+					if (imageInfo.bitmap == null)
 						continue;
 					layout.addView(makeImageItemView(imageInfo));
 				}
 			}
 		};
-		if(!initImageList(callback)) {
+		if (!initImageList(callback)) {
 			hScrollView.setVisibility(View.GONE);
 		}
 
 	}
 
 	private View makeImageItemView(final ImageInfo imageInfo) {
-		final View view = LayoutInflater.from(activity).inflate(getLayoutRes(activity, "skyblue_editpage_inc_image_layout"), null);
+		final View view = LayoutInflater.from(activity).inflate(
+				getLayoutRes(activity, "skyblue_editpage_inc_image_layout"),
+				null);
 
-		ImageView imageView = (ImageView) view.findViewById(getIdRes(activity, "imageView"));
+		ImageView imageView = (ImageView) view.findViewById(getIdRes(activity,
+				"imageView"));
 		imageView.setImageBitmap(imageInfo.bitmap);
 		imageView.setOnClickListener(new OnClickListener() {
 			@Override
@@ -160,7 +171,8 @@ public class EditPage extends EditPageFakeActivity implements OnClickListener, T
 			}
 		});
 
-		View removeBtn = view.findViewById(getIdRes(activity, "imageRemoveBtn"));
+		View removeBtn = view
+				.findViewById(getIdRes(activity, "imageRemoveBtn"));
 		removeBtn.setTag(imageInfo);
 		removeBtn.setOnClickListener(new OnClickListener() {
 			@Override
@@ -174,12 +186,12 @@ public class EditPage extends EditPageFakeActivity implements OnClickListener, T
 	}
 
 	public void onClick(View v) {
-		if(v.getTag() == null)
+		if (v.getTag() == null)
 			return;
 		String tag = (String) v.getTag();
 		if (tag.equals("close")) {
 			// 取消分享的统计
-			for(Platform plat : platforms) {
+			for (Platform plat : platforms) {
 				ShareSDK.logDemoEvent(5, plat);
 			}
 			finish();
@@ -193,7 +205,7 @@ public class EditPage extends EditPageFakeActivity implements OnClickListener, T
 	}
 
 	private void onShareButtonClick(View v) {
-		if(shareParamMap.containsKey("title")) {
+		if (shareParamMap.containsKey("title")) {
 			String title = titleEditText.getText().toString().trim();
 			shareParamMap.put("title", title);
 		}
@@ -221,7 +233,7 @@ public class EditPage extends EditPageFakeActivity implements OnClickListener, T
 
 	public void onResult(HashMap<String, Object> data) {
 		String atText = getJoinSelectedUser(data);
-		if(atText != null) {
+		if (atText != null) {
 			textEditText.append(atText);
 		}
 	}

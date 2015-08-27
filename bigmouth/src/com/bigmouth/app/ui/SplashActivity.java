@@ -49,28 +49,29 @@ import android.widget.Toast;
 public class SplashActivity extends Activity {
 	int imgNum;
 	ArrayList<String> imgUrl = new ArrayList<String>();
-	
+
 	private ImageView iv_splash;
 	Boolean isFirst;
 	String appVersion;
 	DisplayImageOptions options; // DisplayImageOptions是用于设置图片显示的类
 	ImageView iv_temp;
-	private String  localUrl;
-	private String strUrl="cc";
+	private String localUrl;
+	private String strUrl = "cc";
 
 	@SuppressLint("HandlerLeak")
 	private Handler handle = new Handler() {
 		public void handleMessage(android.os.Message msg) {
 			if (!localUrl.equals(strUrl)) {
-				PersistentUtil.getInstance().write(SplashActivity.this, "urll", strUrl);
-				if(imgUrl.size()<=0){
+				PersistentUtil.getInstance().write(SplashActivity.this, "urll",
+						strUrl);
+				if (imgUrl.size() <= 0) {
 					startActivity(new Intent(SplashActivity.this,
 							LoginActivity.class));
 					return;
 				}
-                Intent intent = new Intent();
-                intent.setClass(SplashActivity.this, GuidAcitity.class);
-                intent.putStringArrayListExtra("img", imgUrl);
+				Intent intent = new Intent();
+				intent.setClass(SplashActivity.this, GuidAcitity.class);
+				intent.putStringArrayListExtra("img", imgUrl);
 				startActivity(intent);
 			} else {
 				startActivity(new Intent(SplashActivity.this,
@@ -87,9 +88,8 @@ public class SplashActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_splash);
 		localUrl = PersistentUtil.getInstance().readString(this, "urll", "img");
-		com.bigmouth.app.util.AppShortCutUtil.addNumShortCut(SplashActivity.this,
-				SplashActivity.class, true,
-				"0",false);
+		com.bigmouth.app.util.AppShortCutUtil.addNumShortCut(
+				SplashActivity.this, SplashActivity.class, true, "0", false);
 		iv_temp = (ImageView) findViewById(R.id.img_temp);
 		options = new DisplayImageOptions.Builder()
 
@@ -101,9 +101,9 @@ public class SplashActivity extends Activity {
 				true);
 		appVersion = PersistentUtil.getInstance().readString(this, "version",
 				"1.0");
-		//if (isFirst || !appVersion.equals(getVersionName())) {
-			LoadImgs();
-		//}
+		// if (isFirst || !appVersion.equals(getVersionName())) {
+		LoadImgs();
+		// }
 		iv_splash = (ImageView) findViewById(R.id.bg_splash);
 		Animation animation = AnimationUtils.loadAnimation(this,
 				R.anim.alpha_splash);
@@ -146,11 +146,11 @@ public class SplashActivity extends Activity {
 				// TODO Auto-generated method stub
 				String result = null;
 				try {
-                    
+
 					HttpClient client = new DefaultHttpClient();
-                   
+
 					HttpGet post = new HttpGet(params[0]);
-                    
+
 					HttpResponse response = client.execute(post);
 					int code = response.getStatusLine().getStatusCode();
 					if (code == 200) {
@@ -163,7 +163,7 @@ public class SplashActivity extends Activity {
 
 				} catch (Exception e) {
 					e.printStackTrace();
-				
+
 				}
 				return result;
 
@@ -180,12 +180,14 @@ public class SplashActivity extends Activity {
 						JSONObject json = new JSONObject(response);
 						JSONArray json_url = json.optJSONArray("data");
 						imgNum = json.optInt("count");
-						for(int j =0;j<json_url.length();j++){
+						for (int j = 0; j < json_url.length(); j++) {
 							JSONObject obj = json_url.getJSONObject(j);
-							ImageLoader.getInstance().displayImage(obj.optString("url"), iv_temp, options, null);
-							imgUrl.add("http://app.01teacher.cn"+obj.optString("url"));
+							ImageLoader.getInstance().displayImage(
+									obj.optString("url"), iv_temp, options,
+									null);
+							imgUrl.add("http://app.01teacher.cn"
+									+ obj.optString("url"));
 						}
-						
 
 					} catch (JSONException e) {
 						// TODO Auto-generated catch block
@@ -198,16 +200,18 @@ public class SplashActivity extends Activity {
 
 		}.execute("http://app.01teacher.cn/App/GetGuideImages");
 	}
-    @Override
-    protected void onResume() {
-    	// TODO Auto-generated method stub
-    	super.onResume();
-    	JPushInterface.onResume(this);
-    }
-    @Override
-    protected void onPause() {
-    	// TODO Auto-generated method stub
-    	super.onPause();
-    	JPushInterface.onPause(this);
-    }
+
+	@Override
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		JPushInterface.onResume(this);
+	}
+
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		JPushInterface.onPause(this);
+	}
 }

@@ -40,15 +40,15 @@ public class TitlePopup extends PopupWindow {
 	public static final int TITLE_LEFT = 0;
 	public static final int TITLE_RIGHT = 1;
 	protected final int LIST_PADDING = 10;
-    private Activity ac;
+	private Activity ac;
 	private Context mContext;
 	private Rect mRect = new Rect();
 	private final int[] mLocation = new int[2];
-    private String Type ;
+	private String Type;
 	private int mScreenWidth;
 	private int mScreenHeight;
 	private boolean mIsDirty;
-   
+
 	private int popupGravity = Gravity.NO_GRAVITY;
 
 	private int mDirection = TITLE_RIGHT;
@@ -62,14 +62,14 @@ public class TitlePopup extends PopupWindow {
 		public void onItemClick(ActionItem item, int position);
 	}
 
-	public TitlePopup(Context context,Activity ac) {
-		this(context, LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT,ac);
+	public TitlePopup(Context context, Activity ac) {
+		this(context, LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, ac);
 	}
 
-	public TitlePopup(Context context, int width, int height,Activity ac) {
+	public TitlePopup(Context context, int width, int height, Activity ac) {
 		this.ac = ac;
 		this.mContext = context;
-		Type = PersistentUtil.getInstance().readString(context, "type","0");
+		Type = PersistentUtil.getInstance().readString(context, "type", "0");
 
 		setFocusable(true);
 		setTouchable(true);
@@ -97,8 +97,8 @@ public class TitlePopup extends PopupWindow {
 					mItemOnClickListener.onItemClick(mActionItems.get(index),
 							index);
 				if (index == 0) {
-					String filePath = Environment.getExternalStorageDirectory() + "/DCIM/"
-							+ "bigmouthApp.png";
+					String filePath = Environment.getExternalStorageDirectory()
+							+ "/DCIM/" + "bigmouthApp.png";
 					ScreenShot.shoot(ac, new File(filePath));
 					Toast.makeText(mContext, "分享获取积分", 0).show();
 					ShareSDK.initSDK(mContext);
@@ -120,55 +120,57 @@ public class TitlePopup extends PopupWindow {
 					// imagePath是图片的本地路径，Linked-In以外的平台都支持此参数
 					oks.setImagePath(filePath);// 确保SDcard下面存在此张图片
 					// url仅在微信（包括好友和朋友圈）中使用
-				//	oks.setUrl("http://sharesdk.cn");
+					// oks.setUrl("http://sharesdk.cn");
 					// comment是我对这条分享的评论，仅在人人网和QQ空间使用
 					oks.setComment("我是测试评论文本");
 					// site是分享此内容的网站名称，仅在QQ空间使用
 					oks.setSite(mContext.getString(R.string.app_name));
 					// siteUrl是分享此内容的网站地址，仅在QQ空间使用
 					oks.setSiteUrl("http://sharesdk.cn");
-                  
+
 					// 启动分享GUI
 					oks.show(mContext);
 					// 获取已经注册到SDK的平台实例列表
 					Platform[] platformList = ShareSDK.getPlatformList();
-					for(int i =0;i<platformList.length;i++){
-						platformList[i].setPlatformActionListener(new PlatformActionListener() {
-							
-							@Override
-							public void onError(Platform arg0, int arg1, Throwable arg2) {
-								// TODO Auto-generated method stub
-								
-							}
-							
-							@Override
-							public void onComplete(Platform arg0, int arg1, HashMap<String, Object> arg2) {
-								// TODO Auto-generated method stub
-								Toast.makeText(mContext, "获取积分成功！", 0).show();
-							}
-							
-							@Override
-							public void onCancel(Platform arg0, int arg1) {
-								// TODO Auto-generated method stub
-								
-							}
-						});
+					for (int i = 0; i < platformList.length; i++) {
+						platformList[i]
+								.setPlatformActionListener(new PlatformActionListener() {
+
+									@Override
+									public void onError(Platform arg0,
+											int arg1, Throwable arg2) {
+										// TODO Auto-generated method stub
+
+									}
+
+									@Override
+									public void onComplete(Platform arg0,
+											int arg1,
+											HashMap<String, Object> arg2) {
+										// TODO Auto-generated method stub
+										Toast.makeText(mContext, "获取积分成功！", 0)
+												.show();
+									}
+
+									@Override
+									public void onCancel(Platform arg0, int arg1) {
+										// TODO Auto-generated method stub
+
+									}
+								});
 					}
 
-					
-				
-				} 
-				else if(index==1) {
-					if("2".equals(Type)){
-					Intent intent3 = new Intent(mContext,
-							MipcaCaptureActivity.class);
-					
-					ac.startActivityForResult(intent3, 1);
+				} else if (index == 1) {
+					if ("2".equals(Type)) {
+						Intent intent3 = new Intent(mContext,
+								MipcaCaptureActivity.class);
+
+						ac.startActivityForResult(intent3, 1);
 					}
-					if("1".equals(Type)){
+					if ("1".equals(Type)) {
 						Intent intent3 = new Intent(mContext,
 								StudyActivity1.class);
-						
+
 						ac.startActivityForResult(intent3, 1);
 					}
 				}

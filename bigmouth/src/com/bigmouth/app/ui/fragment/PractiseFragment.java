@@ -24,6 +24,7 @@ import com.loopj.android.http.RequestParams;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
@@ -53,7 +54,8 @@ public class PractiseFragment extends Fragment {
 	private ArrayList<String> list = new ArrayList<String>();
 	private ArrayList<TextView> tvList = new ArrayList<TextView>();
 	private String chinese, usa;
-	private TextView tvWord, tvChineseRight, tvEnglishRight, tvChoose,tvJingdu;
+	private TextView tvWord, tvChineseRight, tvEnglishRight, tvChoose,
+			tvJingdu;
 	private View contentView;
 	private LinearLayout lineWord;
 	private LinearLayout lineGuessWord;
@@ -63,7 +65,7 @@ public class PractiseFragment extends Fragment {
 			tvResultChinese1;
 	private Timer time;
 	private TextView tvFinalShow;
-	private ImageView  ivSuccess;
+	private ImageView ivSuccess;
 	private TextView tvTotal;
 	private int i = 6;
 	private int type;
@@ -109,6 +111,7 @@ public class PractiseFragment extends Fragment {
 
 		// getData();
 		initView();
+	
 		return contentView;
 	}
 
@@ -155,11 +158,16 @@ public class PractiseFragment extends Fragment {
 					tvWord4.setText(list.get(2));
 					tvWord5.setText(list.get(3));
 					tvWord6.setText(list.get(4));
-					tvWord2.setBackground(getResources().getDrawable(R.drawable.bg_text__all_coner_tooblue));
-					tvWord3.setBackground(getResources().getDrawable(R.drawable.bg_text__all_coner_tooblue));
-					tvWord4.setBackground(getResources().getDrawable(R.drawable.bg_text__all_coner_tooblue));
-					tvWord5.setBackground(getResources().getDrawable(R.drawable.bg_text__all_coner_tooblue));
-					tvWord6.setBackground(getResources().getDrawable(R.drawable.bg_text__all_coner_tooblue));
+					tvWord2.setBackground(getResources().getDrawable(
+							R.drawable.bg_text__all_coner_tooblue));
+					tvWord3.setBackground(getResources().getDrawable(
+							R.drawable.bg_text__all_coner_tooblue));
+					tvWord4.setBackground(getResources().getDrawable(
+							R.drawable.bg_text__all_coner_tooblue));
+					tvWord5.setBackground(getResources().getDrawable(
+							R.drawable.bg_text__all_coner_tooblue));
+					tvWord6.setBackground(getResources().getDrawable(
+							R.drawable.bg_text__all_coner_tooblue));
 					time = new Timer(true);
 					TimerTask task = new TimerTask() {
 						public void run() {
@@ -169,9 +177,8 @@ public class PractiseFragment extends Fragment {
 						}
 					};
 					time.schedule(task, 1000, 1000);
-					i=6;
+					i = 6;
 				} catch (Exception e) {
-					Toast.makeText(getActivity(), "获取单词失败", 0).show();
 					e.printStackTrace();
 				}
 
@@ -202,6 +209,7 @@ public class PractiseFragment extends Fragment {
 
 		});
 	}
+
 	@Override
 	public void onAttach(Activity activity) {
 		// TODO Auto-generated method stub
@@ -211,9 +219,10 @@ public class PractiseFragment extends Fragment {
 	}
 
 	private void initView() {
-		tvTotal =(TextView) contentView.findViewById(R.id.tv_pratise_total);
-		
-		ivSuccess = (ImageView) contentView.findViewById(R.id.iv_pratise_success);
+		tvTotal = (TextView) contentView.findViewById(R.id.tv_pratise_total);
+
+		ivSuccess = (ImageView) contentView
+				.findViewById(R.id.iv_pratise_success);
 		tvFinalShow = (TextView) contentView.findViewById(R.id.finalshow);
 		tvJingdu = (TextView) contentView.findViewById(R.id.tv_pratise_jindu);
 		tvResultChinese = (TextView) contentView
@@ -267,23 +276,27 @@ public class PractiseFragment extends Fragment {
 						if (GussNmu == totalNum) {
 							lineUi2.setVisibility(View.GONE);
 							lineUi5.setVisibility(View.VISIBLE);
-							if(type==1){
+							if (type == 1) {
 								UpLoadPoint();
 								tvFinalShow.setText("完成了Coffee Break挑战练习");
-								ivSuccess.setBackground(getActivity().getResources().getDrawable(R.drawable.success3));
-							}else if(type==2){
+								ivSuccess.setBackground(getActivity()
+										.getResources().getDrawable(
+												R.drawable.success3));
+							} else if (type == 2) {
 								UpLoadPoint();
 
 								tvFinalShow.setText("完成了Afternoon Tea挑战练习");
-								ivSuccess.setBackground(getActivity().getResources().getDrawable(R.drawable.success2));
+								ivSuccess.setBackground(getActivity()
+										.getResources().getDrawable(
+												R.drawable.success2));
 
-
-							}else{
+							} else {
 								UpLoadPoint();
 
 								tvFinalShow.setText("完成了Word Feast挑战练习");
-								ivSuccess.setBackground(getActivity().getResources().getDrawable(R.drawable.success1));
-
+								ivSuccess.setBackground(getActivity()
+										.getResources().getDrawable(
+												R.drawable.success1));
 
 							}
 							totalNum = 0;
@@ -294,7 +307,7 @@ public class PractiseFragment extends Fragment {
 						lineUi3.setVisibility(View.VISIBLE);
 						tvResultChinese.setText(chinese);
 						tvResultEnglist.setText(usa);
-						tvJingdu.setText("已完成进度："+totalNum+"/"+GussNmu);
+						tvJingdu.setText("已完成进度：" + totalNum + "/" + GussNmu);
 
 					} else {
 						lineUi2.setVisibility(View.GONE);
@@ -320,7 +333,7 @@ public class PractiseFragment extends Fragment {
 						lineUi1.setVisibility(View.GONE);
 						lineUi2.setVisibility(View.VISIBLE);
 						GussNmu = 5;
-						type=1;
+						type = 1;
 						ac.setPractise(true);
 					}
 				});
@@ -334,7 +347,7 @@ public class PractiseFragment extends Fragment {
 						lineUi1.setVisibility(View.GONE);
 						lineUi2.setVisibility(View.VISIBLE);
 						GussNmu = 10;
-						type=2;
+						type = 2;
 
 						ac.setPractise(true);
 
@@ -350,7 +363,7 @@ public class PractiseFragment extends Fragment {
 						lineUi1.setVisibility(View.GONE);
 						lineUi2.setVisibility(View.VISIBLE);
 						GussNmu = 20;
-						type=3;
+						type = 3;
 
 						ac.setPractise(true);
 
@@ -395,8 +408,6 @@ public class PractiseFragment extends Fragment {
 		lineUi1.setVisibility(View.VISIBLE);
 	}
 
-	
-
 	public void ShowVoice() {
 		MediaPlayer mediaPlayer = new MediaPlayer();
 		if (mediaPlayer.isPlaying()) {
@@ -404,7 +415,8 @@ public class PractiseFragment extends Fragment {
 		}
 
 	}
-	public void UpdateUi(){
+
+	public void UpdateUi() {
 		time.cancel();
 		lineUi1.setVisibility(View.VISIBLE);
 		lineUi2.setVisibility(View.GONE);
@@ -413,11 +425,10 @@ public class PractiseFragment extends Fragment {
 		lineUi5.setVisibility(View.GONE);
 
 	}
-	public void  UpLoadPoint(){
+
+	public void UpLoadPoint() {
 		RequestParams rp = new RequestParams();
-		rp.put("UserID",
-				PersistentUtil.getInstance()
-						.readString(getActivity(), "id", ""));
+		rp.put("UserID",PersistentUtil.getInstance().readString(getActivity(), "id", ""));
 		rp.put("Type", "4");
 		reqhandle = ahc.post("http://app.01teacher.cn/App/PostUserPoints",
 
@@ -427,84 +438,49 @@ public class PractiseFragment extends Fragment {
 				// TODO Auto-generated method stub
 				super.onStart();
 				Log.i("cc...cars", "start...");
-				 thisdialog.show();
+				thisdialog.show();
 			}
 
 			@Override
 			public void onSuccess(String content) {
 				// TODO Auto-generated method stub
 				super.onSuccess(content);
-			Log.i("cc", content);
-				
-
-			}
-
-			@Override
-			public void onFinish() {
-				// TODO Auto-generated method stub
-				super.onFinish();
-				Log.i("cc...", "finish");
-				UpDownPoint();
-				
-			}
-
-			@Override
-			public void onFailure(int arg0, Header[] arg1, byte[] arg2,
-					Throwable arg3) {
-				// TODO Auto-generated method stub
-				super.onFailure(arg0, arg1, arg2, arg3);
-				Log.i("cc...cars", "failue.......");
-				HttpHandle hh = new HttpHandle();
-				hh.handleFaile(getActivity(), arg3);
-				if (thisdialog.isShowing()) {
-					// thisdialog.dismiss();
-				}
-			}
-
-		});
-	
-	}
-	public void  UpDownPoint(){
-		RequestParams rp = new RequestParams();
-		rp.put("UserID",
-				PersistentUtil.getInstance()
-				.readString(getActivity(), "id", ""));
-		
-		reqhandle = ahc.get("http://app.01teacher.cn/App/GetUserPoints",
-				
-				rp, new AsyncHttpResponseHandler() {
-			@Override
-			public void onStart() {
-				// TODO Auto-generated method stub
-				super.onStart();
-			
-			}
-			
-			@Override
-			public void onSuccess(String content) {
-				// TODO Auto-generated method stub
-				super.onSuccess(content);
+				Log.i("cc", content);
 				try {
 					obj = new JSONObject(content);
-					obj=obj.optJSONObject("data");
-					tvTotal.setText(obj.optString("point")+"  points");
+					if(obj.optBoolean("success")){
+						
 					
+						tvTotal.setText(obj.optString("point") + "  points");
+						Intent mIntent = new Intent("com.cc.getnum");
+
+						// 发送广播
+						getActivity().sendBroadcast(mIntent);
+
+					}else{
+						Toast.makeText(getActivity(), "获取积分失败！", 0).show();
+
+					}
+
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				
+
 			}
-			
+
 			@Override
 			public void onFinish() {
 				// TODO Auto-generated method stub
 				super.onFinish();
 				Log.i("cc...", "finish");
-				thisdialog.dismiss();
-				
-			}
+				if (thisdialog.isShowing()) {
+					 thisdialog.dismiss();
+				}
 			
+
+			}
+
 			@Override
 			public void onFailure(int arg0, Header[] arg1, byte[] arg2,
 					Throwable arg3) {
@@ -513,14 +489,13 @@ public class PractiseFragment extends Fragment {
 				Log.i("cc...cars", "failue.......");
 				HttpHandle hh = new HttpHandle();
 				hh.handleFaile(getActivity(), arg3);
-				tvTotal.setText("获取积分失败！");
-
-				if (thisdialog.isShowing()) {
-					// thisdialog.dismiss();
-				}
-			}
+				Toast.makeText(getActivity(), "上传积分失败！", 0).show();
 			
+			}
+
 		});
-		
+
 	}
+
+	
 }

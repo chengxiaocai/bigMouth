@@ -32,7 +32,6 @@ public class ShowMsgActivity extends Activity {
 	private RequestHandle reqhandle;
 	private Dialog thisdialog;
 	private JSONObject obj;
-	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -43,32 +42,36 @@ public class ShowMsgActivity extends Activity {
 		thisdialog = DialogUtil.getLoadDialog(this, "");
 		tvTitle = (TextView) findViewById(R.id.tv_msg_title);
 		tvContent = (TextView) findViewById(R.id.tv_msg_con);
-		
-		
-		findViewById(R.id.tv_msg_quit).setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				 finish();
-			}
-		});
-		findViewById(R.id.tv_msg_index).setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				startActivity(new Intent(ShowMsgActivity.this, LoginActivity.class));
-				finish();
-			}
-		});
+
+		findViewById(R.id.tv_msg_quit).setOnClickListener(
+				new OnClickListener() {
+
+					@Override
+					public void onClick(View v) {
+						// TODO Auto-generated method stub
+						finish();
+					}
+				});
+		findViewById(R.id.tv_msg_index).setOnClickListener(
+				new OnClickListener() {
+
+					@Override
+					public void onClick(View v) {
+						// TODO Auto-generated method stub
+						startActivity(new Intent(ShowMsgActivity.this,
+								LoginActivity.class));
+						finish();
+					}
+				});
 		getUnReadMsg();
 
 	}
+
 	public void getUnReadMsg() {
 
 		RequestParams rp = new RequestParams();
-		rp.put("UserID", PersistentUtil.getInstance().readString(this, "id", ""));
+		rp.put("UserID", PersistentUtil.getInstance()
+				.readString(this, "id", ""));
 		reqhandle = ahc.post("http://app.01teacher.cn/App/GetUserMsg",
 
 		rp, new AsyncHttpResponseHandler() {
@@ -77,7 +80,7 @@ public class ShowMsgActivity extends Activity {
 				// TODO Auto-generated method stub
 				super.onStart();
 				Log.i("cc...getMsg", "start...");
-			 thisdialog.show();
+				thisdialog.show();
 			}
 
 			@Override
@@ -93,16 +96,16 @@ public class ShowMsgActivity extends Activity {
 						JSONObject objData = obj.optJSONObject("data");
 						String title = objData.optString("title");
 						String con = objData.getString("content");
-					    Log.i("cc....con",con);
-					    Log.i("cc....title",title);
-					    if (title != null) {
+						Log.i("cc....con", con);
+						Log.i("cc....title", title);
+						if (title != null) {
 							tvTitle.setText(title);
 						}
 						if (content != null) {
 
 							tvContent.setText(Html.fromHtml(content));
 						}
-						
+
 					}
 
 				} catch (JSONException e) {
@@ -117,7 +120,7 @@ public class ShowMsgActivity extends Activity {
 				// TODO Auto-generated method stub
 				super.onFinish();
 				Log.i("cc...", "finish");
-				 thisdialog.dismiss();
+				thisdialog.dismiss();
 			}
 
 			@Override
@@ -133,6 +136,5 @@ public class ShowMsgActivity extends Activity {
 
 		});
 	}
-
 
 }

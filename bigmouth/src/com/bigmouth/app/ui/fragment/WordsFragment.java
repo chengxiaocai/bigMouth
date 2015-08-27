@@ -54,7 +54,7 @@ import android.widget.Toast;
 
 /**
  * @author tusm
- *
+ * 
  */
 public class WordsFragment extends Fragment implements OnClickListener,
 		SpeechSynthesizerListener {
@@ -132,24 +132,29 @@ public class WordsFragment extends Fragment implements OnClickListener,
 				int y = location[1];
 				int z = location[3];
 				if (y < DisplayUtil.dip2px(getActivity(), 60) + getBiaoHeight()) {
-				
-                      
+
 					return;
 				}
-				if ( y > DisplayUtil.getHeight(getActivity())- (DisplayUtil.dip2px(getActivity(), 60)+ 
-						2* ((DisplayUtil.getWidth(getActivity()) - 160) / 3) + 40)&&y<DisplayUtil.getHeight(getActivity())- (DisplayUtil.dip2px(getActivity(), 60)+ 
-								 ((DisplayUtil.getWidth(getActivity()) - 160) / 3))) {
-					   
-                    y=y-((DisplayUtil.getWidth(getActivity()) - 160) / 3+40);
-					
+				if (y > DisplayUtil.getHeight(getActivity())
+						- (DisplayUtil.dip2px(getActivity(), 60)
+								+ 2
+								* ((DisplayUtil.getWidth(getActivity()) - 160) / 3) + 40)
+						&& y < DisplayUtil.getHeight(getActivity())
+								- (DisplayUtil.dip2px(getActivity(), 60) + ((DisplayUtil
+										.getWidth(getActivity()) - 160) / 3))) {
+
+					y = y
+							- ((DisplayUtil.getWidth(getActivity()) - 160) / 3 + 40);
+
 				}
-				if ( y>DisplayUtil.getHeight(getActivity())- (DisplayUtil.dip2px(getActivity(), 60)+ 
-								((DisplayUtil.getWidth(getActivity()) - 160) / 3))) {
-					
-				return;
-					
+				if (y > DisplayUtil.getHeight(getActivity())
+						- (DisplayUtil.dip2px(getActivity(), 60) + ((DisplayUtil
+								.getWidth(getActivity()) - 160) / 3))) {
+
+					return;
+
 				}
-				
+
 				intent.putExtra("x", x);
 
 				intent.putExtra("y", y);
@@ -261,6 +266,7 @@ public class WordsFragment extends Fragment implements OnClickListener,
 				 * adapter.notifyDataSetChanged();
 				 */
 				getWord();
+				UpLoadPoint();
 
 			}
 
@@ -375,6 +381,7 @@ public class WordsFragment extends Fragment implements OnClickListener,
 		public void onReceive(Context context, Intent intent) {
 			String action = intent.getAction();
 			if (action.equals("com.cc.getword")) {
+
 				getWord();
 			}
 		}
@@ -477,6 +484,71 @@ public class WordsFragment extends Fragment implements OnClickListener,
 		// statusBarHeight是上面所求的状态栏的高度
 		int titleBarHeight = contentTop - statusBarHeight;
 		return contentTop;
+	}
+
+	public void UpLoadPoint() {
+		RequestParams rp = new RequestParams();
+		rp.put("UserID",PersistentUtil.getInstance()
+						.readString(getActivity(), "id", ""));
+		rp.put("Type", "2");
+		reqhandle = ahc.post("http://app.01teacher.cn/App/PostUserPoints",
+
+		rp, new AsyncHttpResponseHandler() {
+			@Override
+			public void onStart() {
+				// TODO Auto-generated method stub
+				super.onStart();
+				Log.i("cc...cars", "start...");
+				thisdialog.show();
+			}
+
+			@Override
+			public void onSuccess(String content) {
+				// TODO Auto-generated method stub
+				super.onSuccess(content);
+				Log.i("cc", content);
+				try {
+					obj = new JSONObject(content);
+					if (obj.optBoolean("success")) {
+
+						Intent mIntent = new Intent("com.cc.getnum");
+
+						// 发送广播
+						getActivity().sendBroadcast(mIntent);
+
+					}
+
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+			}
+
+			@Override
+			public void onFinish() {
+				// TODO Auto-generated method stub
+				super.onFinish();
+				Log.i("cc...", "finish");
+				if (thisdialog.isShowing()) {
+					thisdialog.dismiss();
+				}
+
+			}
+
+			@Override
+			public void onFailure(int arg0, Header[] arg1, byte[] arg2,
+					Throwable arg3) {
+				// TODO Auto-generated method stub
+				super.onFailure(arg0, arg1, arg2, arg3);
+				Log.i("cc...cars", "failue.......");
+				HttpHandle hh = new HttpHandle();
+				hh.handleFaile(getActivity(), arg3);
+
+			}
+
+		});
+
 	}
 
 }

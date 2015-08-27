@@ -1,6 +1,7 @@
 package com.bigmouth.app.ui.fragment;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 import java.util.regex.Matcher;
@@ -11,6 +12,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import cn.sharesdk.framework.Platform;
+import cn.sharesdk.framework.PlatformActionListener;
 import cn.sharesdk.framework.ShareSDK;
 import cn.sharesdk.onekeyshare.OnekeyShare;
 
@@ -144,6 +147,26 @@ public class ReadingFragment extends Fragment {
 						// TODO Auto-generated method stub
 						ShareSDK.initSDK(getActivity());
 						OnekeyShare oks = new OnekeyShare();
+						oks.setCallback(new PlatformActionListener() {
+							
+							@Override
+							public void onError(Platform arg0, int arg1, Throwable arg2) {
+								// TODO Auto-generated method stub
+								
+							}
+							
+							@Override
+							public void onComplete(Platform arg0, int arg1, HashMap<String, Object> arg2) {
+								// TODO Auto-generated method stub
+								
+							}
+							
+							@Override
+							public void onCancel(Platform arg0, int arg1) {
+								// TODO Auto-generated method stub
+								
+							}
+						});
 						// 关闭sso授权
 						oks.disableSSOWhenAuthorize();
 

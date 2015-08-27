@@ -439,7 +439,8 @@ public class LoginActivity extends Activity implements Callback,
 			break;
 		case 2: {
 			// 失败
-			Toast.makeText(LoginActivity.this, "授权登录失败", Toast.LENGTH_SHORT).show();
+			Toast.makeText(LoginActivity.this, "授权登录失败", Toast.LENGTH_SHORT)
+					.show();
 
 		}
 			break;
@@ -506,12 +507,12 @@ public class LoginActivity extends Activity implements Callback,
 					intent3.putExtra("isthree", true);
 					startActivity(intent3);
 					finish();
-					
+
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				
+
 				Log.i("cc", content);
 
 			}
