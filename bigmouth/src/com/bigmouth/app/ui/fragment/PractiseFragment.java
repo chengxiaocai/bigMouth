@@ -71,37 +71,37 @@ public class PractiseFragment extends Fragment {
 	private int i = 6;
 	private int type;
 	StudyActivity1 ac;
-//	final Handler handler = new Handler() {
-//		@SuppressLint("NewApi")
-//		public void handleMessage(Message msg) {
-//			i--;
-//
-//			if (i == 2) {
-//				time.cancel();
-//				int m, n;
-//				while (true) {
-//					m = new Random().nextInt(5);
-//					if (!list.get(m).equals(chinese)) {
-//						break;
-//					}
-//				}
-//				while (true) {
-//					n = new Random().nextInt(5);
-//					if (!list.get(n).equals(chinese) && n != m) {
-//						break;
-//					}
-//				}
-//
-//				tvList.get(m).setBackground(
-//						getResources().getDrawable(
-//								R.drawable.bg_text__all_coner_gray));
-//				tvList.get(n).setBackground(
-//						getResources().getDrawable(
-//								R.drawable.bg_text__all_coner_gray));
-//			}
-//
-//		}
-//	};
+	final Handler handler = new Handler() {
+		@SuppressLint("NewApi")
+		public void handleMessage(Message msg) {
+			i--;
+
+			if (i == 2) {
+				time.cancel();
+				int m, n;
+				while (true) {
+					m = new Random().nextInt(5);
+					if (!list.get(m).equals(chinese)) {
+						break;
+					}
+				}
+				while (true) {
+					n = new Random().nextInt(5);
+					if (!list.get(n).equals(chinese) && n != m) {
+						break;
+					}
+				}
+
+				tvList.get(m).setBackground(
+						getResources().getDrawable(
+								R.drawable.bg_text__all_coner_gray));
+				tvList.get(n).setBackground(
+						getResources().getDrawable(
+								R.drawable.bg_text__all_coner_gray));
+			}
+
+		}
+	};
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -111,7 +111,11 @@ public class PractiseFragment extends Fragment {
 		// initVeiw();
 
 		// getData();
-	//	initView();
+		Intent mIntent = new Intent("com.cc.getnum");
+
+		// 发送广播
+		getActivity().sendBroadcast(mIntent);
+	 	initView();
 
 		return contentView;
 	}
@@ -175,7 +179,7 @@ public class PractiseFragment extends Fragment {
 						public void run() {
 							Message message = new Message();
 							message.what = 5;
-						//	handler.sendMessage(message);
+						handler.sendMessage(message);
 						}
 					};
 					time.schedule(task, 1000, 1000);
