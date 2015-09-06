@@ -2,6 +2,7 @@ package com.bigmouth.app.ui;
 
 import com.bigmouth.app.R;
 import com.bigmouth.app.util.PersistentUtil;
+import com.umeng.analytics.MobclickAgent;
 
 import android.app.Activity;
 import android.content.Context;
@@ -51,5 +52,16 @@ public class CodeAcitivity extends Activity {
 		});
 		mWebView.loadUrl(url);
 	}
+	public void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+		}
+		public void onPause() {
+		super.onPause();
+		MobclickAgent.onPause(this);
+		}
+
+
+	
 
 }

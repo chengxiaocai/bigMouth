@@ -24,10 +24,10 @@ import com.baidu.speechsynthesizer.publicutility.SpeechError;
 import com.bigmouth.app.R;
 import com.bigmouth.app.util.Constant;
 import com.bigmouth.app.util.StreamTools;
+import com.umeng.analytics.MobclickAgent;
 
 import android.app.Activity;
 import android.graphics.Color;
-
 import android.media.AudioManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -345,5 +345,16 @@ public class ReadActivity extends Activity implements OnClickListener,
 		// speechSynthesizer.setParam(SpeechSynthesizer.PARAM_STYLE, "0");
 		// speechSynthesizer.setParam(SpeechSynthesizer.PARAM_TERRITORY, "0");
 	}
+	public void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+		}
+		public void onPause() {
+		super.onPause();
+		MobclickAgent.onPause(this);
+		}
+
+	
+
 
 }

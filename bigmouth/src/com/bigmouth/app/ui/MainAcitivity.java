@@ -21,6 +21,7 @@ import com.bigmouth.app.ui.fragment.ClassTimeFragment;
 import com.bigmouth.app.ui.fragment.ClassRecordFragment;
 import com.bigmouth.app.ui.fragment.TempFragment;
 import com.bigmouth.app.util.PersistentUtil;
+import com.umeng.analytics.MobclickAgent;
 
 public class MainAcitivity extends FragmentActivity implements OnClickListener {
 	private TitlePopup titlePopup;
@@ -47,7 +48,7 @@ public class MainAcitivity extends FragmentActivity implements OnClickListener {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
+       
 		type = PersistentUtil.getInstance().readString(this, "type", "0");
 		if ("2".equals(type)) {
 			setContentView(R.layout.activity_main_teacther);
@@ -225,5 +226,14 @@ public class MainAcitivity extends FragmentActivity implements OnClickListener {
 			transaction.commit();
 		}
 	}
+	public void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+		}
+		public void onPause() {
+		super.onPause();
+		MobclickAgent.onPause(this);
+		}
 
+	
 }

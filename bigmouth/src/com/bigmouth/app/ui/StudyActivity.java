@@ -31,6 +31,7 @@ import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestHandle;
 import com.loopj.android.http.RequestParams;
+import com.umeng.analytics.MobclickAgent;
 
 public class StudyActivity extends FragmentActivity implements OnClickListener {
 	private AsyncHttpClient ahc; // 异步处理
@@ -289,5 +290,15 @@ public class StudyActivity extends FragmentActivity implements OnClickListener {
 		// TODO Auto-generated method stub
 		//super.onSaveInstanceState(outState);
 	}
+	public void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+		}
+		public void onPause() {
+		super.onPause();
+		MobclickAgent.onPause(this);
+		}
+
+	
 
 }

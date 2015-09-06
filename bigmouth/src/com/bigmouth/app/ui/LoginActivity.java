@@ -49,6 +49,7 @@ import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestHandle;
 import com.loopj.android.http.RequestParams;
+import com.umeng.analytics.MobclickAgent;
 import com.umeng.update.UmengUpdateAgent;
 
 public class LoginActivity extends Activity implements Callback,
@@ -78,8 +79,8 @@ public class LoginActivity extends Activity implements Callback,
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.acitity_login);
 		ShareSDK.initSDK(this);
-	    UmengUpdateAgent.update(this);
-	    UmengUpdateAgent.setUpdateOnlyWifi(false);
+		UmengUpdateAgent.update(this);
+		UmengUpdateAgent.setUpdateOnlyWifi(false);
 		ahc = new AsyncHttpClient();
 		thisdialog = DialogUtil.getLoadDialog(this, "");
 		reTtile = (RelativeLayout) findViewById(R.id.re_login_title);
@@ -148,8 +149,28 @@ public class LoginActivity extends Activity implements Callback,
 				if (url == null) {
 					return true;
 				}
-				if (url.equals("http://app.01teacher.cn/App/TLogin")) {
-					threadPartLogin();
+				if (url.equals("http://app.01teacher.cn/wx.html")) {
+					Platform wechat = ShareSDK.getPlatform(Wechat.NAME);
+					wechat.removeAccount();
+					ShareSDK.removeCookieOnAuthorize(true);
+					authorize(wechat);
+					return true;
+				}
+				if (url.equals("http://app.01teacher.cn/wb.html")) {
+					Platform weixinfd = ShareSDK.getPlatform(SinaWeibo.NAME);
+					weixinfd.removeAccount();
+					ShareSDK.removeCookieOnAuthorize(true);
+					weixinfd.setPlatformActionListener(LoginActivity.this);
+
+					weixinfd.showUser(null);
+					return true;
+				}
+				if (url.equals("http://app.01teacher.cn/qq.html")) {
+					Platform weixinfd = ShareSDK.getPlatform(QQ.NAME);
+					weixinfd.removeAccount();
+					ShareSDK.removeCookieOnAuthorize(true);
+					weixinfd.setPlatformActionListener(LoginActivity.this);
+					weixinfd.showUser(null);
 					return true;
 				}
 				view.loadUrl(url);
@@ -443,14 +464,14 @@ public class LoginActivity extends Activity implements Callback,
 				ThreadLogin(platform.getDb().getUserId(), "WX");
 			}
 			if (platform.getName() == QQ.NAME) {
-				
+
 				ThreadLogin(platform.getDb().getUserId(), "QQ");
 			}
 			if (platform.getName() == SinaWeibo.NAME) {
-				
+
 				ThreadLogin(platform.getDb().getUserId(), "SWB");
 			}
-		
+
 		}
 			break;
 		case 2: {
@@ -558,4 +579,15 @@ public class LoginActivity extends Activity implements Callback,
 
 		});
 	}
+	public void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+		}
+		public void onPause() {
+		super.onPause();
+		MobclickAgent.onPause(this);
+		}
+
+	
+
 }

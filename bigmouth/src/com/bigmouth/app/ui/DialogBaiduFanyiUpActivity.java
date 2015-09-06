@@ -19,6 +19,7 @@ import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestHandle;
 import com.loopj.android.http.RequestParams;
+import com.umeng.analytics.MobclickAgent;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -286,7 +287,8 @@ public class DialogBaiduFanyiUpActivity extends Activity implements
 				// TODO Auto-generated method stub
 				super.onSuccess(content);
 				Log.i("cc...cars", "success.......");
-				Toast.makeText(DialogBaiduFanyiUpActivity.this, "陌生单词，已添加到单词库", 0).show();
+				Toast.makeText(DialogBaiduFanyiUpActivity.this, "陌生单词，已添加到单词库",
+						0).show();
 				Intent mIntent = new Intent("com.cc.getword");
 
 				// 发送广播
@@ -318,5 +320,15 @@ public class DialogBaiduFanyiUpActivity extends Activity implements
 		});
 
 	}
+	public void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+		}
+		public void onPause() {
+		super.onPause();
+		MobclickAgent.onPause(this);
+		}
 
+
+	
 }

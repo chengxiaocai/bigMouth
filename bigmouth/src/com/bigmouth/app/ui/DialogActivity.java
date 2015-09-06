@@ -5,6 +5,7 @@ import cn.sharesdk.onekeyshare.OnekeyShare;
 
 import com.bigmouth.app.R;
 import com.bigmouth.app.scan.MipcaCaptureActivity;
+import com.umeng.analytics.MobclickAgent;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -15,7 +16,7 @@ import android.view.View.OnClickListener;
 import android.widget.LinearLayout;
 
 /**
- * @author yangyu 
+ * @author yangyu
  */
 public class DialogActivity extends Activity implements OnClickListener {
 	private LinearLayout layout01, layout02, layout03, layout04;
@@ -32,7 +33,7 @@ public class DialogActivity extends Activity implements OnClickListener {
 	 * 
 	 */
 	private void initView() {
-		// 
+		//
 		layout01 = (LinearLayout) findViewById(R.id.llayout01);
 		layout02 = (LinearLayout) findViewById(R.id.llayout02);
 		layout03 = (LinearLayout) findViewById(R.id.llayout03);
@@ -83,10 +84,10 @@ public class DialogActivity extends Activity implements OnClickListener {
 
 			// 启动分享GUI
 			oks.show(this);
-            finish();
+			finish();
 			break;
 		case R.id.llayout04:
-			
+
 			Intent intent3 = new Intent(this, MipcaCaptureActivity.class);
 			startActivityForResult(intent3, 1);
 			finish();
@@ -97,4 +98,16 @@ public class DialogActivity extends Activity implements OnClickListener {
 		}
 
 	}
+	public void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+		}
+		public void onPause() {
+		super.onPause();
+		MobclickAgent.onPause(this);
+		}
+
+
+
+
 }

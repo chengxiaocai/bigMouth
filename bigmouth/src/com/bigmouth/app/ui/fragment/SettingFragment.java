@@ -20,7 +20,7 @@ public class SettingFragment extends Fragment {
 			Bundle savedInstanceState) {
 		View contentView = inflater.inflate(R.layout.fragment_setting,
 				container, false);
-
+     
 		return contentView;
 	}
 }

@@ -2,6 +2,7 @@ package com.bigmouth.app.ui;
 
 import org.apache.http.Header;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import cn.sharesdk.onekeyshare.OnekeyShare;
@@ -19,6 +20,7 @@ import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestHandle;
 import com.loopj.android.http.RequestParams;
+import com.umeng.analytics.MobclickAgent;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -288,6 +290,7 @@ public class DialogBaiduFanyiActivity extends Activity implements
 				Log.i("cc...cars", "success.......");
 				Toast.makeText(DialogBaiduFanyiActivity.this, "陌生单词，已添加到单词库", 0)
 						.show();
+				UpLoadPoint();
 				Intent mIntent = new Intent("com.cc.getword");
 
 				// 发送广播
@@ -319,5 +322,80 @@ public class DialogBaiduFanyiActivity extends Activity implements
 		});
 
 	}
+	public void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+		}
+		public void onPause() {
+		super.onPause();
+		MobclickAgent.onPause(this);
+		}
+
+
+		public void UpLoadPoint() {
+			
+			RequestParams rp = new RequestParams();
+			rp.put("UserID",PersistentUtil.getInstance()
+							.readString(this, "id", ""));
+			rp.put("Type", "2");
+			reqhandle = ahc.post("http://app.01teacher.cn/App/PostUserPoints",
+
+			rp, new AsyncHttpResponseHandler() {
+				@Override
+				public void onStart() {
+					// TODO Auto-generated method stub
+					super.onStart();
+					Log.i("cc...cars", "start...");
+					thisdialog.show();
+				}
+
+				@Override
+				public void onSuccess(String content) {
+					// TODO Auto-generated method stub
+					super.onSuccess(content);
+					Log.i("cc", content);
+					try {
+						JSONObject obj = new JSONObject(content);
+						if (obj.optBoolean("success")) {
+							Intent mIntent = new Intent("com.cc.getnum");
+
+							// 发送广播
+							sendBroadcast(mIntent);
+
+						}
+
+					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+
+				}
+
+				@Override
+				public void onFinish() {
+					// TODO Auto-generated method stub
+					super.onFinish();
+					Log.i("cc...", "finish");
+					if (thisdialog.isShowing()) {
+						thisdialog.dismiss();
+					}
+
+				}
+
+				@Override
+				public void onFailure(int arg0, Header[] arg1, byte[] arg2,
+						Throwable arg3) {
+					// TODO Auto-generated method stub
+					super.onFailure(arg0, arg1, arg2, arg3);
+					Log.i("cc...cars", "failue.......");
+					HttpHandle hh = new HttpHandle();
+					hh.handleFaile(DialogBaiduFanyiActivity.this, arg3);
+
+				}
+
+			});
+
+		}
+
 
 }

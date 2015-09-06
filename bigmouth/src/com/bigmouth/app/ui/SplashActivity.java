@@ -24,6 +24,7 @@ import com.bigmouth.app.util.StreamTools;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
+import com.umeng.analytics.MobclickAgent;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -205,7 +206,10 @@ public class SplashActivity extends Activity {
 	protected void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
+		MobclickAgent.onResume(this);
+
 		JPushInterface.onResume(this);
+
 	}
 
 	@Override
@@ -213,5 +217,8 @@ public class SplashActivity extends Activity {
 		// TODO Auto-generated method stub
 		super.onPause();
 		JPushInterface.onPause(this);
+		MobclickAgent.onPause(this);
+
 	}
+
 }

@@ -87,6 +87,7 @@ public class WordsFragment extends Fragment implements OnClickListener,
 				false);
 		initView();
 		getWord();
+	
 		// contentView.setBackgroundColor(R.color.yellow);
 		return contentView;
 	}

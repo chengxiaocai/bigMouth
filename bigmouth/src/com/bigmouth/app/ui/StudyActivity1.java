@@ -39,6 +39,7 @@ import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestHandle;
 import com.loopj.android.http.RequestParams;
+import com.umeng.analytics.MobclickAgent;
 
 public class StudyActivity1 extends FragmentActivity implements OnClickListener {
 	private AsyncHttpClient ahc; // 异步处理
@@ -67,7 +68,8 @@ public class StudyActivity1 extends FragmentActivity implements OnClickListener 
 		setContentView(R.layout.activity_study1);
 
 		initView();
-		//ahc = new AsyncHttpClient();
+	  
+		// ahc = new AsyncHttpClient();
 		getNum();
 
 	}
@@ -82,7 +84,9 @@ public class StudyActivity1 extends FragmentActivity implements OnClickListener 
 						// TODO Auto-generated method stub
 						// startActivity(new Intent(StudyActivity1.this,
 						// MainAcitivity.class));
-						if (PersistentUtil.getInstance().readString(StudyActivity1.this, "type", "1").equals("3")) {
+						if (PersistentUtil.getInstance()
+								.readString(StudyActivity1.this, "type", "1")
+								.equals("3")) {
 
 							if (isPractise) {
 								showDialog();
@@ -201,7 +205,6 @@ public class StudyActivity1 extends FragmentActivity implements OnClickListener 
 			}
 			transaction.commit();
 		}
-		
 
 	}
 
@@ -320,9 +323,11 @@ public class StudyActivity1 extends FragmentActivity implements OnClickListener 
 	}
 
 	public void getNum() {
+		
 
 		RequestParams rp = new RequestParams();
-		rp.put("UserID", PersistentUtil.getInstance().readString(this, "id", ""));
+		rp.put("UserID", PersistentUtil.getInstance()
+				.readString(this, "id", ""));
 
 		ahc.post("http://app.01teacher.cn/App/GetUserPoints",
 
@@ -543,7 +548,6 @@ public class StudyActivity1 extends FragmentActivity implements OnClickListener 
 					public void onClick(View v) {
 						// TODO Auto-generated method stub
 						dialog.dismiss();
-						
 
 					}
 				});
@@ -623,6 +627,16 @@ public class StudyActivity1 extends FragmentActivity implements OnClickListener 
 
 		});
 
+	}
+
+	public void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+
+	public void onPause() {
+		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 
 }
