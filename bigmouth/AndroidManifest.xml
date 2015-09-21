@@ -67,6 +67,10 @@
             android:theme="@android:style/Theme.NoTitleBar" >
         </activity>
         <activity
+            android:name="com.bigmouth.app.ui.HomeActivity"
+            android:theme="@android:style/Theme.NoTitleBar" >
+        </activity>
+        <activity
             android:name="com.bigmouth.app.ui.CodeAcitivity"
             android:theme="@android:style/Theme.NoTitleBar" >
         </activity>
