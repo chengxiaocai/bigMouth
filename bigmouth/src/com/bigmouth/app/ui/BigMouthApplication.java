@@ -31,7 +31,7 @@ public class BigMouthApplication extends Application implements
 		 * PollingUtils.startPollingService(this, 5, PollingService.class,
 		 * PollingService.ACTION);
 		 */
-	//	Thread.setDefaultUncaughtExceptionHandler(this);
+	  Thread.setDefaultUncaughtExceptionHandler(this);
 		initImageLoader(getApplicationContext());
 
 	}

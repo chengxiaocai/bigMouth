@@ -92,9 +92,7 @@ public class PractiseFragment extends Fragment {
 					}
 				}
 
-				tvList.get(m).setBackground(
-						getResources().getDrawable(
-								R.drawable.bg_text__all_coner_gray));
+				tvList.get(m).setBackground(getResources().getDrawable(R.drawable.bg_text__all_coner_gray));
 				tvList.get(n).setBackground(
 						getResources().getDrawable(
 								R.drawable.bg_text__all_coner_gray));
@@ -515,6 +513,12 @@ public class PractiseFragment extends Fragment {
 
 		});
 
+	}
+	@Override
+	public void onStop() {
+		// TODO Auto-generated method stub
+		super.onStop();
+		time.cancel();
 	}
 
 }

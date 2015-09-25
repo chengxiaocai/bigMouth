@@ -89,8 +89,7 @@ public class SplashActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_splash);
 		localUrl = PersistentUtil.getInstance().readString(this, "urll", "img");
-		com.bigmouth.app.util.AppShortCutUtil.addNumShortCut(
-				SplashActivity.this, SplashActivity.class, true, "0", false);
+		//com.bigmouth.app.util.AppShortCutUtil.addNumShortCut(SplashActivity.this, SplashActivity.class, true, "0", false);
 		iv_temp = (ImageView) findViewById(R.id.img_temp);
 		options = new DisplayImageOptions.Builder()
 
