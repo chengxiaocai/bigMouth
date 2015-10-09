@@ -174,12 +174,10 @@ public class LoginActivity extends Activity implements Callback,
 					return true;
 				}
 				view.loadUrl(url);
-				if (view.getUrl().equals(
-						"http://app.01teacher.cn/Account/LogOn")) {
+				if (url!=null&&url.equals("http://app.01teacher.cn/Account/LogOn")) {
 					reTtile.setVisibility(View.GONE);
 
-				} else if (view.getUrl().equals(
-						"http://app.01teacher.cn/Account/LogOff")) {
+				} else if (url!=null&&url.equals("http://app.01teacher.cn/Account/LogOff")) {
 					reTtile.setVisibility(View.GONE);
 					SharedPreferences sp = getSharedPreferences(FILENAME,
 							Context.MODE_PRIVATE);
@@ -188,7 +186,7 @@ public class LoginActivity extends Activity implements Callback,
 					sp.edit().remove("type").commit();
 				}
 
-				else if (view.getUrl().equals("http://app.01teacher.cn/")) {
+				else if (url!=null&&url.equals("http://app.01teacher.cn/")) {
 					reTtile.setVisibility(View.VISIBLE);
 					type = PersistentUtil.getInstance().readString(
 							LoginActivity.this, "type", "0");
@@ -204,7 +202,7 @@ public class LoginActivity extends Activity implements Callback,
 					finish();
 
 				}
-				Log.d("cc......", view.getUrl());
+				//Log.d("cc......", view.getUrl());
 
 				return true;
 			}
