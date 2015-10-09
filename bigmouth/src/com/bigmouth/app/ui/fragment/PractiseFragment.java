@@ -1,6 +1,8 @@
 package com.bigmouth.app.ui.fragment;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -25,7 +27,9 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.media.SoundPool;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -71,6 +75,9 @@ public class PractiseFragment extends Fragment {
 	private int i = 6;
 	private int type;
 	StudyActivity1 ac;
+	private SoundPool spPool;
+	private Map<Integer, Integer> voiceMap ;
+
 	final Handler handler = new Handler() {
 		@SuppressLint("NewApi")
 		public void handleMessage(Message msg) {
@@ -106,6 +113,11 @@ public class PractiseFragment extends Fragment {
 			Bundle savedInstanceState) {
 		contentView = inflater.inflate(R.layout.fragment_practise_pre,
 				container, false);
+		spPool = new SoundPool(2, AudioManager.STREAM_MUSIC, 0);
+		voiceMap = new HashMap<Integer, Integer>();
+		voiceMap.put(1, spPool.load(getActivity(), R.raw.succuful, 1));
+		voiceMap.put(2, spPool.load(getActivity(), R.raw.failure, 1));
+
 		// initVeiw();
 
 		// getData();
@@ -285,6 +297,8 @@ public class PractiseFragment extends Fragment {
 					}
 					time.cancel();
 					if (chinese.equals(tv.getText().toString())) {
+						spPool.play(voiceMap.get(1), 1, 1, 0, 0, 1);
+
 						totalNum++;
 						Log.i(GussNmu + "", totalNum + "");
 						if (GussNmu == totalNum) {
@@ -293,9 +307,7 @@ public class PractiseFragment extends Fragment {
 							if (type == 1) {
 								UpLoadPoint();
 								tvFinalShow.setText("完成了Coffee Break挑战练习");
-								ivSuccess.setBackground(getActivity()
-										.getResources().getDrawable(
-												R.drawable.success3));
+								ivSuccess.setBackground(getActivity().getResources().getDrawable(R.drawable.success3));
 							} else if (type == 2) {
 								UpLoadPoint();
 
@@ -324,6 +336,8 @@ public class PractiseFragment extends Fragment {
 						tvJingdu.setText("已完成进度：" + totalNum + "/" + GussNmu);
 
 					} else {
+						spPool.play(voiceMap.get(2), 1, 1, 0, 0, 1);
+
 						lineUi2.setVisibility(View.GONE);
 						lineUi4.setVisibility(View.VISIBLE);
 						tvResultChinese1.setText(chinese);
