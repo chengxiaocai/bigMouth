@@ -152,14 +152,14 @@ public class LoginActivity extends Activity implements Callback,
 				if (url.equals("http://app.01teacher.cn/wx.html")) {
 					Platform wechat = ShareSDK.getPlatform(Wechat.NAME);
 					wechat.removeAccount();
-					ShareSDK.removeCookieOnAuthorize(true);
+				//	ShareSDK.removeCookieOnAuthorize(true);
 					authorize(wechat);
 					return true;
 				}
 				if (url.equals("http://app.01teacher.cn/wb.html")) {
 					Platform weixinfd = ShareSDK.getPlatform(SinaWeibo.NAME);
 					weixinfd.removeAccount();
-					ShareSDK.removeCookieOnAuthorize(true);
+			//		ShareSDK.removeCookieOnAuthorize(true);
 					weixinfd.setPlatformActionListener(LoginActivity.this);
 
 					weixinfd.showUser(null);
@@ -168,7 +168,7 @@ public class LoginActivity extends Activity implements Callback,
 				if (url.equals("http://app.01teacher.cn/qq.html")) {
 					Platform weixinfd = ShareSDK.getPlatform(QQ.NAME);
 					weixinfd.removeAccount();
-					ShareSDK.removeCookieOnAuthorize(true);
+				//	ShareSDK.removeCookieOnAuthorize(true);
 					weixinfd.setPlatformActionListener(LoginActivity.this);
 					weixinfd.showUser(null);
 					return true;
@@ -224,6 +224,8 @@ public class LoginActivity extends Activity implements Callback,
 							"type", str[2] == null ? "" : str[2].split("=")[1]);
 					type = PersistentUtil.getInstance().readString(
 							LoginActivity.this, "type", "0");
+                    setAlias(	PersistentUtil.getInstance().readString(LoginActivity.this, "id", "0"));
+
 					setAlias(str[1].split("=")[1]);
 					if ("2".equals(type)) {
 						findViewById(R.id.iv_login_read).setVisibility(
@@ -331,8 +333,7 @@ public class LoginActivity extends Activity implements Callback,
 			case 6002:
 				logs = "Failed to set alias and tags due to timeout. Try again after 60s.";
 				Log.i("cc", logs);
-				mHandler.sendMessageDelayed(
-						mHandler.obtainMessage(MSG_SET_ALIAS, alias), 1000 * 60);
+				mHandler.sendMessageDelayed(	mHandler.obtainMessage(MSG_SET_ALIAS, alias), 1000 * 60);
 
 				break;
 
@@ -361,7 +362,7 @@ public class LoginActivity extends Activity implements Callback,
 
 						Platform weixinfd = ShareSDK.getPlatform(QQ.NAME);
 						weixinfd.removeAccount();
-						ShareSDK.removeCookieOnAuthorize(true);
+					//	ShareSDK.removeCookieOnAuthorize(true);
 						weixinfd.setPlatformActionListener(LoginActivity.this);
 						weixinfd.showUser(null);
 						dialog.dismiss();
@@ -376,7 +377,7 @@ public class LoginActivity extends Activity implements Callback,
 						Platform weixinfd = ShareSDK
 								.getPlatform(SinaWeibo.NAME);
 						weixinfd.removeAccount();
-						ShareSDK.removeCookieOnAuthorize(true);
+						//ShareSDK.removeCookieOnAuthorize(true);
 						weixinfd.setPlatformActionListener(LoginActivity.this);
 
 						weixinfd.showUser(null);
@@ -392,7 +393,7 @@ public class LoginActivity extends Activity implements Callback,
 						// TODO Auto-generated method stub
 						Platform wechat = ShareSDK.getPlatform(Wechat.NAME);
 						wechat.removeAccount();
-						ShareSDK.removeCookieOnAuthorize(true);
+					//	ShareSDK.removeCookieOnAuthorize(true);
 						authorize(wechat);
 						dialog.dismiss();
 
@@ -535,8 +536,8 @@ public class LoginActivity extends Activity implements Callback,
 				Toast.makeText(LoginActivity.this, "登录成功", 0).show();
 				try {
 					JSONObject obj = new JSONObject(content);
-					PersistentUtil.getInstance().write(LoginActivity.this,
-							"id", obj.optString("UserID"));
+					PersistentUtil.getInstance().write(LoginActivity.this,"id", obj.optString("UserID"));
+                    setAlias(obj.optString("UserID"));
 					PersistentUtil.getInstance().write(LoginActivity.this,
 							"type", obj.optString("UserType"));
 					Intent intent3 = new Intent(LoginActivity.this,

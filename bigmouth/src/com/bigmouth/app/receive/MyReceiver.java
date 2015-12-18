@@ -38,16 +38,25 @@ public class MyReceiver extends BroadcastReceiver {
 		} else if (JPushInterface.ACTION_NOTIFICATION_RECEIVED.equals(intent
 				.getAction())) {
 			Log.d(TAG, "[MyReceiver] 接收到推送下来的通知");
-			int notifactionId = bundle
-					.getInt(JPushInterface.EXTRA_NOTIFICATION_ID);
+			String extras = bundle.getString(JPushInterface.EXTRA_EXTRA);
+			try {
+				JSONObject json= new JSONObject(extras);
+				int num = json.optInt("num");
+				AppShortCutUtil.addNumShortCut(context, SplashActivity.class, true,num+"", false);
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			int notifactionId = bundle.getInt(JPushInterface.EXTRA_NOTIFICATION_ID);
 			Log.d(TAG, "[MyReceiver] 接收到推送下来的通知的ID: " + notifactionId);
-
+		
 		} else if (JPushInterface.ACTION_NOTIFICATION_OPENED.equals(intent
 				.getAction())) {
 			Log.d(TAG, "[MyReceiver] 用户点击打开了通知");
 
 			// 打开自定义的Activity
-			Intent i = new Intent(context, ShowMsgActivity.class);
+		
+			Intent i = new Intent(context, SplashActivity.class);
 			i.putExtras(bundle);
 			// i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK

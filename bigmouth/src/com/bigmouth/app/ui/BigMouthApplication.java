@@ -43,7 +43,7 @@ public class BigMouthApplication extends Application implements
 				.denyCacheImageMultipleSizesInMemory()
 				.discCacheFileNameGenerator(new Md5FileNameGenerator())
 				.tasksProcessingOrder(QueueProcessingType.LIFO)
-				.writeDebugLogs() // Remove for release app
+				.writeDebugLogs() // Remove for release appdx
 
 				.build();
 		ImageLoader.getInstance().init(config);
