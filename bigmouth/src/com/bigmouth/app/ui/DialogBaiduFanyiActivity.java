@@ -1,5 +1,7 @@
 package com.bigmouth.app.ui;
 
+import java.util.Random;
+
 import org.apache.http.Header;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -14,6 +16,7 @@ import com.bigmouth.app.R;
 import com.bigmouth.app.bean.Means;
 import com.bigmouth.app.util.Constant;
 import com.bigmouth.app.util.DialogUtil;
+import com.bigmouth.app.util.EncryptUtil;
 import com.bigmouth.app.util.HttpHandle;
 import com.bigmouth.app.util.PersistentUtil;
 import com.loopj.android.http.AsyncHttpClient;
@@ -192,16 +195,20 @@ public class DialogBaiduFanyiActivity extends Activity implements
 	}
 
 	public void Load(final String word) {
+        int salt = new Random().nextInt(1000000);
 
 		RequestParams rp = new RequestParams();
-		rp.put("client_id", Constant.BAIDU_APP_KEY);
+		rp.put("appid", Constant.BAIDU_TRANSLATE_APPID);
 		rp.put("q", word);
 		rp.put("from", "en");
 		rp.put("to", "zh");
-		// rp.put("ReadingID","");
+		rp.put("salt", salt+"");
+		  String  sign1 =Constant.BAIDU_TRANSLATE_APPID+word+salt+""+Constant.BAIDU_TRANSLATE_SECRET;
+	      String sign = EncryptUtil.md5(sign1);
+	     rp.put("sign", sign);
 		reqhandle = ahc.get(
-
-		"http://openapi.baidu.com/public/2.0/bmt/translate",
+     //20151130000007000South4978164dd35boO7YiCSu1c4Kq8
+		"http://api.fanyi.baidu.com/api/trans/vip/translate",
 
 		rp, new AsyncHttpResponseHandler() {
 			@Override
